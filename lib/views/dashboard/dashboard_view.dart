@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -20,7 +23,7 @@ class DashboardViewState extends State<DashboardView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dashboard'),
+        title: Text(AppLocalizations.of(context)!.dashboard)
       ),
       body: Center(
         child: Column(
