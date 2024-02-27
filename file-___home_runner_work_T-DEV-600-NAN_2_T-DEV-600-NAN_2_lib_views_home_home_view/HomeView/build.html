@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the build method from the DiscoverAppPage class, for the Dart programming language.">
-  <title>build method - DiscoverAppPage class - discoverAppPage_view library - Dart API</title>
+  <meta name="description" content="API docs for the build method from the HomeView class, for the Dart programming language.">
+  <title>build method - HomeView class - home_view library - Dart API</title>
 
 
   
@@ -29,8 +29,8 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_discoverAppPage_discoverAppPage_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_discoverAppPage_discoverAppPage_view-library.html">views&#47;discoverAppPage&#47;discoverAppPage_view.dart</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_discoverAppPage_discoverAppPage_view/DiscoverAppPage-class.html">DiscoverAppPage</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_home_home_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_home_home_view-library.html">views&#47;home&#47;home_view.dart</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_home_home_view/HomeView-class.html">HomeView</a></li>
     <li class="self-crumb">build method</li>
   </ol>
   <div class="self-name">build</div>
@@ -54,7 +54,7 @@
   <div
       id="dartdoc-main-content"
       class="main-content"
-      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_discoverAppPage_discoverAppPage_view&#47;DiscoverAppPage-class-sidebar.html"
+      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_home_home_view&#47;HomeView-class-sidebar.html"
       data-below-sidebar="">
       <div>
 <h1><span class="kind-method">build</span> method 
@@ -84,13 +84,45 @@
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
   return Scaffold(
-    appBar: AppBar(
-      title: Text(&#39;Découvrir l\&#39;application&#39;),
-      backgroundColor: Color(0xFF1C39A1),
-    ),
-    body: const Center(
-      child: Text(&#39;Contenu de la page Découvrir l\&#39;application&#39;),
-    ),
+    backgroundColor: Color(0xFF1C39A1),
+    body: Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+        Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(&#39;..&#47;assets&#47;logo.png&#39;,
+            width: 50,
+            height: 50,
+          ),
+          const SizedBox(width: 5),
+          const Text(
+            &#39;TrellTech&#39;,
+            style: TextStyle(
+              fontSize: 24,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+      const SizedBox(height: 20),
+      ElevatedButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) =&gt; const DiscoverAppView()),
+          );
+        },
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(Colors.white),
+          foregroundColor: MaterialStateProperty.all(Color(0xFF1C39A1)),
+        ),
+        child: const Text(&#39;Découvrir l\&#39;application&#39;),
+      ),
+    ],
+  ),)
+  ,
   );
 }</code></pre>
 </section>
@@ -108,13 +140,13 @@ Widget build(BuildContext context) {
 
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_discoverAppPage_discoverAppPage_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_discoverAppPage_discoverAppPage_view-library.html">discoverAppPage_view</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_discoverAppPage_discoverAppPage_view/DiscoverAppPage-class.html">DiscoverAppPage</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_home_home_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_home_home_view-library.html">home_view</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_home_home_view/HomeView-class.html">HomeView</a></li>
     <li class="self-crumb">build method</li>
 </ol>
 
 
-    <h5>DiscoverAppPage class</h5>
+    <h5>HomeView class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-->
 

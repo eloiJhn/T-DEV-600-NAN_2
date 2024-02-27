@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the HomePage constructor from Class HomePage from the homepage_view library, for the Dart programming language.">
-  <title>HomePage constructor - HomePage - homepage_view library - Dart API</title>
+  <meta name="description" content="API docs for the build method from the DiscoverAppView class, for the Dart programming language.">
+  <title>build method - DiscoverAppView class - discover_app_view library - Dart API</title>
 
 
   
@@ -29,11 +29,11 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_homepage_homepage_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_homepage_homepage_view-library.html">views&#47;homepage&#47;homepage_view.dart</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_homepage_homepage_view/HomePage-class.html">HomePage</a></li>
-    <li class="self-crumb">HomePage const constructor</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_discover_app_discover_app_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_discover_app_discover_app_view-library.html">views&#47;discover_app&#47;discover_app_view.dart</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_discover_app_discover_app_view/DiscoverAppView-class.html">DiscoverAppView</a></li>
+    <li class="self-crumb">build method</li>
   </ol>
-  <div class="self-name">HomePage</div>
+  <div class="self-name">build</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -54,25 +54,45 @@
   <div
       id="dartdoc-main-content"
       class="main-content"
-      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_homepage_homepage_view&#47;HomePage-class-sidebar.html"
+      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_discover_app_discover_app_view&#47;DiscoverAppView-class-sidebar.html"
       data-below-sidebar="">
       <div>
-<h1><span class="kind-constructor">HomePage</span> constructor 
+<h1><span class="kind-method">build</span> method 
 </h1></div>
 
     <section class="multi-line-signature">
-      const
-      <span class="name ">HomePage</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="-param-key">{<span class="type-annotation">dynamic</span> <span class="parameter-name">key</span>}</span></li>
-</ol>)
-    </section>
+      
+  <div>
+    <ol class="annotation-list">
+        <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
+    </ol>
+  </div>
 
+<span class="returntype">dynamic</span>
+<span class="name ">build</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="build-param-context"><span class="type-annotation">dynamic</span> <span class="parameter-name">context</span></span></li>
+</ol>)
+
+      
+
+    </section>
     
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">const HomePage({super.key});</code></pre>
+  <pre class="language-dart"><code class="language-dart">@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Text(&#39;Découvrir l\&#39;application&#39;),
+      backgroundColor: Color(0xFF1C39A1),
+    ),
+    body: const Center(
+      child: Text(&#39;Contenu de la page Découvrir l\&#39;application&#39;),
+    ),
+  );
+}</code></pre>
 </section>
 
 
@@ -88,15 +108,15 @@
 
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_homepage_homepage_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_homepage_homepage_view-library.html">homepage_view</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_homepage_homepage_view/HomePage-class.html">HomePage</a></li>
-    <li class="self-crumb">HomePage const constructor</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_discover_app_discover_app_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_discover_app_discover_app_view-library.html">discover_app_view</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_discover_app_discover_app_view/DiscoverAppView-class.html">DiscoverAppView</a></li>
+    <li class="self-crumb">build method</li>
 </ol>
 
 
-    <h5>HomePage class</h5>
+    <h5>DiscoverAppView class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
-  </div><!--/.sidebar-offcanvas-left-->
+  </div><!--/.sidebar-offcanvas-->
 
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
