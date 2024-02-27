@@ -1,9 +1,6 @@
 name: Mirror to EpitechMscProPromo2026
 
-on:
-  push:
-    branches:
-      - master
+on: push
 
 concurrency:
   group: git-mirror

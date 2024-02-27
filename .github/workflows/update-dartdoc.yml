@@ -24,14 +24,3 @@ jobs:
 
       - name: Generate DartDoc
         run: dart pub global run dartdoc
-
-      - name: Deploy to Mirror Repository
-        run: |
-          git config --global user.name 'eloiJhn'
-          git config --global user.email 'eloi.jahan9221@gmail.com'
-          git clone git@github.com:EpitechMscProPromo2026/T-DEV-600-NAN_2.git
-          cp -r doc/* documentation/
-          cd documentation
-          git add .
-          git commit -m "Update documentation"
-          git push
