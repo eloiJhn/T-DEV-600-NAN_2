@@ -1,0 +1,37 @@
+name: Generate and Deploy DartDoc
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  generate-documentation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '3.19.1'
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      - name: Install DartDoc
+        run: dart pub global activate dartdoc
+
+      - name: Generate DartDoc
+        run: dart pub global run dartdoc --output=doc
+
+      - name: Deploy the doc to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./doc
+          publish_branch: gh-pages
+          user_name: eloiJhn
+          user_email: eloi.jahan9221@gmail.com
