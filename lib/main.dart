@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trelltech/views/auth/login_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trelltech/views/homepage/homepage_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +22,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const LoginView(),
+        '/': (context) => const HomePage(),
+        '/login': (context) => const LoginView(),
       },
     );
   }
