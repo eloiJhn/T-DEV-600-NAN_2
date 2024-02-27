@@ -23,4 +23,13 @@ jobs:
         run: dart pub global activate dartdoc
 
       - name: Generate DartDoc
-        run: dart pub global run dartdoc
+        run: dart pub global run dartdoc --output=doc
+
+      - name: Deploy the doc to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./doc
+          publish_branch: gh-pages
+          user_name: eloiJhn
+          user_email: eloi.jahan9221@gmail.com
