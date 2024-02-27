@@ -11,6 +11,7 @@ concurrency:
 
 jobs:
   git-mirror:
+    if: github.repository == 'eloiJhn/T-DEV-600-NAN_2'
     runs-on: ubuntu-latest
     steps:
       - uses: wearerequired/git-mirror-action@v1

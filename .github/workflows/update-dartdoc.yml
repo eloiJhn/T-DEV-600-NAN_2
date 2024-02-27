@@ -6,6 +6,7 @@ on:
 
 jobs:
   generate-documentation:
+    if: github.repository == 'eloiJhn/T-DEV-600-NAN_2'
     runs-on: ubuntu-latest
 
     steps:
