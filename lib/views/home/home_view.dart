@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:trelltech/views/discoverAppPage/discoverAppPage_view.dart';
+import 'package:trelltech/views/discover_app/discover_app_view.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomeView extends StatelessWidget {
+  const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,12 +10,12 @@ class HomePage extends StatelessWidget {
       backgroundColor: Color(0xFF1C39A1),
       body: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min, // Pour centrer verticalement
+          mainAxisSize: MainAxisSize.min,
           children: [
           Row(
-          mainAxisSize: MainAxisSize.min, // Pour centrer horizontalement
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset('assets/logo.png',
+            Image.asset('../assets/logo.png',
               width: 50,
               height: 50,
             ),
@@ -30,16 +30,16 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 20), // Espace entre le titre et le bouton
+        const SizedBox(height: 20),
         ElevatedButton(
           onPressed: () {
             Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const DiscoverAppPage()),
+              MaterialPageRoute(builder: (context) => const DiscoverAppView()),
             );
           },
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.white), // Couleur de fond
-            foregroundColor: MaterialStateProperty.all(Color(0xFF1C39A1)), // Couleur du texte
+            backgroundColor: MaterialStateProperty.all(Colors.white),
+            foregroundColor: MaterialStateProperty.all(Color(0xFF1C39A1)),
           ),
           child: const Text('Découvrir l\'application'),
         ),
