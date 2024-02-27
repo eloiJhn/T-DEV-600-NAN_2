@@ -3,7 +3,7 @@ name: Mirror to Bitbucket Repo
 on:
   push:
     branches:
-      - main
+      - master
 
 concurrency:
   group: git-mirror
