@@ -84,12 +84,13 @@
   <pre class="language-dart"><code class="language-dart">Future&lt;String?&gt; app_authenticateWithTrello(BuildContext context) async {
   &#47;&#47; Get the Trello API key from the .env file
   final trelloAPIKey = dotenv.env[&#39;TRELLO_API_KEY&#39;];
+  final trelloAPPName = dotenv.env[&#39;TRELLO_APP_NAME&#39;];
 
   final prefs = await SharedPreferences.getInstance();
   final url = Uri.https(&#39;trello.com&#39;, &#39;&#47;1&#47;authorize&#39;, {
     &#39;expiration&#39;: &#39;never&#39;,
-    &#39;name&#39;: &#39;TrellTech&#39;,
-    &#39;scope&#39;: &#39;read&#39;,
+    &#39;name&#39;: trelloAPPName,
+    &#39;scope&#39;: &#39;read,write,account&#39;,
     &#39;response_type&#39;: &#39;token&#39;,
     &#39;key&#39;: trelloAPIKey,
     &#39;return_url&#39;: &#39;trelltech:&#47;&#47;&#39;,
@@ -97,8 +98,8 @@
   });
 
   &#47;&#47; Verify that the Trello API key is present
-  if(trelloAPIKey == null) {
-    print(&#39;La clé API Trello n\&#39;a pas été trouvée&#39;);
+  if(trelloAPIKey == null || trelloAPPName == null) {
+    print(&#39;TRELLO_API_KEY or TRELLO_APP_NAME not found in the .env file&#39;);
     return null;
   }
 
@@ -131,7 +132,7 @@
       return accessToken;
     }
   } catch (e) {
-    print(&#39;Erreur d\&#39;authentification avec Trello: $e&#39;);
+    print(&#39;Error during authentication: $e&#39;);
     return null;
   }
 }</code></pre>
