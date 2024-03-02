@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:trelltech/views/auth/login_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trelltech/views/dashboard/dashboard_view.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -22,6 +24,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const LoginView(),
+        '/dashboard': (context) => const DashboardView(),
       },
     );
   }
