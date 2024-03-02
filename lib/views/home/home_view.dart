@@ -16,8 +16,8 @@ class HomeView extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset('assets/images/logo.png',
-              width: 50,
-              height: 50,
+              width: 30,
+              height: 30,
             ),
             const SizedBox(width: 5),
             const Text(
