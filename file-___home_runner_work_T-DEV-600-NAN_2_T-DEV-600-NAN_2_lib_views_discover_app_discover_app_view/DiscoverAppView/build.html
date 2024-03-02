@@ -85,11 +85,91 @@
 Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(
-      title: Text(&#39;Découvrir l\&#39;application&#39;),
-      backgroundColor: Color(0xFF1C39A1),
+      title: const Text(&#39;Découvrir l\&#39;application&#39;),
+      backgroundColor: const Color(0xFF1C39A1),
     ),
-    body: const Center(
-      child: Text(&#39;Contenu de la page Découvrir l\&#39;application&#39;),
+    body: Column(
+      children: &lt;Widget&gt;[
+        Flexible(
+          flex: 2, &#47;&#47; Donnez plus de flex à l&#39;image si nécessaire
+          child: Center(
+            child: Image.asset(
+              &#39;assets&#47;images&#47;presentation.png&#39;,
+              &#47;&#47; La taille de l&#39;image sera relative à l&#39;espace disponible
+              fit: BoxFit.contain,
+            ),
+          ),
+        ),
+        const Flexible(
+          flex: 1,
+          child: Card(
+            elevation: 0,
+            child: ListTile(
+              title:  Text(&#39;Gestion des espaces de travail&#39;),
+              subtitle:  Text(&#39;Créez, modifiez, supprimez et affichez vos espaces de travail.&#39;),
+              leading:  Icon(Icons.workspaces_outline),
+            ),
+          ),
+        ),
+                 const Flexible(
+                   flex: 1,
+                      child: Card(
+                        elevation: 0,
+                        child: ListTile(
+                          title:  Text(&#39;Gestion des tableaux&#39;),
+                          subtitle:  Text(&#39;Gérez vos tableaux avec des modèles comme Kanban.&#39;),
+                          leading:  Icon(Icons.dashboard_customize),
+                        ),
+                      ),
+                    ),
+                  const Flexible(
+                    flex: 1,
+                      child: Card(
+                        elevation: 0,
+                        child: ListTile(
+                          title:  Text(&#39;Gestion des listes&#39;),
+                          subtitle:  Text(&#39;Ajoutez, modifiez, supprimez et consultez vos listes.&#39;),
+                          leading:  Icon(Icons.list),
+                        ),
+                      ),
+                    ),
+                 const Flexible(
+                   flex: 1,
+                      child: Card(
+                        elevation: 0,
+                        child: ListTile(
+                          title:  Text(&#39;Gestion des cartes&#39;),
+                          subtitle:  Text(&#39;Gérez vos cartes au sein des listes.&#39;),
+                          leading:  Icon(Icons.card_membership),
+                        ),
+                      ),
+                    ),
+                  const Flexible(
+                    flex: 1,
+                      child: Card(
+                        elevation: 0,
+                        child: ListTile(
+                          title:  Text(&#39;Assignation de personnes aux cartes&#39;),
+                          subtitle:  Text(&#39;Assignez des tâches aux membres de votre équipe.&#39;),
+                          leading:  Icon(Icons.person_add_alt_1),
+                        ),
+                      ),
+                    ),
+                  Flexible(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: ElevatedButton(
+                        onPressed: () =&gt; Navigator.of(context).pushReplacementNamed(&#39;&#47;login&#39;),
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(const Color(0xFF1C39A1)),
+                          foregroundColor: MaterialStateProperty.all(Colors.white),
+                        ),
+                        child: const Text(&#39;Se connecter&#39;),
+                      ),
+                    ),
+                  ),
+      ],
     ),
   );
 }</code></pre>
