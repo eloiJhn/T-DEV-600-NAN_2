@@ -1,0 +1,23 @@
+name: Mirror to EpitechMscProPromo2026
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+concurrency:
+  group: git-mirror
+
+jobs:
+  git-mirror:
+    if: github.repository == 'eloiJhn/T-DEV-600-NAN_2'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: wearerequired/git-mirror-action@v1
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        with:
+          source-repo: "git@github.com:eloiJhn/T-DEV-600-NAN_2.git"
+          destination-repo: "git@github.com:EpitechMscProPromo2026/T-DEV-600-NAN_2.git"
