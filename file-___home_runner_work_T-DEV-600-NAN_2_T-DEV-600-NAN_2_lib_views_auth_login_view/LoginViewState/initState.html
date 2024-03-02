@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the build method from the MyApp class, for the Dart programming language.">
-  <title>build method - MyApp class - main library - Dart API</title>
+  <meta name="description" content="API docs for the initState method from the LoginViewState class, for the Dart programming language.">
+  <title>initState method - LoginViewState class - login_view library - Dart API</title>
 
 
   
@@ -29,11 +29,11 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main-library.html">main.dart</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main/MyApp-class.html">MyApp</a></li>
-    <li class="self-crumb">build method</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_auth_login_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_auth_login_view-library.html">views&#47;auth&#47;login_view.dart</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_auth_login_view/LoginViewState-class.html">LoginViewState</a></li>
+    <li class="self-crumb">initState method</li>
   </ol>
-  <div class="self-name">build</div>
+  <div class="self-name">initState</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -54,10 +54,10 @@
   <div
       id="dartdoc-main-content"
       class="main-content"
-      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main&#47;MyApp-class-sidebar.html"
+      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_auth_login_view&#47;LoginViewState-class-sidebar.html"
       data-below-sidebar="">
       <div>
-<h1><span class="kind-method">build</span> method 
+<h1><span class="kind-method">initState</span> method 
 </h1></div>
 
     <section class="multi-line-signature">
@@ -68,9 +68,8 @@
     </ol>
   </div>
 
-<span class="returntype">dynamic</span>
-<span class="name ">build</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="build-param-context"><span class="type-annotation">dynamic</span> <span class="parameter-name">context</span></span></li>
-</ol>)
+<span class="returntype">void</span>
+<span class="name ">initState</span>(<wbr>)
 
       
 
@@ -82,23 +81,10 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
-Widget build(BuildContext context) {
-  return MaterialApp(
-    title: &#39;TrellTech&#39;,
-    localizationsDelegates: AppLocalizations.localizationsDelegates,
-    supportedLocales: AppLocalizations.supportedLocales,
-    theme: ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      useMaterial3: true,
-    ),
-    initialRoute: &#39;&#47;&#39;,
-    routes: {
-      &#39;&#47;&#39;: (context) =&gt; const HomeView(),
-      &#39;&#47;login&#39;: (context) =&gt; const LoginView(),
-      &#39;&#47;discover&#39;: (context) =&gt; const DiscoverAppView(),
-      &#39;&#47;dashboard&#39;: (context) =&gt; const DashboardView(),
-    },
-  );
+void initState() {
+  super.initState();
+  WidgetsBinding.instance.addObserver(this);
+  initPlatformState();
 }</code></pre>
 </section>
 
@@ -115,13 +101,13 @@ Widget build(BuildContext context) {
 
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main-library.html">main</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main/MyApp-class.html">MyApp</a></li>
-    <li class="self-crumb">build method</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_auth_login_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_auth_login_view-library.html">login_view</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_auth_login_view/LoginViewState-class.html">LoginViewState</a></li>
+    <li class="self-crumb">initState method</li>
 </ol>
 
 
-    <h5>MyApp class</h5>
+    <h5>LoginViewState class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-->
 

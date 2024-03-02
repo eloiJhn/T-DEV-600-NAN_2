@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the build method from the MyApp class, for the Dart programming language.">
-  <title>build method - MyApp class - main library - Dart API</title>
+  <meta name="description" content="API docs for the initPlatformState method from the LoginViewState class, for the Dart programming language.">
+  <title>initPlatformState method - LoginViewState class - login_view library - Dart API</title>
 
 
   
@@ -29,11 +29,11 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main-library.html">main.dart</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main/MyApp-class.html">MyApp</a></li>
-    <li class="self-crumb">build method</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_auth_login_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_auth_login_view-library.html">views&#47;auth&#47;login_view.dart</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_auth_login_view/LoginViewState-class.html">LoginViewState</a></li>
+    <li class="self-crumb">initPlatformState method</li>
   </ol>
-  <div class="self-name">build</div>
+  <div class="self-name">initPlatformState</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -54,23 +54,17 @@
   <div
       id="dartdoc-main-content"
       class="main-content"
-      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main&#47;MyApp-class-sidebar.html"
+      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_auth_login_view&#47;LoginViewState-class-sidebar.html"
       data-below-sidebar="">
       <div>
-<h1><span class="kind-method">build</span> method 
+<h1><span class="kind-method">initPlatformState</span> method 
 </h1></div>
 
     <section class="multi-line-signature">
       
-  <div>
-    <ol class="annotation-list">
-        <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
-    </ol>
-  </div>
 
-<span class="returntype">dynamic</span>
-<span class="name ">build</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="build-param-context"><span class="type-annotation">dynamic</span> <span class="parameter-name">context</span></span></li>
-</ol>)
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+<span class="name ">initPlatformState</span>(<wbr>)
 
       
 
@@ -81,24 +75,37 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">@override
-Widget build(BuildContext context) {
-  return MaterialApp(
-    title: &#39;TrellTech&#39;,
-    localizationsDelegates: AppLocalizations.localizationsDelegates,
-    supportedLocales: AppLocalizations.supportedLocales,
-    theme: ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      useMaterial3: true,
-    ),
-    initialRoute: &#39;&#47;&#39;,
-    routes: {
-      &#39;&#47;&#39;: (context) =&gt; const HomeView(),
-      &#39;&#47;login&#39;: (context) =&gt; const LoginView(),
-      &#39;&#47;discover&#39;: (context) =&gt; const DiscoverAppView(),
-      &#39;&#47;dashboard&#39;: (context) =&gt; const DashboardView(),
-    },
-  );
+  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; initPlatformState() async {
+  Uri redirectUrl;
+  String clientId =
+      &#39;BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ&#39;;
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse(&#39;w3a:&#47;&#47;com.example.w3aflutter&#47;auth&#39;);
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse(&#39;com.example.w3aflutter:&#47;&#47;auth&#39;);
+  } else {
+    throw UnKnownException(&#39;Unknown platform&#39;);
+  }
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId: clientId,
+    network: Network.sapphire_mainnet,
+    redirectUrl: redirectUrl,
+    buildEnv: BuildEnv.production,
+    &#47;&#47; 259200 allows user to stay authenticated for 3 days with Web3Auth.
+    &#47;&#47; Default is 86400, which is 1 day.
+    sessionTime: 259200,
+  ));
+
+  await Web3AuthFlutter.initialize();
+
+  final String res = await Web3AuthFlutter.getPrivKey();
+  log(res);
+  if (res.isNotEmpty) {
+    setState(() {
+      logoutVisible = true;
+    });
+  }
 }</code></pre>
 </section>
 
@@ -115,13 +122,13 @@ Widget build(BuildContext context) {
 
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main-library.html">main</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main/MyApp-class.html">MyApp</a></li>
-    <li class="self-crumb">build method</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_auth_login_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_auth_login_view-library.html">login_view</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_auth_login_view/LoginViewState-class.html">LoginViewState</a></li>
+    <li class="self-crumb">initPlatformState method</li>
 </ol>
 
 
-    <h5>MyApp class</h5>
+    <h5>LoginViewState class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-->
 

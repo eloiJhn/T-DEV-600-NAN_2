@@ -83,28 +83,127 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: const Text(&#39;Dashboard&#39;),
-    ),
-    body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: &lt;Widget&gt;[
-          const Text(
-            &#39;You have tapped the button this many times:&#39;,
-          ),
-          Text(
-            &#39;$_counter&#39;,
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-        ],
+  return MaterialApp(
+    home: Scaffold(
+      appBar: AppBar(
+        title: const Text(&#39;Web3Auth x Flutter QuickStart&#39;),
       ),
-    ),
-    floatingActionButton: FloatingActionButton(
-      onPressed: _incrementCounter,
-      tooltip: &#39;Increment&#39;,
-      child: const Icon(Icons.add),
+      body: SingleChildScrollView(
+        child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                ),
+                Visibility(
+                  visible: !logoutVisible,
+                  child: Column(
+                    children: [
+                      const Icon(
+                        Icons.flutter_dash,
+                        size: 80,
+                        color: Color(0xFF1389fd),
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      const Text(
+                        &#39;Web3Auth&#39;,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 36,
+                          color: Color(0xFF0364ff),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Text(
+                        &#39;Welcome to Web3Auth x Flutter Quick Start Demo&#39;,
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        &#39;Login with&#39;,
+                        style: TextStyle(fontSize: 12),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      &#47;&#47; Text field for entering the user&#39;s email
+                      TextField(
+                        controller: emailController,
+                        decoration: const InputDecoration(
+                          labelText: &#39;Enter Email&#39;,
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: _login(
+                              () =&gt; _withEmailPasswordless(emailController.text),
+                        ),
+                        child: const Text(&#39;Login with Email Passwordless&#39;),
+                      ),
+                    ],
+                  ),
+                ),
+                ElevatedButtonTheme(
+                  data: ElevatedButtonThemeData(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 195, 47, 233),
+                      foregroundColor: Colors.white,
+                    ),
+                  ),
+                  child: Visibility(
+                    visible: logoutVisible,
+                    child: Column(
+                      children: [
+                        Center(
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red[600],
+                                foregroundColor: Colors.white,
+                              ),
+                              onPressed: _logout(),
+                              child: const Column(
+                                children: [
+                                  Text(&#39;Logout&#39;),
+                                ],
+                              )),
+                        ),
+                        const Text(
+                          &#39;Blockchain calls&#39;,
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        ElevatedButton(
+                          onPressed: _getUserInfo,
+                          child: const Text(&#39;Get UserInfo&#39;),
+                        ),
+                        ElevatedButton(
+                          onPressed: _getAddress,
+                          child: const Text(&#39;Get Address&#39;),
+                        ),
+                        ElevatedButton(
+                          onPressed: _getBalance,
+                          child: const Text(&#39;Get Balance&#39;),
+                        ),
+                        ElevatedButton(
+                          onPressed: _sendTransaction,
+                          child: const Text(&#39;Send Transaction&#39;),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(_result),
+                )
+              ],
+            )),
+      ),
     ),
   );
 }</code></pre>
