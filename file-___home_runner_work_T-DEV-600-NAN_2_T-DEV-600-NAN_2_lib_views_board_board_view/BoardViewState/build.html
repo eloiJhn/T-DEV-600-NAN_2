@@ -84,30 +84,87 @@
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
   return Scaffold(
-      appBar: AppBar(title: Text(widget.board.name)),
-      body: Center(
-        child: FutureBuilder(
-            future: _getLists(),
-            builder: (context, AsyncSnapshot&lt;List&lt;TrelloList&gt;&gt; snapshot) {
-              if (!snapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                return CarouselSlider.builder(
-                  itemCount: snapshot.data?.length,
-                  itemBuilder: (BuildContext context, int item,
-                          int pageViewIndex) =&gt;
-                      Text(snapshot.data![item].name),
-                  options: CarouselOptions(
+    appBar: AppBar(title: Text(widget.board.name)),
+    body: FutureBuilder(
+        future: _getLists(),
+        builder: (context, AsyncSnapshot&lt;List&lt;TrelloList&gt;&gt; snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            return CarouselSlider.builder(
+                carouselController: carouselController,
+                itemCount: snapshot.data?.length,
+                options: CarouselOptions(
                     autoPlay: false,
-                    enlargeCenterPage: true,
-                    viewportFraction: 0.9,
-                    aspectRatio: 2.0,
-                    initialPage: 2,
-                  ),
-                );
-              }
-            }),
-      ));
+                    scrollDirection: Axis.vertical,
+                    enlargeCenterPage: false,
+                    height: MediaQuery.of(context).size.height),
+                itemBuilder:
+                    (BuildContext context, int item, int pageViewIndex) {
+                  ScrollController listScrollController = ScrollController();
+                  return Card(
+                      child: Column(children: [
+                    Text(
+                      snapshot.data![item].name.toUpperCase(),
+                      style: const TextStyle(fontSize: 30),
+                    ),
+                    Expanded(
+                        child: FutureBuilder(
+                            future: _getCardsByList(snapshot.data![item].id),
+                            builder: (context,
+                                AsyncSnapshot&lt;List&lt;TrelloCard&gt;&gt; snapshot) {
+                              if (!snapshot.hasData) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              } else {
+                                return NotificationListener&lt;
+                                        ScrollNotification&gt;(
+                                    onNotification: (notification) {
+                                      if (notification
+                                              is ScrollEndNotification &amp;&amp;
+                                          listScrollController
+                                                  .position.extentAfter ==
+                                              0) {
+                                        carouselController.animateToPage(
+                                          item + 1,
+                                          duration: const Duration(
+                                              milliseconds: 500),
+                                          curve: Curves.easeInOut,
+                                        );
+                                      }
+                                      return false;
+                                    },
+                                    child: ListView.builder(
+                                        controller: listScrollController,
+                                        itemCount: snapshot.data?.length,
+                                        itemBuilder: (BuildContext context,
+                                            int index) {
+                                          return GestureDetector(
+                                            onTap: () =&gt; {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext
+                                                          context) =&gt;
+                                                      CardWidget(
+                                                          card: snapshot
+                                                              .data![index])),
+                                            },
+                                            child: Card(
+                                              color: Colors.grey[200],
+                                              child: ListTile(
+                                                title: Text(snapshot
+                                                    .data![index].name),
+                                              ),
+                                            ),
+                                          );
+                                        }));
+                              }
+                            }))
+                  ]));
+                });
+          }
+        }),
+  );
 }</code></pre>
 </section>
 
