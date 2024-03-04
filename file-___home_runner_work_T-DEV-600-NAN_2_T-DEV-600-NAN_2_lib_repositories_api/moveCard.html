@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the api_getCards function from the api library, for the Dart programming language.">
-  <title>api_getCards function - api library - Dart API</title>
+  <meta name="description" content="API docs for the moveCard function from the api library, for the Dart programming language.">
+  <title>moveCard function - api library - Dart API</title>
 
 
   
@@ -30,9 +30,9 @@
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">trelltech</a></li>
     <li><a href="../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_api/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_api-library.html">repositories&#47;api.dart</a></li>
-    <li class="self-crumb">api_getCards function</li>
+    <li class="self-crumb">moveCard function</li>
   </ol>
-  <div class="self-name">api_getCards</div>
+  <div class="self-name">moveCard</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -56,17 +56,18 @@
       data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_api&#47;file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_api-library-sidebar.html"
       data-below-sidebar="">
       <div>
-<h1><span class="kind-function">api_getCards</span> function 
+<h1><span class="kind-function">moveCard</span> function 
  
 </h1></div>
 
     <section class="multi-line-signature">
         
 
-<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a></span>&gt;</span></span>
-<span class="name ">api_getCards</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="api_getCards-param-apiKey"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">apiKey</span>, </span></li>
-<li><span class="parameter" id="api_getCards-param-token"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">token</span>, </span></li>
-<li><span class="parameter" id="api_getCards-param-listId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">listId</span></span></li>
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+<span class="name ">moveCard</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="moveCard-param-apiKey"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">apiKey</span>, </span></li>
+<li><span class="parameter" id="moveCard-param-token"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">token</span>, </span></li>
+<li><span class="parameter" id="moveCard-param-cardId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">cardId</span>, </span></li>
+<li><span class="parameter" id="moveCard-param-listId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">listId</span></span></li>
 </ol>)
 
         
@@ -74,25 +75,22 @@
     </section>
     
 <section class="desc markdown">
-  <p>Fetches the cards of a specific list from Trello.</p>
-<p>This method calls the Trello API to fetch the cards of a specific list.
-It requires the user's API key, token, and the list's ID.
-Returns a list of cards.</p>
+  <p>Moves a specific card to a different list on Trello.</p>
+<p>This method calls the Trello API to move a specific card to a different list.
+It requires the user's API key, token, the card's ID, and the ID of the list to move the card to.</p>
 </section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;dynamic&gt;&gt; api_getCards(String apiKey, String token, String listId) async {
-  final response = await http.get(
-    Uri.parse(&#39;https:&#47;&#47;api.trello.com&#47;1&#47;lists&#47;$listId&#47;cards?key=$apiKey&amp;token=$token&#39;),
+  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; moveCard(String apiKey, String token, String cardId, String listId) async {
+  final response = await http.put(
+    Uri.parse(&#39;https:&#47;&#47;api.trello.com&#47;1&#47;cards&#47;$cardId?key=$apiKey&amp;token=$token&amp;idList=$listId&#39;),
   );
 
-  if (response.statusCode == 200) {
-    return jsonDecode(response.body);
-  } else {
-    throw Exception(&#39;Failed to load cards&#39;);
+  if (response.statusCode != 200) {
+    throw Exception(&#39;Failed to move card&#39;);
   }
 }</code></pre>
 </section>
@@ -111,7 +109,7 @@ Returns a list of cards.</p>
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">trelltech</a></li>
     <li><a href="../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_api/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_api-library.html">api</a></li>
-    <li class="self-crumb">api_getCards function</li>
+    <li class="self-crumb">moveCard function</li>
 </ol>
 
 

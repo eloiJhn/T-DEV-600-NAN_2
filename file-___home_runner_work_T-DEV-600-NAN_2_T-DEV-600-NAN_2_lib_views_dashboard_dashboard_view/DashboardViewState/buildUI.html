@@ -90,6 +90,33 @@
             accessToken ?? &#39;Aucun token stocké&#39;,
             style: Theme.of(context).textTheme.headlineMedium,
           ),
+          Flexible(
+            child: FutureBuilder(
+                future: _getBoards(),
+                builder: (context, AsyncSnapshot&lt;List&lt;Board&gt;&gt; snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else {
+                    return ListView.builder(
+                        itemCount: snapshot.data?.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Row(children: [
+                            Text(snapshot.data![index].name),
+                            ElevatedButton(
+                              onPressed: () =&gt; Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =&gt; BoardView(
+                                          board: snapshot.data![index]))),
+                              child:
+                                  Text(AppLocalizations.of(context)!.openBoard),
+                            ),
+                          ]);
+                        });
+                  }
+                }),
+          ),
           ElevatedButton(
             onPressed: () =&gt; app_disconnect(context),
             child: Text(AppLocalizations.of(context)!.logout),
