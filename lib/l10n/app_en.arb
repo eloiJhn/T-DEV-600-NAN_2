@@ -1,4 +1,5 @@
 {
   "dashboard": "Dashboard",
-  "logout": "Logout"
+  "logout": "Logout",
+  "openBoard": "Open"
 }
