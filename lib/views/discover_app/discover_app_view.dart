@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trelltech/repositories/authentification.dart';
 
 class DiscoverAppView extends StatelessWidget {
   const DiscoverAppView({super.key});
@@ -83,7 +84,7 @@ class DiscoverAppView extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: ElevatedButton(
-                          onPressed: () => Navigator.of(context).pushReplacementNamed('/login'),
+                          onPressed: () => app_authenticateWithTrello(context),
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(const Color(0xFF1C39A1)),
                             foregroundColor: MaterialStateProperty.all(Colors.white),

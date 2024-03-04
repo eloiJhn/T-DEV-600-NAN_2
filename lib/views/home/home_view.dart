@@ -1,8 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:trelltech/repositories/authentification.dart';
 import 'package:trelltech/views/discover_app/discover_app_view.dart';
 
-class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+class HomeView extends StatefulWidget {
+  const HomeView({Key? key}) : super(key: key);
+
+  @override
+  _HomeViewState createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  @override
+  void initState() {
+    super.initState();
+    app_isConnected().then((isConnected) {
+      if (isConnected) {
+        Navigator.pushReplacementNamed(context, '/dashboard');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
