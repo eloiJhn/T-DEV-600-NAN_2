@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="home_view library API docs, for the Dart programming language.">
-  <title>home_view library - Dart API</title>
+  <meta name="description" content="API docs for the disconnect function from the authentification library, for the Dart programming language.">
+  <title>disconnect function - authentification library - Dart API</title>
 
 
   
@@ -29,9 +29,10 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">trelltech</a></li>
-    <li class="self-crumb">views/home/home_view.dart</li>
+    <li><a href="../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_authentification/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_authentification-library.html">repositories&#47;authentification.dart</a></li>
+    <li class="self-crumb">disconnect function</li>
   </ol>
-  <div class="self-name">home_view</div>
+  <div class="self-name">disconnect</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -52,45 +53,39 @@
   <div
       id="dartdoc-main-content"
       class="main-content"
-      data-above-sidebar=""
-      data-below-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_home_home_view&#47;file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_home_home_view-library-sidebar.html">
-      
+      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_authentification&#47;file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_authentification-library-sidebar.html"
+      data-below-sidebar="">
       <div>
+<h1><span class="kind-function">disconnect</span> function 
+ 
+</h1></div>
+
+    <section class="multi-line-signature">
         
 
-        <h1>
-          <span class="kind-library">views/home/home_view</span>
-          library 
- 
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+<span class="name ">disconnect</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="disconnect-param-context"><span class="type-annotation">dynamic</span> <span class="parameter-name">context</span></span></li>
+</ol>)
 
-        </h1>
-      </div>
+        
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Disconnect the user from the application
+@param context The context of the application</p>
+</section>
+
 
     
-
-
-    <section class="summary offset-anchor" id="classes">
-      <h2>Classes</h2>
-
-      <dl>
-        <dt id="HomeView">
-  <span class="name "><a href="../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_home_home_view/HomeView-class.html">HomeView</a></span> 
-
-</dt>
-<dd>
-  
-</dd>
-
-      </dl>
-    </section>
-
-
-
-
-
-
-
-
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; disconnect(BuildContext context) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.remove(&#39;accessToken&#39;);
+  Navigator.pushReplacementNamed(context, &#39;&#47;&#39;);
+}</code></pre>
+</section>
 
 
   </div> <!-- /.main-content -->
@@ -105,26 +100,17 @@
 
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">trelltech</a></li>
-    <li class="self-crumb">views/home/home_view.dart</li>
+    <li><a href="../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_authentification/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_authentification-library.html">authentification</a></li>
+    <li class="self-crumb">disconnect function</li>
 </ol>
 
 
-    <h5><span class="package-name">trelltech</span> <span class="package-kind">package</span></h5>
-    <ol>
-      <li class="section-title">Libraries</li>
-      <li><a href="../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_api/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_api-library.html">repositories/api</a></li>
-      <li><a href="../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_authentification/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_authentification-library.html">repositories/authentification</a></li>
-      <li><a href="../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view-library.html">views/dashboard/dashboard_view</a></li>
-      <li><a href="../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_discover_app_discover_app_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_discover_app_discover_app_view-library.html">views/discover_app/discover_app_view</a></li>
-      <li><a href="../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_home_home_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_home_home_view-library.html">views/home/home_view</a></li>
-      <li><a href="../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main-library.html">main</a></li>
-</ol>
-
-  </div>
+    <h5>authentification library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-left-->
 
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
-    <h5>home_view library</h5>
-  </div><!--/sidebar-offcanvas-right-->
+  </div><!--/.sidebar-offcanvas-->
 
 </main>
 
