@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the build method from the DashboardViewState class, for the Dart programming language.">
-  <title>build method - DashboardViewState class - dashboard_view library - Dart API</title>
+  <meta name="description" content="API docs for the WorkspaceView constructor from Class WorkspaceView from the workspace_view library, for the Dart programming language.">
+  <title>WorkspaceView constructor - WorkspaceView - workspace_view library - Dart API</title>
 
 
   
@@ -29,11 +29,11 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view-library.html">views&#47;dashboard&#47;dashboard_view.dart</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/DashboardViewState-class.html">DashboardViewState</a></li>
-    <li class="self-crumb">build method</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view-library.html">views&#47;board&#47;workspace_view.dart</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/WorkspaceView-class.html">WorkspaceView</a></li>
+    <li class="self-crumb">WorkspaceView const constructor</li>
   </ol>
-  <div class="self-name">build</div>
+  <div class="self-name">WorkspaceView</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -54,46 +54,26 @@
   <div
       id="dartdoc-main-content"
       class="main-content"
-      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view&#47;DashboardViewState-class-sidebar.html"
+      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view&#47;WorkspaceView-class-sidebar.html"
       data-below-sidebar="">
       <div>
-<h1><span class="kind-method">build</span> method 
+<h1><span class="kind-constructor">WorkspaceView</span> constructor 
 </h1></div>
 
     <section class="multi-line-signature">
-      
-  <div>
-    <ol class="annotation-list">
-        <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
-    </ol>
-  </div>
-
-<span class="returntype">dynamic</span>
-<span class="name ">build</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="build-param-context"><span class="type-annotation">dynamic</span> <span class="parameter-name">context</span></span></li>
+      const
+      <span class="name ">WorkspaceView</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="-param-key">{<span class="type-annotation">dynamic</span> <span class="parameter-name">key</span>, </span></li>
+<li><span class="parameter" id="-param-boards"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a></span> <span class="parameter-name">boards</span>}</span></li>
 </ol>)
-
-      
-
     </section>
+
     
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">@override
-Widget build(BuildContext context) {
-  return FutureBuilder(
-    future: getAccessToken(),
-    builder: (BuildContext context, AsyncSnapshot&lt;void&gt; snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Center(child: CircularProgressIndicator());
-      } else {
-        return buildUI(context);
-      }
-    },
-  );
-}</code></pre>
+  <pre class="language-dart"><code class="language-dart">const WorkspaceView({Key? key, required this.boards}) : super(key: key);</code></pre>
 </section>
 
 
@@ -109,15 +89,15 @@ Widget build(BuildContext context) {
 
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view-library.html">dashboard_view</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/DashboardViewState-class.html">DashboardViewState</a></li>
-    <li class="self-crumb">build method</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view-library.html">workspace_view</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/WorkspaceView-class.html">WorkspaceView</a></li>
+    <li class="self-crumb">WorkspaceView const constructor</li>
 </ol>
 
 
-    <h5>DashboardViewState class</h5>
+    <h5>WorkspaceView class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
-  </div><!--/.sidebar-offcanvas-->
+  </div><!--/.sidebar-offcanvas-left-->
 
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->

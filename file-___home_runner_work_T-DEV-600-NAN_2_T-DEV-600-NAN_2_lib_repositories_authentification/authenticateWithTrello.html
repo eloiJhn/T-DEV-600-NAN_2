@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the app_authenticateWithTrello function from the authentification library, for the Dart programming language.">
-  <title>app_authenticateWithTrello function - authentification library - Dart API</title>
+  <meta name="description" content="API docs for the authenticateWithTrello function from the authentification library, for the Dart programming language.">
+  <title>authenticateWithTrello function - authentification library - Dart API</title>
 
 
   
@@ -30,9 +30,9 @@
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">trelltech</a></li>
     <li><a href="../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_authentification/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_authentification-library.html">repositories&#47;authentification.dart</a></li>
-    <li class="self-crumb">app_authenticateWithTrello function</li>
+    <li class="self-crumb">authenticateWithTrello function</li>
   </ol>
-  <div class="self-name">app_authenticateWithTrello</div>
+  <div class="self-name">authenticateWithTrello</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -56,7 +56,7 @@
       data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_authentification&#47;file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_authentification-library-sidebar.html"
       data-below-sidebar="">
       <div>
-<h1><span class="kind-function">app_authenticateWithTrello</span> function 
+<h1><span class="kind-function">authenticateWithTrello</span> function 
  
 </h1></div>
 
@@ -64,7 +64,7 @@
         
 
 <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>&gt;</span></span>
-<span class="name ">app_authenticateWithTrello</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="app_authenticateWithTrello-param-context"><span class="type-annotation">dynamic</span> <span class="parameter-name">context</span></span></li>
+<span class="name ">authenticateWithTrello</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="authenticateWithTrello-param-context"><span class="type-annotation">dynamic</span> <span class="parameter-name">context</span></span></li>
 </ol>)
 
         
@@ -81,7 +81,7 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;String?&gt; app_authenticateWithTrello(BuildContext context) async {
+  <pre class="language-dart"><code class="language-dart">Future&lt;String?&gt; authenticateWithTrello(BuildContext context) async {
   &#47;&#47; Get the Trello API key from the .env file
   final trelloAPIKey = dotenv.env[&#39;TRELLO_API_KEY&#39;];
   final trelloAPPName = dotenv.env[&#39;TRELLO_APP_NAME&#39;];
@@ -124,6 +124,11 @@
       &#47;&#47; Store the access token in the app&#39;s preferences
       await prefs.setString(&#39;accessToken&#39;, accessToken!);
 
+      final clientID = await getTrelloClientID(trelloAPIKey, accessToken);
+
+      &#47;&#47; Store the client ID in the app&#39;s preferences
+      await prefs.setString(&#39;clientID&#39;, clientID);
+
       &#47;&#47; Redirect the user to the dashboard page once authenticated (and remove the possibility to go back)
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) =&gt; DashboardView()),
@@ -152,7 +157,7 @@
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">trelltech</a></li>
     <li><a href="../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_authentification/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_authentification-library.html">authentification</a></li>
-    <li class="self-crumb">app_authenticateWithTrello function</li>
+    <li class="self-crumb">authenticateWithTrello function</li>
 </ol>
 
 

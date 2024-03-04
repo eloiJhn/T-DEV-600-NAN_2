@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the build method from the DashboardViewState class, for the Dart programming language.">
-  <title>build method - DashboardViewState class - dashboard_view library - Dart API</title>
+  <meta name="description" content="API docs for the getWorkspaces method from the DashboardViewState class, for the Dart programming language.">
+  <title>getWorkspaces method - DashboardViewState class - dashboard_view library - Dart API</title>
 
 
   
@@ -31,9 +31,9 @@
     <li><a href="../../index.html">trelltech</a></li>
     <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view-library.html">views&#47;dashboard&#47;dashboard_view.dart</a></li>
     <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/DashboardViewState-class.html">DashboardViewState</a></li>
-    <li class="self-crumb">build method</li>
+    <li class="self-crumb">getWorkspaces method</li>
   </ol>
-  <div class="self-name">build</div>
+  <div class="self-name">getWorkspaces</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -57,20 +57,14 @@
       data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view&#47;DashboardViewState-class-sidebar.html"
       data-below-sidebar="">
       <div>
-<h1><span class="kind-method">build</span> method 
+<h1><span class="kind-method">getWorkspaces</span> method 
 </h1></div>
 
     <section class="multi-line-signature">
       
-  <div>
-    <ol class="annotation-list">
-        <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
-    </ol>
-  </div>
 
-<span class="returntype">dynamic</span>
-<span class="name ">build</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="build-param-context"><span class="type-annotation">dynamic</span> <span class="parameter-name">context</span></span></li>
-</ol>)
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+<span class="name ">getWorkspaces</span>(<wbr>)
 
       
 
@@ -81,18 +75,9 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">@override
-Widget build(BuildContext context) {
-  return FutureBuilder(
-    future: getAccessToken(),
-    builder: (BuildContext context, AsyncSnapshot&lt;void&gt; snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Center(child: CircularProgressIndicator());
-      } else {
-        return buildUI(context);
-      }
-    },
-  );
+  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; getWorkspaces() async {
+  workspaces = await getWorkspace(apiKey, accessToken, clientId);
+  setState(() {});
 }</code></pre>
 </section>
 
@@ -111,7 +96,7 @@ Widget build(BuildContext context) {
     <li><a href="../../index.html">trelltech</a></li>
     <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view-library.html">dashboard_view</a></li>
     <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/DashboardViewState-class.html">DashboardViewState</a></li>
-    <li class="self-crumb">build method</li>
+    <li class="self-crumb">getWorkspaces method</li>
 </ol>
 
 
