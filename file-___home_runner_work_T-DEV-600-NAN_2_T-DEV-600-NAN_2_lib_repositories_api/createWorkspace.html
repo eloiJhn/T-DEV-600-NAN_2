@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the api_deleteWorkspace function from the api library, for the Dart programming language.">
-  <title>api_deleteWorkspace function - api library - Dart API</title>
+  <meta name="description" content="API docs for the createWorkspace function from the api library, for the Dart programming language.">
+  <title>createWorkspace function - api library - Dart API</title>
 
 
   
@@ -30,9 +30,9 @@
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">trelltech</a></li>
     <li><a href="../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_api/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_api-library.html">repositories&#47;api.dart</a></li>
-    <li class="self-crumb">api_deleteWorkspace function</li>
+    <li class="self-crumb">createWorkspace function</li>
   </ol>
-  <div class="self-name">api_deleteWorkspace</div>
+  <div class="self-name">createWorkspace</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -56,7 +56,7 @@
       data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_api&#47;file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_api-library-sidebar.html"
       data-below-sidebar="">
       <div>
-<h1><span class="kind-function">api_deleteWorkspace</span> function 
+<h1><span class="kind-function">createWorkspace</span> function 
  
 </h1></div>
 
@@ -64,9 +64,9 @@
         
 
 <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
-<span class="name ">api_deleteWorkspace</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="api_deleteWorkspace-param-apiKey"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">apiKey</span>, </span></li>
-<li><span class="parameter" id="api_deleteWorkspace-param-token"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">token</span>, </span></li>
-<li><span class="parameter" id="api_deleteWorkspace-param-workspaceId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">workspaceId</span></span></li>
+<span class="name ">createWorkspace</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="createWorkspace-param-apiKey"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">apiKey</span>, </span></li>
+<li><span class="parameter" id="createWorkspace-param-token"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">token</span>, </span></li>
+<li><span class="parameter" id="createWorkspace-param-name"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span></span></li>
 </ol>)
 
         
@@ -74,22 +74,22 @@
     </section>
     
 <section class="desc markdown">
-  <p>Deletes a specific workspace from Trello.</p>
-<p>This method calls the Trello API to delete a specific workspace.
-It requires the user's API key, token, and the workspace's ID.</p>
+  <p>Creates a new workspace on Trello.</p>
+<p>This method calls the Trello API to create a new workspace.
+It requires the user's API key, token, and the name of the workspace.</p>
 </section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; api_deleteWorkspace(String apiKey, String token, String workspaceId) async {
-  final response = await http.delete(
-    Uri.parse(&#39;https:&#47;&#47;api.trello.com&#47;1&#47;organizations&#47;$workspaceId?key=$apiKey&amp;token=$token&#39;),
+  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; createWorkspace(String apiKey, String token, String name) async {
+  final response = await http.post(
+    Uri.parse(&#39;https:&#47;&#47;api.trello.com&#47;1&#47;organizations?key=$apiKey&amp;token=$token&amp;displayName=$name&#39;),
   );
 
   if (response.statusCode != 200) {
-    throw Exception(&#39;Failed to delete workspace&#39;);
+    throw Exception(&#39;Failed to create workspace&#39;);
   }
 }</code></pre>
 </section>
@@ -108,7 +108,7 @@ It requires the user's API key, token, and the workspace's ID.</p>
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">trelltech</a></li>
     <li><a href="../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_api/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_repositories_api-library.html">api</a></li>
-    <li class="self-crumb">api_deleteWorkspace function</li>
+    <li class="self-crumb">createWorkspace function</li>
 </ol>
 
 

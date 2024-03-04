@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the buildUI method from the DashboardViewState class, for the Dart programming language.">
-  <title>buildUI method - DashboardViewState class - dashboard_view library - Dart API</title>
+  <meta name="description" content="API docs for the initState method from the BoardViewState class, for the Dart programming language.">
+  <title>initState method - BoardViewState class - board_view library - Dart API</title>
 
 
   
@@ -29,11 +29,11 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view-library.html">views&#47;dashboard&#47;dashboard_view.dart</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/DashboardViewState-class.html">DashboardViewState</a></li>
-    <li class="self-crumb">buildUI method</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view-library.html">views&#47;board&#47;board_view.dart</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view/BoardViewState-class.html">BoardViewState</a></li>
+    <li class="self-crumb">initState method</li>
   </ol>
-  <div class="self-name">buildUI</div>
+  <div class="self-name">initState</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -54,18 +54,22 @@
   <div
       id="dartdoc-main-content"
       class="main-content"
-      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view&#47;DashboardViewState-class-sidebar.html"
+      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view&#47;BoardViewState-class-sidebar.html"
       data-below-sidebar="">
       <div>
-<h1><span class="kind-method">buildUI</span> method 
+<h1><span class="kind-method">initState</span> method 
 </h1></div>
 
     <section class="multi-line-signature">
       
+  <div>
+    <ol class="annotation-list">
+        <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
+    </ol>
+  </div>
 
-<span class="returntype">dynamic</span>
-<span class="name ">buildUI</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="buildUI-param-context"><span class="type-annotation">dynamic</span> <span class="parameter-name">context</span></span></li>
-</ol>)
+<span class="returntype">void</span>
+<span class="name ">initState</span>(<wbr>)
 
       
 
@@ -76,28 +80,10 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Widget buildUI(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(title: Text(AppLocalizations.of(context)!.dashboard)),
-    body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: &lt;Widget&gt;[
-          const Text(
-            &#39;Votre token est:&#39;,
-          ),
-          Text(
-            accessToken ?? &#39;Aucun token stocké&#39;,
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-          ElevatedButton(
-            onPressed: () =&gt; app_disconnect(context),
-            child: Text(AppLocalizations.of(context)!.logout),
-          ),
-        ],
-      ),
-    ),
-  );
+  <pre class="language-dart"><code class="language-dart">@override
+void initState() {
+  super.initState();
+  _initialize();
 }</code></pre>
 </section>
 
@@ -114,13 +100,13 @@
 
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view-library.html">dashboard_view</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/DashboardViewState-class.html">DashboardViewState</a></li>
-    <li class="self-crumb">buildUI method</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view-library.html">board_view</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view/BoardViewState-class.html">BoardViewState</a></li>
+    <li class="self-crumb">initState method</li>
 </ol>
 
 
-    <h5>DashboardViewState class</h5>
+    <h5>BoardViewState class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-->
 
