@@ -84,7 +84,7 @@ class DiscoverAppView extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: ElevatedButton(
-                          onPressed: () => app_authenticateWithTrello(context),
+                          onPressed: () => authenticateWithTrello(context),
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(const Color(0xFF1C39A1)),
                             foregroundColor: MaterialStateProperty.all(Colors.white),

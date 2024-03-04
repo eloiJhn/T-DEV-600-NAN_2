@@ -13,7 +13,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    app_isConnected().then((isConnected) {
+    isConnected().then((isConnected) {
       if (isConnected) {
         Navigator.pushReplacementNamed(context, '/dashboard');
       }
