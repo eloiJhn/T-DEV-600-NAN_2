@@ -83,7 +83,11 @@
   <pre class="language-dart"><code class="language-dart">@override
 void initState() {
   super.initState();
-  getAccessToken();
+  Future.microtask(() async {
+    await getAccessToken();
+    clientId = await getClientID();
+    await getWorkspaces();
+  });
 }</code></pre>
 </section>
 

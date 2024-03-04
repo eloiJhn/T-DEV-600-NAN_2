@@ -78,6 +78,7 @@
   <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; getAccessToken() async {
   final prefs = await SharedPreferences.getInstance();
   accessToken = prefs.getString(&#39;accessToken&#39;);
+  print(accessToken);
   navigateIfNoToken();
 }</code></pre>
 </section>
