@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:trelltech/views/auth/login_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:trelltech/views/discover_app/discover_app_view.dart';
 import 'package:trelltech/views/home/home_view.dart';
-void main() {
+import 'package:trelltech/views/dashboard/dashboard_view.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -23,8 +28,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const HomeView(),
-        '/login': (context) => const LoginView(),
         '/discover': (context) => const DiscoverAppView(),
+        '/dashboard': (context) => const DashboardView(),
       },
     );
   }

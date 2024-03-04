@@ -1,8 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:trelltech/repositories/authentification.dart';
 import 'package:trelltech/views/discover_app/discover_app_view.dart';
 
-class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+class HomeView extends StatefulWidget {
+  const HomeView({Key? key}) : super(key: key);
+
+  @override
+  _HomeViewState createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  @override
+  void initState() {
+    super.initState();
+    app_isConnected().then((isConnected) {
+      if (isConnected) {
+        Navigator.pushReplacementNamed(context, '/dashboard');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +32,8 @@ class HomeView extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset('assets/images/logo.png',
-              width: 50,
-              height: 50,
+              width: 30,
+              height: 30,
             ),
             const SizedBox(width: 5),
             const Text(
