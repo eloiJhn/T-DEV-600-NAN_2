@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the build method from the BoardViewState class, for the Dart programming language.">
-  <title>build method - BoardViewState class - board_view library - Dart API</title>
+  <meta name="description" content="API docs for the initState method from the BoardViewState class, for the Dart programming language.">
+  <title>initState method - BoardViewState class - board_view library - Dart API</title>
 
 
   
@@ -31,9 +31,9 @@
     <li><a href="../../index.html">trelltech</a></li>
     <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view-library.html">views&#47;board&#47;board_view.dart</a></li>
     <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view/BoardViewState-class.html">BoardViewState</a></li>
-    <li class="self-crumb">build method</li>
+    <li class="self-crumb">initState method</li>
   </ol>
-  <div class="self-name">build</div>
+  <div class="self-name">initState</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -57,7 +57,7 @@
       data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view&#47;BoardViewState-class-sidebar.html"
       data-below-sidebar="">
       <div>
-<h1><span class="kind-method">build</span> method 
+<h1><span class="kind-method">initState</span> method 
 </h1></div>
 
     <section class="multi-line-signature">
@@ -68,9 +68,8 @@
     </ol>
   </div>
 
-<span class="returntype">dynamic</span>
-<span class="name ">build</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="build-param-context"><span class="type-annotation">dynamic</span> <span class="parameter-name">context</span></span></li>
-</ol>)
+<span class="returntype">void</span>
+<span class="name ">initState</span>(<wbr>)
 
       
 
@@ -82,32 +81,9 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
-Widget build(BuildContext context) {
-  return Scaffold(
-      appBar: AppBar(title: Text(widget.board.name)),
-      body: Center(
-        child: FutureBuilder(
-            future: _getLists(),
-            builder: (context, AsyncSnapshot&lt;List&lt;TrelloList&gt;&gt; snapshot) {
-              if (!snapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                return CarouselSlider.builder(
-                  itemCount: snapshot.data?.length,
-                  itemBuilder: (BuildContext context, int item,
-                          int pageViewIndex) =&gt;
-                      Text(snapshot.data![item].name),
-                  options: CarouselOptions(
-                    autoPlay: false,
-                    enlargeCenterPage: true,
-                    viewportFraction: 0.9,
-                    aspectRatio: 2.0,
-                    initialPage: 2,
-                  ),
-                );
-              }
-            }),
-      ));
+void initState() {
+  super.initState();
+  _initialize();
 }</code></pre>
 </section>
 
@@ -126,7 +102,7 @@ Widget build(BuildContext context) {
     <li><a href="../../index.html">trelltech</a></li>
     <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view-library.html">board_view</a></li>
     <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view/BoardViewState-class.html">BoardViewState</a></li>
-    <li class="self-crumb">build method</li>
+    <li class="self-crumb">initState method</li>
 </ol>
 
 

@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the build method from the BoardViewState class, for the Dart programming language.">
-  <title>build method - BoardViewState class - board_view library - Dart API</title>
+  <meta name="description" content="API docs for the TrelloList constructor from Class TrelloList from the trello_list library, for the Dart programming language.">
+  <title>TrelloList constructor - TrelloList - trello_list library - Dart API</title>
 
 
   
@@ -29,11 +29,11 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view-library.html">views&#47;board&#47;board_view.dart</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view/BoardViewState-class.html">BoardViewState</a></li>
-    <li class="self-crumb">build method</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_list/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_list-library.html">models&#47;trello_list.dart</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_list/TrelloList-class.html">TrelloList</a></li>
+    <li class="self-crumb">TrelloList constructor</li>
   </ol>
-  <div class="self-name">build</div>
+  <div class="self-name">TrelloList</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -54,61 +54,35 @@
   <div
       id="dartdoc-main-content"
       class="main-content"
-      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view&#47;BoardViewState-class-sidebar.html"
+      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_list&#47;TrelloList-class-sidebar.html"
       data-below-sidebar="">
       <div>
-<h1><span class="kind-method">build</span> method 
+<h1><span class="kind-constructor">TrelloList</span> constructor 
 </h1></div>
 
     <section class="multi-line-signature">
       
-  <div>
-    <ol class="annotation-list">
-        <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
-    </ol>
-  </div>
-
-<span class="returntype">dynamic</span>
-<span class="name ">build</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="build-param-context"><span class="type-annotation">dynamic</span> <span class="parameter-name">context</span></span></li>
+      <span class="name ">TrelloList</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="-param-id">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span>, </span></li>
+<li><span class="parameter" id="-param-name"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span>}</span></li>
 </ol>)
-
-      
-
     </section>
+
     
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">@override
-Widget build(BuildContext context) {
-  return Scaffold(
-      appBar: AppBar(title: Text(widget.board.name)),
-      body: Center(
-        child: FutureBuilder(
-            future: _getLists(),
-            builder: (context, AsyncSnapshot&lt;List&lt;TrelloList&gt;&gt; snapshot) {
-              if (!snapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                return CarouselSlider.builder(
-                  itemCount: snapshot.data?.length,
-                  itemBuilder: (BuildContext context, int item,
-                          int pageViewIndex) =&gt;
-                      Text(snapshot.data![item].name),
-                  options: CarouselOptions(
-                    autoPlay: false,
-                    enlargeCenterPage: true,
-                    viewportFraction: 0.9,
-                    aspectRatio: 2.0,
-                    initialPage: 2,
-                  ),
-                );
-              }
-            }),
-      ));
-}</code></pre>
+  <pre class="language-dart"><code class="language-dart">TrelloList({
+  required this.id,
+  required this.name,
+  &#47;&#47; required this.closed,
+  &#47;&#47; required this.pos,
+  &#47;&#47; required this.softLimit,
+  &#47;&#47; required this.idBoard,
+  &#47;&#47; required this.subscribed,
+  &#47;&#47; required this.limits,
+});</code></pre>
 </section>
 
 
@@ -124,15 +98,15 @@ Widget build(BuildContext context) {
 
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view-library.html">board_view</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view/BoardViewState-class.html">BoardViewState</a></li>
-    <li class="self-crumb">build method</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_list/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_list-library.html">trello_list</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_list/TrelloList-class.html">TrelloList</a></li>
+    <li class="self-crumb">TrelloList constructor</li>
 </ol>
 
 
-    <h5>BoardViewState class</h5>
+    <h5>TrelloList class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
-  </div><!--/.sidebar-offcanvas-->
+  </div><!--/.sidebar-offcanvas-left-->
 
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
