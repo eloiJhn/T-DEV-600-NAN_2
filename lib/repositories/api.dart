@@ -1,6 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:trelltech/models/board.dart';
+
 /**
  * Fetches the user's ID from Trello.
  *
@@ -28,13 +30,14 @@ Future<String> getTrelloClientID(String apiKey, String token) async {
  * It requires the user's API key and token.
  * Returns a list of boards.
  */
-Future<List<dynamic>> getBoards(String apiKey, String token) async {
+Future<List<Board>> getBoards(String apiKey, String token, String workspaceId) async {
   final response = await http.get(
-    Uri.parse('https://api.trello.com/1/members/me/boards?key=$apiKey&token=$token'),
+    Uri.parse('https://api.trello.com/1/organizations/$workspaceId/boards?key=$apiKey&token=$token'),
   );
 
   if (response.statusCode == 200) {
-    return jsonDecode(response.body);
+    var boardsJson = jsonDecode(response.body) as List;
+    return boardsJson.map((board) => Board.fromJson(board)).toList();
   } else {
     throw Exception('Failed to load boards');
   }

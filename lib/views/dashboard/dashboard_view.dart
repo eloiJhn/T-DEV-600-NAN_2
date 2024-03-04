@@ -1,12 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:trelltech/repositories/api.dart';
 import 'package:trelltech/repositories/authentification.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:trelltech/models/board.dart';
-
-import '../../repositories/api.dart';
-import '../board/board_view.dart';
+import 'package:trelltech/views/board/workspace_view.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -16,31 +16,77 @@ class DashboardView extends StatefulWidget {
 }
 
 class DashboardViewState extends State<DashboardView> {
+  List? workspaces;
   String? accessToken;
+  String? clientId;
+  String apiKey = dotenv.env['TRELLO_API_KEY']!;
 
   @override
   void initState() {
     super.initState();
-    getAccessToken();
+    Future.microtask(() async {
+      await getAccessToken();
+      clientId = await getClientID();
+      await getWorkspaces();
+    });
   }
 
   Future<void> getAccessToken() async {
     final prefs = await SharedPreferences.getInstance();
     accessToken = prefs.getString('accessToken');
+    print(accessToken);
     navigateIfNoToken();
   }
 
   void navigateIfNoToken() {
     if (accessToken == null) {
-      Navigator.pushReplacementNamed(context, '/login');
+      Navigator.pushReplacementNamed(context, '/');
     }
   }
 
-  Future<List<Board>> _getBoards() async {
-    var apiKey = dotenv.env['TRELLO_API_KEY'];
-    var boards = await getBoards(apiKey!, accessToken!);
-    List<Board> boardList = boards.map((item) => Board.fromJson(item)).toList();
-    return boardList;
+  Future<void> getWorkspaces() async {
+    workspaces = await getWorkspace(apiKey, accessToken, clientId);
+    setState(() {});
+  }
+
+  Widget buildUI(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.dashboard)),
+      body: Center(
+        child: Column(
+          children: workspaces != null
+              ? workspaces!.map<Widget>((workspace) {
+                  return Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 100,
+                    color: Colors.grey,
+                    child: Center(
+                      child: GestureDetector(
+                        onTap: () async {
+                          var boards = await getBoards(apiKey, accessToken!, workspace['id']);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WorkspaceView(boards: boards),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          workspace[
+                              'displayName'], // Display the workspace name
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList()
+              : [],
+        ),
+      ),
+    );
   }
 
   @override
@@ -51,51 +97,7 @@ class DashboardViewState extends State<DashboardView> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else {
-          return Scaffold(
-            appBar:
-                AppBar(title: Text(AppLocalizations.of(context)!.dashboard)),
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Flexible(
-                    child: FutureBuilder(
-                        future: _getBoards(),
-                        builder:
-                            (context, AsyncSnapshot<List<Board>> snapshot) {
-                          if (!snapshot.hasData) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else {
-                            return ListView.builder(
-                                itemCount: snapshot.data?.length,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Row(children: [
-                                    Text(snapshot.data![index].name),
-                                    ElevatedButton(
-                                      onPressed: () => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => BoardView(
-                                                  board:
-                                                      snapshot.data![index]))),
-                                      child: Text(AppLocalizations.of(context)!
-                                          .openBoard),
-                                    ),
-                                  ]);
-                                });
-                          }
-                        }),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => app_disconnect(context),
-                    child: Text(AppLocalizations.of(context)!.logout),
-                  ),
-                ],
-              ),
-            ),
-          );
+          return buildUI(context);
         }
       },
     );
