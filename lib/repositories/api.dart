@@ -2,6 +2,26 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 /**
+ * Fetches the user's ID from Trello.
+ *
+ * This method calls the Trello API to fetch the user's ID.
+ * It requires the user's API key and token.
+ * Returns the user's ID.
+ */
+Future<String> getTrelloClientID(String apiKey, String token) async {
+  final response = await http.get(
+    Uri.parse('https://api.trello.com/1/members/me?key=$apiKey&token=$token'),
+  );
+
+  if (response.statusCode == 200) {
+    var data = jsonDecode(response.body);
+    return data['id'];
+  } else {
+    throw Exception('Failed to load boards');
+  }
+}
+
+/**
  * Fetches the user's boards from Trello.
  *
  * This method calls the Trello API to fetch the user's boards.
@@ -17,6 +37,19 @@ Future<List<dynamic>> api_getBoards(String apiKey, String token) async {
     return jsonDecode(response.body);
   } else {
     throw Exception('Failed to load boards');
+  }
+}
+
+Future<List<dynamic>> getWorkspace(String apiKey, String? token,String? clientId) async {
+  final response = await http.get(
+    Uri.parse('https://api.trello.com/1/members/$clientId/organizations?key=$apiKey&token=$token'),
+  );
+
+  if (response.statusCode == 200) {
+    print(response.body);
+    return jsonDecode(response.body);
+  } else {
+    throw Exception('Failed to load workspace');
   }
 }
 

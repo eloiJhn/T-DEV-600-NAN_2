@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:trelltech/repositories/api.dart';
 import 'package:trelltech/views/dashboard/dashboard_view.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -12,7 +13,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
  * @param context The context of the application
  * @return The access token if the user is authenticated, null otherwise
  */
-Future<String?> app_authenticateWithTrello(BuildContext context) async {
+Future<String?> authenticateWithTrello(BuildContext context) async {
   // Get the Trello API key from the .env file
   final trelloAPIKey = dotenv.env['TRELLO_API_KEY'];
   final trelloAPPName = dotenv.env['TRELLO_APP_NAME'];
@@ -55,6 +56,11 @@ Future<String?> app_authenticateWithTrello(BuildContext context) async {
       // Store the access token in the app's preferences
       await prefs.setString('accessToken', accessToken!);
 
+      final clientID = await getTrelloClientID(trelloAPIKey, accessToken);
+
+      // Store the client ID in the app's preferences
+      await prefs.setString('clientID', clientID);
+
       // Redirect the user to the dashboard page once authenticated (and remove the possibility to go back)
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => DashboardView()),
@@ -72,7 +78,7 @@ Future<String?> app_authenticateWithTrello(BuildContext context) async {
  * Disconnect the user from the application
  * @param context The context of the application
  */
-Future<void> app_disconnect(BuildContext context) async {
+Future<void> disconnect(BuildContext context) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.remove('accessToken');
   Navigator.pushReplacementNamed(context, '/');
@@ -82,7 +88,25 @@ Future<void> app_disconnect(BuildContext context) async {
  * Check if the user is connected to the application
  * @return True if the user is connected, false otherwise
  */
-Future<bool> app_isConnected() async {
+Future<bool> isConnected() async {
   final prefs = await SharedPreferences.getInstance();
   return prefs.containsKey('accessToken') && prefs.getString('accessToken') != null;
+}
+
+/**
+ * Get the access token of the user
+ * @return The access token of the user
+ */
+Future<String?> getAccessToken() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getString('accessToken');
+}
+
+/**
+ * Get the client ID of the user
+ * @return The client ID of the user
+ */
+Future<String?> getClientID() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getString('clientID');
 }
