@@ -1,4 +1,5 @@
 {
   "dashboard": "Tableau de bord",
-  "logout": "Déconnexion"
+  "logout": "Déconnexion",
+  "openBoard": "Ouvrir"
 }
