@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the build method from the WorkspaceViewState class, for the Dart programming language.">
-  <title>build method - WorkspaceViewState class - workspace_view library - Dart API</title>
+  <meta name="description" content="API docs for the build method from the CustomListItem class, for the Dart programming language.">
+  <title>build method - CustomListItem class - workspace_view library - Dart API</title>
 
 
   
@@ -30,7 +30,7 @@
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">trelltech</a></li>
     <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view-library.html">views&#47;board&#47;workspace_view.dart</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/WorkspaceViewState-class.html">WorkspaceViewState</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/CustomListItem-class.html">CustomListItem</a></li>
     <li class="self-crumb">build method</li>
   </ol>
   <div class="self-name">build</div>
@@ -54,7 +54,7 @@
   <div
       id="dartdoc-main-content"
       class="main-content"
-      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view&#47;WorkspaceViewState-class-sidebar.html"
+      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view&#47;CustomListItem-class-sidebar.html"
       data-below-sidebar="">
       <div>
 <h1><span class="kind-method">build</span> method 
@@ -86,41 +86,51 @@ Widget build(BuildContext context) {
   return FutureBuilder&lt;Color&gt;(
     future: bgColorFuture,
     builder: (BuildContext context, AsyncSnapshot&lt;Color&gt; snapshot) {
-      return Stack(
-        children: &lt;Widget&gt;[
-          Scaffold(
-            appBar: AppBar(
-              title: Text(widget.workspaceName),
-              actions: &lt;Widget&gt;[
-                const CustomPopupMenuButton(),
-              ],
-            ),
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: &lt;Widget&gt;[
-                  Flexible(
-                    child: ListView.builder(
-                      itemCount: widget.boards.length,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (BuildContext context, int index) {
-                        return CustomListItem(
-                          board: widget.boards[index],
-                          bgColorFuture: _getBgColor(widget.boards[index].bgColor, widget.boards[index].bgImage),
-                        );
-                      },
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () =&gt; disconnect(context),
-                    child: Text(AppLocalizations.of(context)!.logout),
-                  ),
-                ],
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(
+          child: SizedBox(
+            width: 50,
+            height: 50,
+            child: CircularProgressIndicator(),
+          ),
+        );
+      } else if (snapshot.hasError) {
+        return Text(&#39;Erreur: ${snapshot.error}&#39;);
+      } else {
+        Color bgColor = snapshot.data!;
+        return GestureDetector(
+          onTap: () {
+            if (board.closed) {
+              Fluttertoast.showToast(
+                  msg: &quot;Le tableau est fermé&quot;,
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.0
+              );
+            } else {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) =&gt; BoardView(board: board)),
+              );
+            }
+          },
+          child: Opacity(
+            opacity: board.closed ? 0.5 : 1,
+            child: Container(
+              height: 100,
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: CustomCardContent(bgColor: bgColor, board: board),
               ),
             ),
           ),
-        ],
-      );
+        );
+      }
     },
   );
 }</code></pre>
@@ -140,12 +150,12 @@ Widget build(BuildContext context) {
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">trelltech</a></li>
     <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view-library.html">workspace_view</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/WorkspaceViewState-class.html">WorkspaceViewState</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/CustomListItem-class.html">CustomListItem</a></li>
     <li class="self-crumb">build method</li>
 </ol>
 
 
-    <h5>WorkspaceViewState class</h5>
+    <h5>CustomListItem class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-->
 

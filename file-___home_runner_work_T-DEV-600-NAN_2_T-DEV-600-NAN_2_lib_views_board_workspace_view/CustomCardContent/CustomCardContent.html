@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the build method from the WorkspaceViewState class, for the Dart programming language.">
-  <title>build method - WorkspaceViewState class - workspace_view library - Dart API</title>
+  <meta name="description" content="API docs for the CustomCardContent constructor from Class CustomCardContent from the workspace_view library, for the Dart programming language.">
+  <title>CustomCardContent constructor - CustomCardContent - workspace_view library - Dart API</title>
 
 
   
@@ -30,10 +30,10 @@
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">trelltech</a></li>
     <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view-library.html">views&#47;board&#47;workspace_view.dart</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/WorkspaceViewState-class.html">WorkspaceViewState</a></li>
-    <li class="self-crumb">build method</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/CustomCardContent-class.html">CustomCardContent</a></li>
+    <li class="self-crumb">CustomCardContent const constructor</li>
   </ol>
-  <div class="self-name">build</div>
+  <div class="self-name">CustomCardContent</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -54,76 +54,27 @@
   <div
       id="dartdoc-main-content"
       class="main-content"
-      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view&#47;WorkspaceViewState-class-sidebar.html"
+      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view&#47;CustomCardContent-class-sidebar.html"
       data-below-sidebar="">
       <div>
-<h1><span class="kind-method">build</span> method 
+<h1><span class="kind-constructor">CustomCardContent</span> constructor 
 </h1></div>
 
     <section class="multi-line-signature">
-      
-  <div>
-    <ol class="annotation-list">
-        <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
-    </ol>
-  </div>
-
-<span class="returntype">dynamic</span>
-<span class="name ">build</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="build-param-context"><span class="type-annotation">dynamic</span> <span class="parameter-name">context</span></span></li>
+      const
+      <span class="name ">CustomCardContent</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="-param-key">{<span class="type-annotation">dynamic</span> <span class="parameter-name">key</span>, </span></li>
+<li><span class="parameter" id="-param-bgColor"><span>required</span> <span class="type-annotation">dynamic</span> <span class="parameter-name">bgColor</span>, </span></li>
+<li><span class="parameter" id="-param-board"><span>required</span> <span class="type-annotation">dynamic</span> <span class="parameter-name">board</span>}</span></li>
 </ol>)
-
-      
-
     </section>
+
     
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">@override
-Widget build(BuildContext context) {
-  return FutureBuilder&lt;Color&gt;(
-    future: bgColorFuture,
-    builder: (BuildContext context, AsyncSnapshot&lt;Color&gt; snapshot) {
-      return Stack(
-        children: &lt;Widget&gt;[
-          Scaffold(
-            appBar: AppBar(
-              title: Text(widget.workspaceName),
-              actions: &lt;Widget&gt;[
-                const CustomPopupMenuButton(),
-              ],
-            ),
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: &lt;Widget&gt;[
-                  Flexible(
-                    child: ListView.builder(
-                      itemCount: widget.boards.length,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (BuildContext context, int index) {
-                        return CustomListItem(
-                          board: widget.boards[index],
-                          bgColorFuture: _getBgColor(widget.boards[index].bgColor, widget.boards[index].bgImage),
-                        );
-                      },
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () =&gt; disconnect(context),
-                    child: Text(AppLocalizations.of(context)!.logout),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      );
-    },
-  );
-}</code></pre>
+  <pre class="language-dart"><code class="language-dart">const CustomCardContent({Key? key, required this.bgColor, required this.board}) : super(key: key);</code></pre>
 </section>
 
 
@@ -140,14 +91,14 @@ Widget build(BuildContext context) {
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">trelltech</a></li>
     <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view-library.html">workspace_view</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/WorkspaceViewState-class.html">WorkspaceViewState</a></li>
-    <li class="self-crumb">build method</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/CustomCardContent-class.html">CustomCardContent</a></li>
+    <li class="self-crumb">CustomCardContent const constructor</li>
 </ol>
 
 
-    <h5>WorkspaceViewState class</h5>
+    <h5>CustomCardContent class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
-  </div><!--/.sidebar-offcanvas-->
+  </div><!--/.sidebar-offcanvas-left-->
 
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
