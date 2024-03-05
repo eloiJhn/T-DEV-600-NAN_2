@@ -8,7 +8,10 @@ class Board {
   bool pinned;
   String url;
   String shortUrl;
-  Map<String, dynamic> prefs;
+  */
+  String? bgImage;
+  String? bgColor;
+  /*
   Map<String, String> labelNames;
   Map<String, dynamic> limits;
   bool starred;
@@ -36,7 +39,10 @@ class Board {
     required this.pinned,
     required this.url,
     required this.shortUrl,
-    required this.prefs,
+    */
+    this.bgImage,
+    this.bgColor,
+  /*
     required this.labelNames,
     required this.limits,
     required this.starred,
@@ -66,7 +72,10 @@ class Board {
       pinned: json['pinned'],
       url: json['url'],
       shortUrl: json['shortUrl'],
-      prefs: Map<String, dynamic>.from(json['prefs']),
+      */
+      bgImage: json['prefs']['backgroundImage'],
+      bgColor: json['prefs']['backgroundColor'],
+      /*
       labelNames: Map<String, String>.from(json['labelNames']),
       limits: Map<String, dynamic>.from(json['limits']),
       starred: json['starred'],

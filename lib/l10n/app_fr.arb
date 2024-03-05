@@ -1,5 +1,6 @@
 {
   "dashboard": "Tableau de bord",
   "logout": "Déconnexion",
-  "openBoard": "Ouvrir"
+  "openBoard": "Ouvrir",
+  "addCard": "Ajouter une carte"
 }
