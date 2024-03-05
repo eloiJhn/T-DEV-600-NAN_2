@@ -53,36 +53,32 @@ class DashboardViewState extends State<DashboardView> {
     return Scaffold(
       appBar: AppBar(title: Text(AppLocalizations.of(context)!.dashboard)),
       body: Center(
-        child: Column(
+        child: GridView.count(
+          crossAxisCount: 2, // Nombre de colonnes
           children: workspaces != null
               ? workspaces!.map<Widget>((workspace) {
-                  return Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 100,
-                    color: Colors.grey,
-                    child: Center(
-                      child: GestureDetector(
-                        onTap: () async {
-                          var boards = await getBoards(apiKey, accessToken!, workspace['id']);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => WorkspaceView(boards: boards),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          workspace[
-                              'displayName'], // Display the workspace name
-                          style: TextStyle(
-                            fontSize: 24,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
+            return Card(
+              margin: EdgeInsets.all(10.0),
+              child: InkWell(
+                onTap: () async {
+                  var boards = await getBoards(apiKey, accessToken!, workspace['id']);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => WorkspaceView(workspaceName: workspace['displayName'],boards: boards),
                     ),
                   );
-                }).toList()
+                },
+                child: Center(
+                  child: Text(
+                    workspace['displayName'],
+                    style: TextStyle(fontSize: 24),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            );
+          }).toList()
               : [],
         ),
       ),
