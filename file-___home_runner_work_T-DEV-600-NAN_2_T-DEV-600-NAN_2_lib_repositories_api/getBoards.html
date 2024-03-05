@@ -89,10 +89,8 @@ Returns a list of boards.</p>
     Uri.parse(&#39;https:&#47;&#47;api.trello.com&#47;1&#47;organizations&#47;$workspaceId&#47;boards?key=$apiKey&amp;token=$token&#39;),
   );
 
-
   if (response.statusCode == 200) {
     var boardsJson = jsonDecode(response.body) as List;
-    print(response.body);
     return boardsJson.map((board) =&gt; Board.fromJson(board)).toList();
   } else {
     throw Exception(&#39;Failed to load boards&#39;);
