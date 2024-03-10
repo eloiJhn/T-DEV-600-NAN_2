@@ -1,7 +1,7 @@
 class Board {
   String id;
   String name;
-  /* String desc;
+  //String desc;
   bool closed;
   String idMemberCreator;
   String idOrganization;
@@ -32,17 +32,16 @@ class Board {
   Board({
     required this.id,
     required this.name,
-    /*required this.desc,
+    //required this.desc,
     required this.closed,
     required this.idMemberCreator,
     required this.idOrganization,
     required this.pinned,
     required this.url,
     required this.shortUrl,
-    */
     this.bgImage,
     this.bgColor,
-  /*
+    /*
     required this.labelNames,
     required this.limits,
     required this.starred,
@@ -65,14 +64,13 @@ class Board {
     return Board(
       id: json['id'],
       name: json['name'],
-      /*desc: json['desc'],
+      //desc: json['desc'],
       closed: json['closed'],
       idMemberCreator: json['idMemberCreator'],
       idOrganization: json['idOrganization'],
       pinned: json['pinned'],
       url: json['url'],
       shortUrl: json['shortUrl'],
-      */
       bgImage: json['prefs']['backgroundImage'],
       bgColor: json['prefs']['backgroundColor'],
       /*
