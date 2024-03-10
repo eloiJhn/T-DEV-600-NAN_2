@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -51,34 +49,41 @@ class DashboardViewState extends State<DashboardView> {
 
   Widget buildUI(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.dashboard)),
+      backgroundColor: Color(0xFF1C39A1),
+      appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.dashboard),
+          backgroundColor: Colors.transparent,
+          foregroundColor: Colors.white),
       body: Center(
         child: GridView.count(
           crossAxisCount: 2, // Nombre de colonnes
           children: workspaces != null
               ? workspaces!.map<Widget>((workspace) {
-            return Card(
-              margin: EdgeInsets.all(10.0),
-              child: InkWell(
-                onTap: () async {
-                  var boards = await getBoards(apiKey, accessToken!, workspace['id']);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => WorkspaceView(workspaceName: workspace['displayName'],boards: boards),
+                  return Card(
+                    margin: EdgeInsets.all(10.0),
+                    child: InkWell(
+                      onTap: () async {
+                        var boards = await getBoards(
+                            apiKey, accessToken!, workspace['id']);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WorkspaceView(
+                                workspaceName: workspace['displayName'],
+                                boards: boards),
+                          ),
+                        );
+                      },
+                      child: Center(
+                        child: Text(
+                          workspace['displayName'],
+                          style: TextStyle(fontSize: 24),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                     ),
                   );
-                },
-                child: Center(
-                  child: Text(
-                    workspace['displayName'],
-                    style: TextStyle(fontSize: 24),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            );
-          }).toList()
+                }).toList()
               : [],
         ),
       ),
