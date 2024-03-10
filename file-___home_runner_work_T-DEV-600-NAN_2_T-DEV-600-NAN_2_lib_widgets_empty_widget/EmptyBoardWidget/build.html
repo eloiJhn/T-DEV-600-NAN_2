@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the build method from the WorkspaceViewState class, for the Dart programming language.">
-  <title>build method - WorkspaceViewState class - workspace_view library - Dart API</title>
+  <meta name="description" content="API docs for the build method from the EmptyBoardWidget class, for the Dart programming language.">
+  <title>build method - EmptyBoardWidget class - empty_widget library - Dart API</title>
 
 
   
@@ -29,8 +29,8 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view-library.html">views&#47;board&#47;workspace_view.dart</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/WorkspaceViewState-class.html">WorkspaceViewState</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_empty_widget/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_empty_widget-library.html">widgets&#47;empty_widget.dart</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_empty_widget/EmptyBoardWidget-class.html">EmptyBoardWidget</a></li>
     <li class="self-crumb">build method</li>
   </ol>
   <div class="self-name">build</div>
@@ -54,7 +54,7 @@
   <div
       id="dartdoc-main-content"
       class="main-content"
-      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view&#47;WorkspaceViewState-class-sidebar.html"
+      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_empty_widget&#47;EmptyBoardWidget-class-sidebar.html"
       data-below-sidebar="">
       <div>
 <h1><span class="kind-method">build</span> method 
@@ -83,58 +83,47 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
-  return FutureBuilder&lt;Color&gt;(
-    future: bgColorFuture,
-    builder: (BuildContext context, AsyncSnapshot&lt;Color&gt; snapshot) {
-      return Stack(
-        children: &lt;Widget&gt;[
-          Scaffold(
-            appBar: AppBar(
-              title: Text(widget.workspaceName),
-              actions: &lt;Widget&gt;[
-                const CustomPopupMenuButton(),
+  return GestureDetector(
+    onTap: onTap,
+    child: Padding(
+      padding: const EdgeInsets.all(10),
+      child: DottedBorder(
+        borderType: BorderType.RRect,
+        radius: Radius.circular(10),
+        padding: const EdgeInsets.all(6),
+        child: ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: &lt;Widget&gt;[
+                Icon(
+                  iconData,
+                  color: Colors.grey,
+                  size: 100,
+                ),
+                Text(
+                  &quot;${isMasculine ? &#39;Aucun&#39; : &#39;Aucune&#39;} $itemType&quot;,
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  message,
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ],
             ),
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: &lt;Widget&gt;[
-                  Flexible(
-                    child: widget.boards.isEmpty
-                        ? EmptyBoardWidget(
-                            itemType: &#39;Tableau&#39;,
-                            message:
-                                &quot;Vous n&#39;avez actuellement aucun tableau de créé pour cette organisation. Veuillez cliquer pour en ajouter un&quot;,
-                            iconData: Icons.dashboard,
-                            onTap: () {
-                              print(&#39;Tableau clicked&#39;);
-                            },
-                            isMasculine: true,
-                          )
-                        : ListView.builder(
-                            itemCount: widget.boards.length,
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (BuildContext context, int index) {
-                              return CustomListItem(
-                                board: widget.boards[index],
-                                bgColorFuture: _getBgColor(
-                                    widget.boards[index].bgColor,
-                                    widget.boards[index].bgImage),
-                              );
-                            },
-                          ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () =&gt; disconnect(context),
-                    child: Text(AppLocalizations.of(context)!.logout),
-                  ),
-                ],
-              ),
-            ),
           ),
-        ],
-      );
-    },
+        ),
+      ),
+    ),
   );
 }</code></pre>
 </section>
@@ -152,13 +141,13 @@ Widget build(BuildContext context) {
 
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view-library.html">workspace_view</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/WorkspaceViewState-class.html">WorkspaceViewState</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_empty_widget/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_empty_widget-library.html">empty_widget</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_empty_widget/EmptyBoardWidget-class.html">EmptyBoardWidget</a></li>
     <li class="self-crumb">build method</li>
 </ol>
 
 
-    <h5>WorkspaceViewState class</h5>
+    <h5>EmptyBoardWidget class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-->
 

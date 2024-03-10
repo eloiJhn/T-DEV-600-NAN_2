@@ -108,12 +108,12 @@ Widget build(BuildContext context) {
                   timeInSecForIosWeb: 1,
                   backgroundColor: Colors.red,
                   textColor: Colors.white,
-                  fontSize: 16.0
-              );
+                  fontSize: 16.0);
             } else {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) =&gt; BoardView(board: board)),
+                MaterialPageRoute(
+                    builder: (context) =&gt; BoardView(board: board)),
               );
             }
           },

@@ -83,36 +83,70 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
-  return PopupMenuButton&lt;String&gt;(
-    onSelected: (String result) {
-      showDialog(
+  return IconButton(
+    icon: Icon(Icons.more_vert),
+    onPressed: () {
+      showModalBottomSheet(
         context: context,
+        isScrollControlled: true,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text(&#39;Selected Option&#39;),
-            content: Text(&#39;You selected: $result&#39;),
-            actions: &lt;Widget&gt;[
-              TextButton(
-                child: const Text(&#39;OK&#39;),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.9,
+            child: Column(
+              children: &lt;Widget&gt;[
+                IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: &lt;Widget&gt;[
+                      ListTile(
+                        leading: Icon(Icons.edit),
+                        title: Text(&#39;Modifier&#39;),
+                        onTap: () {
+                          Navigator.pop(context, &#39;Modifier&#39;);
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.delete),
+                        title: Text(&#39;Supprimer&#39;),
+                        onTap: () {
+                          Navigator.pop(context, &#39;Supprimer&#39;);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           );
         },
-      );
+      ).then((value) {
+        if (value != null) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text(&#39;Selected Option&#39;),
+                content: Text(&#39;You selected: $value&#39;),
+                actions: &lt;Widget&gt;[
+                  TextButton(
+                    child: const Text(&#39;OK&#39;),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      });
     },
-    itemBuilder: (BuildContext context) =&gt; const &lt;PopupMenuEntry&lt;String&gt;&gt;[
-      PopupMenuItem&lt;String&gt;(
-          value: &#39;Modifier&#39;,
-          child: Text(&#39;Modifier&#39;)
-      ),
-      PopupMenuItem&lt;String&gt;(
-          value: &#39;Supprimer&#39;,
-          child: Text(&#39;Supprimer&#39;)
-      ),
-    ],
   );
 }</code></pre>
 </section>
