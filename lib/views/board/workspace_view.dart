@@ -79,8 +79,8 @@ class WorkspaceViewState extends State<WorkspaceView> {
             Scaffold(
               appBar: AppBar(
                 title: Text(widget.workspaceName),
-                actions: <Widget>[
-                  const CustomPopupMenuButton(),
+                actions: const <Widget>[
+                  CustomPopupMenuButton(),
                 ],
               ),
               body: Center(
@@ -262,15 +262,15 @@ class CustomPopupMenuButton extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         ListTile(
-                          leading: Icon(Icons.edit),
-                          title: Text('Modifier'),
+                          leading: const Icon(Icons.edit),
+                          title: const Text('Modifier'),
                           onTap: () {
                             Navigator.pop(context, 'Modifier');
                           },
                         ),
                         ListTile(
-                          leading: Icon(Icons.delete),
-                          title: Text('Supprimer'),
+                          leading: const Icon(Icons.delete),
+                          title: const Text('Supprimer'),
                           onTap: () {
                             Navigator.pop(context, 'Supprimer');
                           },
