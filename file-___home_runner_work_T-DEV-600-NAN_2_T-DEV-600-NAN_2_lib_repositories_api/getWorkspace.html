@@ -73,12 +73,18 @@
 
     </section>
     
+<section class="desc markdown">
+  <p>Fetches the user's workspaces from Trello.</p>
+<p>This function calls the Trello API to fetch the user's workspaces.
+It requires the user's API key, token, and client ID.
+Returns a list of workspaces.</p>
+</section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;dynamic&gt;&gt; getWorkspace(String apiKey, String? token,String? clientId) async {
+  <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;dynamic&gt;&gt; getWorkspace(String apiKey, String? token, String? clientId) async {
   final response = await http.get(
     Uri.parse(&#39;https:&#47;&#47;api.trello.com&#47;1&#47;members&#47;$clientId&#47;organizations?key=$apiKey&amp;token=$token&#39;),
   );
