@@ -83,14 +83,43 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
-  return FutureBuilder&lt;Color&gt;(
-    future: bgColorFuture,
-    builder: (BuildContext context, AsyncSnapshot&lt;Color&gt; snapshot) {
-      if (!isOrganizationInitialized) {
-        return const CircularProgressIndicator();
-      }
-      return _buildWorkspaceView(snapshot.data ?? Colors.grey);
-    },
+  return Scaffold(
+    appBar: AppBar(
+      title: Text(&quot;ddd&quot;)
+    ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: &lt;Widget&gt;[
+            Flexible(
+              child: ListView.builder(
+                  itemCount: widget.boards.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Row(children: [
+                      Text(widget.boards[index].name),
+                      ElevatedButton(
+                        onPressed: () =&gt; Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =&gt; BoardView(
+                                  board: widget.boards[index]
+                              )
+                          ),
+                        ),
+                        child: Text(AppLocalizations.of(context)!.openBoard),
+                      ),
+                    ]);
+                  }
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () =&gt; disconnect(context),
+              child: Text(AppLocalizations.of(context)!.logout),
+            ),
+          ],
+        ),
+      ),
   );
 }</code></pre>
 </section>

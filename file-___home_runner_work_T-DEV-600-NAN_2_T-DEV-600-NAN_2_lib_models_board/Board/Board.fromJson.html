@@ -76,16 +76,14 @@
   return Board(
     id: json[&#39;id&#39;],
     name: json[&#39;name&#39;],
-    &#47;&#47;desc: json[&#39;desc&#39;],
+    &#47;*desc: json[&#39;desc&#39;],
     closed: json[&#39;closed&#39;],
     idMemberCreator: json[&#39;idMemberCreator&#39;],
     idOrganization: json[&#39;idOrganization&#39;],
     pinned: json[&#39;pinned&#39;],
     url: json[&#39;url&#39;],
     shortUrl: json[&#39;shortUrl&#39;],
-    bgImage: json[&#39;prefs&#39;][&#39;backgroundImage&#39;],
-    bgColor: json[&#39;prefs&#39;][&#39;backgroundColor&#39;],
-    &#47;*
+    prefs: Map&lt;String, dynamic&gt;.from(json[&#39;prefs&#39;]),
     labelNames: Map&lt;String, String&gt;.from(json[&#39;labelNames&#39;]),
     limits: Map&lt;String, dynamic&gt;.from(json[&#39;limits&#39;]),
     starred: json[&#39;starred&#39;],
