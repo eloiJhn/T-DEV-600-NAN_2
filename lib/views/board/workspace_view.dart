@@ -12,6 +12,7 @@ import 'package:trelltech/repositories/api.dart';
 import 'package:trelltech/repositories/authentification.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:trelltech/views/board/board_view.dart';
+import 'package:trelltech/views/dashboard/dashboard_view.dart';
 import 'package:trelltech/views/organizations/organization_edit_view.dart';
 import 'package:trelltech/widgets/empty_widget.dart';
 
@@ -217,7 +218,7 @@ class CustomListItem extends StatelessWidget {
             },
             child: Opacity(
               opacity: board.closed ? 0.5 : 1,
-              child: Container(
+              child: SizedBox(
                 height: 100,
                 child: Card(
                   shape: RoundedRectangleBorder(
@@ -331,7 +332,31 @@ class CustomPopupMenuButton extends StatelessWidget {
                           leading: const Icon(Icons.delete),
                           title: const Text('Supprimer'),
                           onTap: () {
-                            Navigator.pop(context, 'Supprimer');
+                            showDialog(context: context, builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Supprimer l\'organisation'),
+                                content: const Text('Êtes-vous sûr de vouloir supprimer cette organisation ?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('Annuler'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      deleteWorkspace(dotenv.env['TRELLO_API_KEY']!, (await getAccessToken())!, organisationId).then((value) {
+                                        Navigator.of(context).pushAndRemoveUntil(
+                                          MaterialPageRoute(builder: (context) => DashboardView()),
+                                              (Route<dynamic> route) => false,
+                                        );
+                                      });
+                                    },
+                                    child: const Text('Supprimer'),
+                                  ),
+                                ],
+                              );
+                            });
                           },
                         ),
                       ],
