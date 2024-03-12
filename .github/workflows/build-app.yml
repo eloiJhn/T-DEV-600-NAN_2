@@ -30,7 +30,7 @@ jobs:
 
       - name: Build iOS IPA
         run: |
-          flutter build ios --release --no-codesign --dart-define-from-file=.env
+          flutter build ios --release --dart-define-from-file=.env
           cd build/ios/iphoneos/
           mkdir Payload
           mv Runner.app Payload
