@@ -44,7 +44,7 @@ class BoardViewState extends State<BoardView> {
     var apiKey = dotenv.env['TRELLO_API_KEY'];
     var lists = await getLists(apiKey!, accessToken!, widget.board.id);
     List<TrelloList> listList =
-        lists.map((item) => TrelloList.fromJson(item)).toList();
+    lists.map((item) => TrelloList.fromJson(item)).toList();
     return listList;
   }
 
@@ -52,7 +52,7 @@ class BoardViewState extends State<BoardView> {
     var apiKey = dotenv.env['TRELLO_API_KEY'];
     var cards = await getCards(apiKey!, accessToken!, trelloListId);
     List<TrelloCard> listCard =
-        cards.map((item) => TrelloCard.fromJson(item)).toList();
+    cards.map((item) => TrelloCard.fromJson(item)).toList();
     return listCard;
   }
 
@@ -198,4 +198,4 @@ class BoardViewState extends State<BoardView> {
               }),
         ));
   }
-}
+  }
