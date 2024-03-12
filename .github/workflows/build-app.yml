@@ -36,22 +36,12 @@ jobs:
       - name: Create .env file
         run: echo "TRELLO_API_KEY=${{ secrets.TRELLO_API_KEY }}" >> .env && echo "TRELLO_APP_NAME=${{ secrets.TRELLO_APP_NAME }}" >> .env
 
-#      - name: Build APK
-#        run: flutter build apk --release --dart-define-from-file=.env
-
-      - name: Build IPA
-        run: |
-          flutter build ios --dart-define-from-file=.env -allowProvisioningUpdates
-          cd build/ios/iphoneos/
-          mkdir Payload
-          mv Runner.app Payload
-          zip -r Payload.zip Payload
-          mv Payload.zip trelltech_nan2.ipa
+      - name: Build APK
+        run: flutter build apk --release --dart-define-from-file=.env
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: Releases
           path: |
-            build/ios/iphoneos/trelltech_nan2.ipa
             build/app/outputs/flutter-apk/app-release.apk
