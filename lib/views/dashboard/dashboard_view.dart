@@ -7,6 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trelltech/repositories/api.dart';
 import 'package:trelltech/repositories/authentification.dart';
 import 'package:trelltech/views/board/workspace_view.dart';
+import 'package:trelltech/widgets/menu_widget.dart';
+
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
