@@ -1,0 +1,45 @@
+name: Build app flutter
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build-app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.1'
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Create .env file
+        run: echo "TRELLO_API_KEY=${{ secrets.TRELLO_API_KEY }}" >> .env && echo "TRELLO_APP_NAME=${{ secrets.TRELLO_APP_NAME }}" >> .env
+
+      - name: Build Android APK
+        run: flutter build apk --release --dart-define-from-file=.env
+
+      - name: Build iOS IPA
+        run: |
+          flutter build ios --release --no-codesign --dart-define-from-file=.env
+          cd build/ios/iphoneos/
+          mkdir Payload
+          mv Runner.app Payload
+          zip -r Payload.zip Payload
+          mv Payload.zip trelltech_nan2.ipa
+
+      - name: Archive Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifacts
+          path: |
+            build/app/outputs/flutter-apk/app-release.apk
+            build/ios/iphoneos/trelltech_nan2.ipa
