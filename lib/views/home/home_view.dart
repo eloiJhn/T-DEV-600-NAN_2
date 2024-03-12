@@ -48,6 +48,7 @@ class _HomeViewState extends State<HomeView> {
         ),
         const SizedBox(height: 20),
         ElevatedButton(
+          key: const Key('discover_button'),
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => const DiscoverAppView()),
