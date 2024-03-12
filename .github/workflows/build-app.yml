@@ -36,12 +36,12 @@ jobs:
       - name: Create .env file
         run: echo "TRELLO_API_KEY=${{ secrets.TRELLO_API_KEY }}" >> .env && echo "TRELLO_APP_NAME=${{ secrets.TRELLO_APP_NAME }}" >> .env
 
-      - name: Build APK
-        run: flutter build apk --release --dart-define-from-file=.env
+#      - name: Build APK
+#        run: flutter build apk --release --dart-define-from-file=.env
 
       - name: Build IPA
         run: |
-          flutter build ios --dart-define-from-file=.env
+          flutter build ios --dart-define-from-file=.env -allowProvisioningUpdates
           cd build/ios/iphoneos/
           mkdir Payload
           mv Runner.app Payload
