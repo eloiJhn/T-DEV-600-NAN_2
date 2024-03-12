@@ -2,14 +2,13 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:trelltech/models/board.dart';
+import 'package:trelltech/models/trello_organization.dart';
 
-/**
- * Fetches the user's ID from Trello.
- *
- * This method calls the Trello API to fetch the user's ID.
- * It requires the user's API key and token.
- * Returns the user's ID.
- */
+/// Fetches the user's ID from Trello.
+///
+/// This function calls the Trello API to fetch the user's ID.
+/// It requires the user's API key and token.
+/// Returns the user's ID.
 Future<String> getTrelloClientID(String apiKey, String token) async {
   final response = await http.get(
     Uri.parse('https://api.trello.com/1/members/me?key=$apiKey&token=$token'),
@@ -69,18 +68,15 @@ Future<dynamic> addMemberToCard(String apiKey, String token, String cardId, Stri
   }
 }
 
-/**
- * Fetches the user's boards from Trello.
- *
- * This method calls the Trello API to fetch the user's boards.
- * It requires the user's API key and token.
- * Returns a list of boards.
- */
+/// Fetches the user's boards from Trello.
+///
+/// This function calls the Trello API to fetch the user's boards.
+/// It requires the user's API key, token, and the workspace ID.
+/// Returns a list of boards.
 Future<List<Board>> getBoards(String apiKey, String token, String workspaceId) async {
   final response = await http.get(
     Uri.parse('https://api.trello.com/1/organizations/$workspaceId/boards?key=$apiKey&token=$token'),
   );
-
 
   if (response.statusCode == 200) {
     var boardsJson = jsonDecode(response.body) as List;
@@ -91,7 +87,12 @@ Future<List<Board>> getBoards(String apiKey, String token, String workspaceId) a
   }
 }
 
-Future<List<dynamic>> getWorkspace(String apiKey, String? token,String? clientId) async {
+/// Fetches the user's workspaces from Trello.
+///
+/// This function calls the Trello API to fetch the user's workspaces.
+/// It requires the user's API key, token, and client ID.
+/// Returns a list of workspaces.
+Future<List<dynamic>> getWorkspaces(String apiKey, String? token, String? clientId) async {
   final response = await http.get(
     Uri.parse('https://api.trello.com/1/members/$clientId/organizations?key=$apiKey&token=$token'),
   );
@@ -104,13 +105,11 @@ Future<List<dynamic>> getWorkspace(String apiKey, String? token,String? clientId
   }
 }
 
-/**
- * Fetches the lists of a specific board from Trello.
- *
- * This method calls the Trello API to fetch the lists of a specific board.
- * It requires the user's API key, token, and the board's ID.
- * Returns a list of lists.
- */
+/// Fetches the lists of a specific board from Trello.
+///
+/// This function calls the Trello API to fetch the lists of a specific board.
+/// It requires the user's API key, token, and the board's ID.
+/// Returns a list of lists.
 Future<List<dynamic>> getLists(String apiKey, String token, String boardId) async {
   final response = await http.get(
     Uri.parse('https://api.trello.com/1/boards/$boardId/lists?key=$apiKey&token=$token'),
@@ -123,13 +122,11 @@ Future<List<dynamic>> getLists(String apiKey, String token, String boardId) asyn
   }
 }
 
-/**
- * Fetches the cards of a specific list from Trello.
- *
- * This method calls the Trello API to fetch the cards of a specific list.
- * It requires the user's API key, token, and the list's ID.
- * Returns a list of cards.
- */
+/// Fetches the cards of a specific list from Trello.
+///
+/// This function calls the Trello API to fetch the cards of a specific list.
+/// It requires the user's API key, token, and the list's ID.
+/// Returns a list of cards.
 Future<List<dynamic>> getCards(String apiKey, String token, String listId) async {
   final response = await http.get(
     Uri.parse('https://api.trello.com/1/lists/$listId/cards?key=$apiKey&token=$token'),
@@ -142,12 +139,10 @@ Future<List<dynamic>> getCards(String apiKey, String token, String listId) async
   }
 }
 
-/**
- * Creates a new card in a specific list on Trello.
- *
- * This method calls the Trello API to create a new card in a specific list.
- * It requires the user's API key, token, the list's ID, and the name of the card.
- */
+/// Creates a new card in a specific list on Trello.
+///
+/// This function calls the Trello API to create a new card in a specific list.
+/// It requires the user's API key, token, the list's ID, and the name of the card.
 Future<void> createCard(String apiKey, String token, String listId, String name) async {
   final response = await http.post(
     Uri.parse('https://api.trello.com/1/cards?key=$apiKey&token=$token&idList=$listId&name=$name'),
@@ -158,12 +153,10 @@ Future<void> createCard(String apiKey, String token, String listId, String name)
   }
 }
 
-/**
- * Deletes a specific card from Trello.
- *
- * This method calls the Trello API to delete a specific card.
- * It requires the user's API key, token, and the card's ID.
- */
+/// Deletes a specific card from Trello.
+///
+/// This function calls the Trello API to delete a specific card.
+/// It requires the user's API key, token, and the card's ID.
 Future<void> deleteCard(String apiKey, String token, String cardId) async {
   final response = await http.delete(
     Uri.parse('https://api.trello.com/1/cards/$cardId?key=$apiKey&token=$token'),
@@ -174,12 +167,10 @@ Future<void> deleteCard(String apiKey, String token, String cardId) async {
   }
 }
 
-/**
- * Updates the name of a specific card on Trello.
- *
- * This method calls the Trello API to update the name of a specific card.
- * It requires the user's API key, token, the card's ID, and the new name of the card.
- */
+/// Updates the name of a specific card on Trello.
+///
+/// This function calls the Trello API to update the name of a specific card.
+/// It requires the user's API key, token, the card's ID, and the new name of the card.
 Future<void> updateCard(String apiKey, String token, String cardId, String desc) async {
   final response = await http.put(
     Uri.parse('https://api.trello.com/1/cards/$cardId?key=$apiKey&token=$token&desc=$desc'),
@@ -190,12 +181,10 @@ Future<void> updateCard(String apiKey, String token, String cardId, String desc)
   }
 }
 
-/**
- * Moves a specific card to a different list on Trello.
- *
- * This method calls the Trello API to move a specific card to a different list.
- * It requires the user's API key, token, the card's ID, and the ID of the list to move the card to.
- */
+/// Moves a specific card to a different list on Trello.
+///
+/// This function calls the Trello API to move a specific card to a different list.
+/// It requires the user's API key, token, the card's ID, and the ID of the list to move the card to.
 Future<void> moveCard(String apiKey, String token, String cardId, String listId) async {
   final response = await http.put(
     Uri.parse('https://api.trello.com/1/cards/$cardId?key=$apiKey&token=$token&idList=$listId'),
@@ -206,12 +195,10 @@ Future<void> moveCard(String apiKey, String token, String cardId, String listId)
   }
 }
 
-/**
- * Creates a new workspace on Trello.
- *
- * This method calls the Trello API to create a new workspace.
- * It requires the user's API key, token, and the name of the workspace.
- */
+/// Creates a new workspace on Trello.
+///
+/// This function calls the Trello API to create a new workspace.
+/// It requires the user's API key, token, and the name of the workspace.
 Future<void> createWorkspace(String apiKey, String token, String name) async {
   final response = await http.post(
     Uri.parse('https://api.trello.com/1/organizations?key=$apiKey&token=$token&displayName=$name'),
@@ -222,12 +209,10 @@ Future<void> createWorkspace(String apiKey, String token, String name) async {
   }
 }
 
-/**
- * Deletes a specific workspace from Trello.
- *
- * This method calls the Trello API to delete a specific workspace.
- * It requires the user's API key, token, and the workspace's ID.
- */
+/// Deletes a specific workspace from Trello.
+///
+/// This function calls the Trello API to delete a specific workspace.
+/// It requires the user's API key, token, and the workspace's ID.
 Future<void> deleteWorkspace(String apiKey, String token, String workspaceId) async {
   final response = await http.delete(
     Uri.parse('https://api.trello.com/1/organizations/$workspaceId?key=$apiKey&token=$token'),
@@ -238,18 +223,32 @@ Future<void> deleteWorkspace(String apiKey, String token, String workspaceId) as
   }
 }
 
-/**
- * Updates the name of a specific workspace on Trello.
- *
- * This method calls the Trello API to update the name of a specific workspace.
- * It requires the user's API key, token, the workspace's ID, and the new name of the workspace.
- */
-Future<void> updateWorkspace(String apiKey, String token, String workspaceId, String name) async {
+Future<bool> updateWorkspace(String apiKey, String? token, String workspaceId, TrelloOrganization organization) async {
   final response = await http.put(
-    Uri.parse('https://api.trello.com/1/organizations/$workspaceId?key=$apiKey&token=$token&displayName=$name'),
+    Uri.parse('https://api.trello.com/1/organizations/$workspaceId?key=$apiKey&token=$token&displayName=${organization.displayName}&desc=${organization.description}'),
   );
 
   if (response.statusCode != 200) {
     throw Exception('Failed to update workspace');
+  }
+
+  return true;
+}
+
+/// Updates the name of a specific workspace on Trello.
+///
+/// This function calls the Trello API to update the name of a specific workspace.
+/// It requires the user's API key, token, the workspace's ID, and the new name of the workspace.
+Future<TrelloOrganization> getWorkspace(String apiKey, String? token, String workspaceId) async {
+  final response = await http.get(
+    Uri.parse('https://api.trello.com/1/organizations/$workspaceId?key=$apiKey&token=$token'),
+  );
+
+  if (response.statusCode == 200) {
+    var data = jsonDecode(response.body);
+    print(data);
+    return TrelloOrganization.fromJson(data);
+  } else {
+    throw Exception('Failed to load workspace');
   }
 }

@@ -8,7 +8,6 @@ class Board {
   bool pinned;
   String url;
   String shortUrl;
-  */
   String? bgImage;
   String? bgColor;
   /*
