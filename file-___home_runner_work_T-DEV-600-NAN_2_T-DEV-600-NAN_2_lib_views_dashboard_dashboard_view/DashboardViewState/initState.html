@@ -86,7 +86,7 @@ void initState() {
   Future.microtask(() async {
     await getAccessToken();
     clientId = await getClientID();
-    await getWorkspaces();
+    await getUserWorkspaces();
   });
 }</code></pre>
 </section>
