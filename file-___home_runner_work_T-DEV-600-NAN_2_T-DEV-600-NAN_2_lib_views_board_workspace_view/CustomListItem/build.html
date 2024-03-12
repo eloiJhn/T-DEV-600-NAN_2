@@ -102,24 +102,26 @@ Widget build(BuildContext context) {
           onTap: () {
             if (board.closed) {
               Fluttertoast.showToast(
-                  msg: &quot;Le tableau est fermé&quot;,
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: Colors.red,
-                  textColor: Colors.white,
-                  fontSize: 16.0
+                msg: &quot;Le tableau est fermé&quot;,
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0,
               );
             } else {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) =&gt; BoardView(board: board)),
+                MaterialPageRoute(
+                  builder: (context) =&gt; BoardView(board: board),
+                ),
               );
             }
           },
           child: Opacity(
             opacity: board.closed ? 0.5 : 1,
-            child: Container(
+            child: SizedBox(
               height: 100,
               child: Card(
                 shape: RoundedRectangleBorder(

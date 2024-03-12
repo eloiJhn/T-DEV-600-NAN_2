@@ -83,36 +83,78 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
-  return PopupMenuButton&lt;String&gt;(
-    onSelected: (String result) {
-      showDialog(
+  return IconButton(
+    icon: const Icon(Icons.more_vert),
+    onPressed: () {
+      showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text(&#39;Selected Option&#39;),
-            content: Text(&#39;You selected: $result&#39;),
-            actions: &lt;Widget&gt;[
-              TextButton(
-                child: const Text(&#39;OK&#39;),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
+          return SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: &lt;Widget&gt;[
+                IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: &lt;Widget&gt;[
+                      ListTile(
+                        leading: const Icon(Icons.edit),
+                        title: const Text(&#39;Modifier&#39;),
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =&gt; EditOrganizationScreen(organisationId: organisationId, boards: boards),
+                            ),
+                          ).then((value) =&gt; state.refresh());
+                        },
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.delete),
+                        title: const Text(&#39;Supprimer&#39;),
+                        onTap: () {
+                          showDialog(context: context, builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text(&#39;Supprimer l\&#39;organisation&#39;),
+                              content: const Text(&#39;Êtes-vous sûr de vouloir supprimer cette organisation ?&#39;),
+                              actions: &lt;Widget&gt;[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text(&#39;Annuler&#39;),
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    deleteWorkspace(dotenv.env[&#39;TRELLO_API_KEY&#39;]!, (await getAccessToken())!, organisationId).then((value) {
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(builder: (context) =&gt; DashboardView()),
+                                            (Route&lt;dynamic&gt; route) =&gt; false,
+                                      );
+                                    });
+                                  },
+                                  child: const Text(&#39;Supprimer&#39;),
+                                ),
+                              ],
+                            );
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           );
         },
       );
     },
-    itemBuilder: (BuildContext context) =&gt; const &lt;PopupMenuEntry&lt;String&gt;&gt;[
-      PopupMenuItem&lt;String&gt;(
-          value: &#39;Modifier&#39;,
-          child: Text(&#39;Modifier&#39;)
-      ),
-      PopupMenuItem&lt;String&gt;(
-          value: &#39;Supprimer&#39;,
-          child: Text(&#39;Supprimer&#39;)
-      ),
-    ],
   );
 }</code></pre>
 </section>
