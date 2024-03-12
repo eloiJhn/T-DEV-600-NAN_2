@@ -25,8 +25,12 @@ class DashboardViewState extends State<DashboardView> {
     Future.microtask(() async {
       await getAccessToken();
       clientId = await getClientID();
-      await getWorkspaces();
+      await getUserWorkspaces();
     });
+  }
+
+  Future<void> refreshData() async {
+    await getUserWorkspaces();
   }
 
   Future<void> getAccessToken() async {
@@ -42,8 +46,8 @@ class DashboardViewState extends State<DashboardView> {
     }
   }
 
-  Future<void> getWorkspaces() async {
-    workspaces = await getWorkspace(apiKey, accessToken, clientId);
+  Future<void> getUserWorkspaces() async {
+    workspaces = await getWorkspaces(apiKey, accessToken, clientId);
     setState(() {});
   }
 
@@ -69,7 +73,7 @@ class DashboardViewState extends State<DashboardView> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => WorkspaceView(
-                                workspaceName: workspace['displayName'],
+                                workspaceId: workspace['id'],
                                 boards: boards),
                           ),
                         );
@@ -98,7 +102,10 @@ class DashboardViewState extends State<DashboardView> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else {
-          return buildUI(context);
+          return RefreshIndicator(
+            onRefresh: refreshData,
+            child: buildUI(context),
+          );
         }
       },
     );

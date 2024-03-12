@@ -2,6 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:trelltech/models/board.dart';
+import 'package:trelltech/models/trello_organization.dart';
 
 /// Fetches the user's ID from Trello.
 ///
@@ -45,7 +46,7 @@ Future<List<Board>> getBoards(String apiKey, String token, String workspaceId) a
 /// This function calls the Trello API to fetch the user's workspaces.
 /// It requires the user's API key, token, and client ID.
 /// Returns a list of workspaces.
-Future<List<dynamic>> getWorkspace(String apiKey, String? token, String? clientId) async {
+Future<List<dynamic>> getWorkspaces(String apiKey, String? token, String? clientId) async {
   final response = await http.get(
     Uri.parse('https://api.trello.com/1/members/$clientId/organizations?key=$apiKey&token=$token'),
   );
@@ -176,16 +177,32 @@ Future<void> deleteWorkspace(String apiKey, String token, String workspaceId) as
   }
 }
 
-/// Updates the name of a specific workspace on Trello.
-///
-/// This function calls the Trello API to update the name of a specific workspace.
-/// It requires the user's API key, token, the workspace's ID, and the new name of the workspace.
-Future<void> updateWorkspace(String apiKey, String token, String workspaceId, String name) async {
+Future<bool> updateWorkspace(String apiKey, String? token, String workspaceId, TrelloOrganization organization) async {
   final response = await http.put(
-    Uri.parse('https://api.trello.com/1/organizations/$workspaceId?key=$apiKey&token=$token&displayName=$name'),
+    Uri.parse('https://api.trello.com/1/organizations/$workspaceId?key=$apiKey&token=$token&displayName=${organization.displayName}&desc=${organization.description}'),
   );
 
   if (response.statusCode != 200) {
     throw Exception('Failed to update workspace');
+  }
+
+  return true;
+}
+
+/// Updates the name of a specific workspace on Trello.
+///
+/// This function calls the Trello API to update the name of a specific workspace.
+/// It requires the user's API key, token, the workspace's ID, and the new name of the workspace.
+Future<TrelloOrganization> getWorkspace(String apiKey, String? token, String workspaceId) async {
+  final response = await http.get(
+    Uri.parse('https://api.trello.com/1/organizations/$workspaceId?key=$apiKey&token=$token'),
+  );
+
+  if (response.statusCode == 200) {
+    var data = jsonDecode(response.body);
+    print(data);
+    return TrelloOrganization.fromJson(data);
+  } else {
+    throw Exception('Failed to load workspace');
   }
 }

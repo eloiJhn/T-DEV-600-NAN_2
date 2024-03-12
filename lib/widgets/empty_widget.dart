@@ -9,13 +9,13 @@ class EmptyBoardWidget extends StatelessWidget {
   final bool isMasculine;
 
   const EmptyBoardWidget({
-    Key? key,
+    super.key,
     required this.itemType,
     required this.message,
     required this.iconData,
     required this.onTap,
     required this.isMasculine,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +25,10 @@ class EmptyBoardWidget extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         child: DottedBorder(
           borderType: BorderType.RRect,
-          radius: Radius.circular(10),
+          radius: const Radius.circular(10),
           padding: const EdgeInsets.all(6),
           child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
             child: Container(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -41,15 +41,15 @@ class EmptyBoardWidget extends StatelessWidget {
                   ),
                   Text(
                     "${isMasculine ? 'Aucun' : 'Aucune'} $itemType",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     message,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                     ),
                     textAlign: TextAlign.center,

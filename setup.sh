@@ -13,7 +13,7 @@ function setup () {
 	rm -rf .dart_tool > /dev/null;
 	flutter pub get > /dev/null;
 	echo "Dependencies installed";
-	echo "Retrieve API key from the backend";
+  echo "Go to https://trello.com/app-key to get your API key and app name."
     read -p "Enter the API key: " api_key
     read -p "Enter the app name: " app_name
     if [[ "$(uname)" == "Linux" ]]; then
@@ -24,8 +24,8 @@ function setup () {
         sed -i '' "s/TRELLO_APP_NAME=.*/TRELLO_APP_NAME=${app_name}/g" .env
     fi
 	echo -e "\nThe API key is ${api_key}";
-    echo -e "\nThe app name is ${app_name}";
-    echo -e "\n\e[1;46mSetup complete\e[0m";
+  echo -e "\nThe app name is ${app_name}";
+  echo -e "\n\e[1;46mSetup complete\e[0m";
 }
 
 requirements;
