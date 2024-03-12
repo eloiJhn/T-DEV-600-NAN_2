@@ -19,5 +19,8 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
+      - name: Create .env file
+        run: echo "TRELLO_API_KEY=${{ secrets.TRELLO_API_KEY }}" >> .env && echo "TRELLO_APP_NAME=${{ secrets.TRELLO_APP_NAME }}" >> .env
+
       - name: Run Tests
         run: flutter test
