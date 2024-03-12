@@ -135,27 +135,34 @@ class BoardViewState extends State<BoardView> {
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int index) {
-                                                return GestureDetector(
-                                                  onTap: () => {
-                                                    showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext
-                                                                context) =>
-                                                            CardWidget(
-                                                                card: snapshot
-                                                                        .data![
-                                                                    index])),
-                                                  },
-                                                  child: Card(
-                                                    margin:
-                                                        const EdgeInsets.all(
-                                                            10),
-                                                    color: Colors.grey[200],
-                                                    child: ListTile(
+                                                return Card(
+                                                  margin:
+                                                      const EdgeInsets.all(10),
+                                                  color: Colors.grey[200],
+                                                  child: ListTile(
                                                       title: Text(snapshot
                                                           .data![index].name),
-                                                    ),
-                                                  ),
+                                                      onTap: () =>
+                                                          showModalBottomSheet(
+                                                              isScrollControlled:
+                                                                  true,
+                                                              context: context,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return CardWidget(
+                                                                    card: snapshot
+                                                                            .data![
+                                                                        index]);
+                                                              }).whenComplete( () {
+                                                                setState(() {
+                                                                  _getCardsByList(
+                                                                      snapshot
+                                                                          .data![
+                                                                              index]
+                                                                          .id);
+                                                                });
+                                                              }))
                                                 );
                                               });
                                         }
@@ -180,9 +187,14 @@ class BoardViewState extends State<BoardView> {
                                               ),
                                               Expanded(
                                                 child: TextField(
-                                                  style: const TextStyle(color: Colors.white),
-                                                  decoration: InputDecoration.collapsed(
-                                                    hintText: AppLocalizations.of(context)!.addCard,
+                                                  style: const TextStyle(
+                                                      color: Colors.white),
+                                                  decoration:
+                                                      InputDecoration.collapsed(
+                                                    hintText:
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .addCard,
                                                     hintStyle: const TextStyle(
                                                         color: Colors.white70),
                                                   ),
