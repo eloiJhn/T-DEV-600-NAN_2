@@ -50,4 +50,4 @@ jobs:
         run: flutter gen-l10n
 
       - name: Run Integration Tests
-        run: flutter drive --target=integration_tests/app.dart
+        run: flutter test integration_tests/
