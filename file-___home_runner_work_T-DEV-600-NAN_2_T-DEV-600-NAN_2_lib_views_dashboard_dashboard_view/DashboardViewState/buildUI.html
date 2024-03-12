@@ -78,41 +78,34 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Widget buildUI(BuildContext context) {
   return Scaffold(
-    backgroundColor: Color(0xFF1C39A1),
-    appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.dashboard),
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.white),
+    appBar: AppBar(title: Text(AppLocalizations.of(context)!.dashboard)),
     body: Center(
       child: GridView.count(
-        crossAxisCount: 2,
+        crossAxisCount: 2, &#47;&#47; Nombre de colonnes
         children: workspaces != null
             ? workspaces!.map&lt;Widget&gt;((workspace) {
-                return Card(
-                  margin: EdgeInsets.all(10.0),
-                  child: InkWell(
-                    onTap: () async {
-                      var boards = await getBoards(
-                          apiKey, accessToken!, workspace[&#39;id&#39;]);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =&gt; WorkspaceView(
-                              workspaceId: workspace[&#39;id&#39;],
-                              boards: boards),
-                        ),
-                      );
-                    },
-                    child: Center(
-                      child: Text(
-                        workspace[&#39;displayName&#39;],
-                        style: TextStyle(fontSize: 24),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
+          return Card(
+            margin: EdgeInsets.all(10.0),
+            child: InkWell(
+              onTap: () async {
+                var boards = await getBoards(apiKey, accessToken!, workspace[&#39;id&#39;]);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =&gt; WorkspaceView(workspaceName: workspace[&#39;displayName&#39;],boards: boards),
                   ),
                 );
-              }).toList()
+              },
+              child: Center(
+                child: Text(
+                  workspace[&#39;displayName&#39;],
+                  style: TextStyle(fontSize: 24),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          );
+        }).toList()
             : [],
       ),
     ),

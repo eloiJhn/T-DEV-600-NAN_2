@@ -86,10 +86,41 @@ Widget build(BuildContext context) {
   return FutureBuilder&lt;Color&gt;(
     future: bgColorFuture,
     builder: (BuildContext context, AsyncSnapshot&lt;Color&gt; snapshot) {
-      if (!isOrganizationInitialized) {
-        return const CircularProgressIndicator();
-      }
-      return _buildWorkspaceView(snapshot.data ?? Colors.grey);
+      return Stack(
+        children: &lt;Widget&gt;[
+          Scaffold(
+            appBar: AppBar(
+              title: Text(widget.workspaceName),
+              actions: &lt;Widget&gt;[
+                const CustomPopupMenuButton(),
+              ],
+            ),
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: &lt;Widget&gt;[
+                  Flexible(
+                    child: ListView.builder(
+                      itemCount: widget.boards.length,
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (BuildContext context, int index) {
+                        return CustomListItem(
+                          board: widget.boards[index],
+                          bgColorFuture: _getBgColor(widget.boards[index].bgColor, widget.boards[index].bgImage),
+                        );
+                      },
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () =&gt; disconnect(context),
+                    child: Text(AppLocalizations.of(context)!.logout),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      );
     },
   );
 }</code></pre>

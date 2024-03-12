@@ -160,27 +160,34 @@ Widget build(BuildContext context) {
                                             itemBuilder:
                                                 (BuildContext context,
                                                     int index) {
-                                              return GestureDetector(
-                                                onTap: () =&gt; {
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                              context) =&gt;
-                                                          CardWidget(
-                                                              card: snapshot
-                                                                      .data![
-                                                                  index])),
-                                                },
-                                                child: Card(
-                                                  margin:
-                                                      const EdgeInsets.all(
-                                                          10),
-                                                  color: Colors.grey[200],
-                                                  child: ListTile(
+                                              return Card(
+                                                margin:
+                                                    const EdgeInsets.all(10),
+                                                color: Colors.grey[200],
+                                                child: ListTile(
                                                     title: Text(snapshot
                                                         .data![index].name),
-                                                  ),
-                                                ),
+                                                    onTap: () =&gt;
+                                                        showModalBottomSheet(
+                                                            isScrollControlled:
+                                                                true,
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return CardWidget(
+                                                                  card: snapshot
+                                                                          .data![
+                                                                      index]);
+                                                            }).whenComplete( () {
+                                                              setState(() {
+                                                                _getCardsByList(
+                                                                    snapshot
+                                                                        .data![
+                                                                            index]
+                                                                        .id);
+                                                              });
+                                                            }))
                                               );
                                             });
                                       }
@@ -205,9 +212,14 @@ Widget build(BuildContext context) {
                                             ),
                                             Expanded(
                                               child: TextField(
-                                                style: const TextStyle(color: Colors.white),
-                                                decoration: InputDecoration.collapsed(
-                                                  hintText: AppLocalizations.of(context)!.addCard,
+                                                style: const TextStyle(
+                                                    color: Colors.white),
+                                                decoration:
+                                                    InputDecoration.collapsed(
+                                                  hintText:
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .addCard,
                                                   hintStyle: const TextStyle(
                                                       color: Colors.white70),
                                                 ),

@@ -89,10 +89,7 @@ Widget build(BuildContext context) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         return const Center(child: CircularProgressIndicator());
       } else {
-        return RefreshIndicator(
-          onRefresh: refreshData,
-          child: buildUI(context),
-        );
+        return buildUI(context);
       }
     },
   );

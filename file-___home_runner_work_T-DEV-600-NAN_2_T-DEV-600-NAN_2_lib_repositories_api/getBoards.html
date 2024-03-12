@@ -75,8 +75,8 @@
     
 <section class="desc markdown">
   <p>Fetches the user's boards from Trello.</p>
-<p>This function calls the Trello API to fetch the user's boards.
-It requires the user's API key, token, and the workspace ID.
+<p>This method calls the Trello API to fetch the user's boards.
+It requires the user's API key and token.
 Returns a list of boards.</p>
 </section>
 
@@ -88,6 +88,7 @@ Returns a list of boards.</p>
   final response = await http.get(
     Uri.parse(&#39;https:&#47;&#47;api.trello.com&#47;1&#47;organizations&#47;$workspaceId&#47;boards?key=$apiKey&amp;token=$token&#39;),
   );
+
 
   if (response.statusCode == 200) {
     var boardsJson = jsonDecode(response.body) as List;
