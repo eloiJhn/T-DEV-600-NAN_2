@@ -51,12 +51,12 @@
 </header>
 <main>
 
-  <div
-      id="dartdoc-main-content"
-      class="main-content"
-      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view&#47;BoardViewState-class-sidebar.html"
-      data-below-sidebar="">
-      <div>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view&#47;BoardViewState-class-sidebar.html"
+    data-below-sidebar="">
+    <div>
 <h1><span class="kind-method">build</span> method 
 </h1></div>
 
@@ -84,144 +84,87 @@
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
   return Scaffold(
-      appBar: AppBar(title: Text(widget.board.name)),
-      body: Container(
-        decoration: BoxDecoration(
-          image: widget.board.bgImage != null
-              ? DecorationImage(
-                  image: NetworkImage(widget.board.bgImage!),
-                  fit: BoxFit.cover,
-                )
-              : null,
-          color: widget.board.bgColor != null
-              ? Color(int.parse(&#39;0xff${widget.board.bgColor!.split(&#39;#&#39;)[1]}&#39;))
-              : null,
-        ),
-        child: FutureBuilder(
-            future: _getLists(),
-            builder: (context, AsyncSnapshot&lt;List&lt;TrelloList&gt;&gt; snapshot) {
-              if (!snapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                return CarouselSlider.builder(
-                    itemCount: snapshot.data?.length,
-                    options: CarouselOptions(
-                        autoPlay: false,
-                        enlargeCenterPage: false,
-                        height: MediaQuery.of(context).size.height),
-                    itemBuilder:
-                        (BuildContext context, int item, int pageViewIndex) {
-                      return Card(
-                          margin: const EdgeInsets.fromLTRB(15, 30, 15, 30),
-                          child: Column(children: [
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                    color: Color(0xff162B62)),
-                                child: Container(
-                                  margin: const EdgeInsets.only(
-                                      right: 20, left: 20),
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          snapshot.data![item].name
-                                              .toUpperCase(),
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20),
-                                        ),
-                                        IconButton(
-                                          icon: const Icon(Icons.more_horiz),
-                                          color: Colors.white,
-                                          onPressed: () =&gt; {},
-                                        )
-                                      ]),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                                flex: 8,
-                                child: FutureBuilder(
-                                    future: _getCardsByList(
-                                        snapshot.data![item].id),
-                                    builder: (context,
-                                        AsyncSnapshot&lt;List&lt;TrelloCard&gt;&gt;
-                                            snapshot) {
-                                      if (!snapshot.hasData) {
-                                        return const Center(
-                                            child:
-                                                CircularProgressIndicator());
-                                      } else {
-                                        return ListView.builder(
-                                            itemCount: snapshot.data?.length,
-                                            itemBuilder:
-                                                (BuildContext context,
-                                                    int index) {
-                                              return GestureDetector(
-                                                onTap: () =&gt; {
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                              context) =&gt;
-                                                          CardWidget(
-                                                              card: snapshot
-                                                                      .data![
-                                                                  index])),
-                                                },
-                                                child: Card(
-                                                  margin:
-                                                      const EdgeInsets.all(
-                                                          10),
-                                                  color: Colors.grey[200],
-                                                  child: ListTile(
-                                                    title: Text(snapshot
-                                                        .data![index].name),
-                                                  ),
-                                                ),
-                                              );
-                                            });
+    appBar: AppBar(title: Text(widget.board.name)),
+    body: FutureBuilder(
+        future: _getLists(),
+        builder: (context, AsyncSnapshot&lt;List&lt;TrelloList&gt;&gt; snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            return CarouselSlider.builder(
+                carouselController: carouselController,
+                itemCount: snapshot.data?.length,
+                options: CarouselOptions(
+                    autoPlay: false,
+                    scrollDirection: Axis.vertical,
+                    enlargeCenterPage: false,
+                    height: MediaQuery.of(context).size.height),
+                itemBuilder:
+                    (BuildContext context, int item, int pageViewIndex) {
+                  ScrollController listScrollController = ScrollController();
+                  return Card(
+                      child: Column(children: [
+                    Text(
+                      snapshot.data![item].name.toUpperCase(),
+                      style: const TextStyle(fontSize: 30),
+                    ),
+                    Expanded(
+                        child: FutureBuilder(
+                            future: _getCardsByList(snapshot.data![item].id),
+                            builder: (context,
+                                AsyncSnapshot&lt;List&lt;TrelloCard&gt;&gt; snapshot) {
+                              if (!snapshot.hasData) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              } else {
+                                return NotificationListener&lt;
+                                        ScrollNotification&gt;(
+                                    onNotification: (notification) {
+                                      if (notification
+                                              is ScrollEndNotification &amp;&amp;
+                                          listScrollController
+                                                  .position.extentAfter ==
+                                              0) {
+                                        carouselController.animateToPage(
+                                          item + 1,
+                                          duration: const Duration(
+                                              milliseconds: 500),
+                                          curve: Curves.easeInOut,
+                                        );
                                       }
-                                    })),
-                            Expanded(
-                                flex: 1,
-                                child: Container(
-                                    decoration: const BoxDecoration(
-                                        color: Color(0xff162B62)),
-                                    child: Center(
-                                      child: Container(
-                                        margin:
-                                            const EdgeInsets.only(left: 10),
-                                        child: Row(
-                                          children: [
-                                            const Icon(
-                                              Icons.add,
-                                              color: Colors.white,
-                                            ),
-                                            const SizedBox(
-                                              width: 8,
-                                            ),
-                                            Expanded(
-                                              child: TextField(
-                                                style: const TextStyle(color: Colors.white),
-                                                decoration: InputDecoration.collapsed(
-                                                  hintText: AppLocalizations.of(context)!.addCard,
-                                                  hintStyle: const TextStyle(
-                                                      color: Colors.white70),
-                                                ),
+                                      return false;
+                                    },
+                                    child: ListView.builder(
+                                        controller: listScrollController,
+                                        itemCount: snapshot.data?.length,
+                                        itemBuilder: (BuildContext context,
+                                            int index) {
+                                          return GestureDetector(
+                                            onTap: () =&gt; {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext
+                                                          context) =&gt;
+                                                      CardWidget(
+                                                          card: snapshot
+                                                              .data![index])),
+                                            },
+                                            child: Card(
+                                              color: Colors.grey[200],
+                                              child: ListTile(
+                                                title: Text(snapshot
+                                                    .data![index].name),
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                    )))
-                          ]));
-                    });
-              }
-            }),
-      ));
+                                          );
+                                        }));
+                              }
+                            }))
+                  ]));
+                });
+          }
+        }),
+  );
 }</code></pre>
 </section>
 
@@ -249,7 +192,7 @@ Widget build(BuildContext context) {
   </div><!--/.sidebar-offcanvas-->
 
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
-  </div><!--/.sidebar-offcanvas-->
+</div><!--/.sidebar-offcanvas-->
 
 </main>
 

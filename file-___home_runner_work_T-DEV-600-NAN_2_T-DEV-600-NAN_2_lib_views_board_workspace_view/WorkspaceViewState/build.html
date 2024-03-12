@@ -51,12 +51,12 @@
 </header>
 <main>
 
-  <div
-      id="dartdoc-main-content"
-      class="main-content"
-      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view&#47;WorkspaceViewState-class-sidebar.html"
-      data-below-sidebar="">
-      <div>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view&#47;WorkspaceViewState-class-sidebar.html"
+    data-below-sidebar="">
+    <div>
 <h1><span class="kind-method">build</span> method 
 </h1></div>
 
@@ -83,58 +83,43 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
-  return FutureBuilder&lt;Color&gt;(
-    future: bgColorFuture,
-    builder: (BuildContext context, AsyncSnapshot&lt;Color&gt; snapshot) {
-      return Stack(
-        children: &lt;Widget&gt;[
-          Scaffold(
-            appBar: AppBar(
-              title: Text(widget.workspaceName),
-              actions: const &lt;Widget&gt;[
-                CustomPopupMenuButton(),
-              ],
-            ),
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: &lt;Widget&gt;[
-                  Flexible(
-                    child: widget.boards.isEmpty
-                        ? EmptyBoardWidget(
-                            itemType: &#39;Tableau&#39;,
-                            message:
-                                &quot;Vous n&#39;avez actuellement aucun tableau de créé pour cette organisation. Veuillez cliquer pour en ajouter un&quot;,
-                            iconData: Icons.dashboard,
-                            onTap: () {
-                              print(&#39;Tableau clicked&#39;);
-                            },
-                            isMasculine: true,
-                          )
-                        : ListView.builder(
-                            itemCount: widget.boards.length,
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (BuildContext context, int index) {
-                              return CustomListItem(
-                                board: widget.boards[index],
-                                bgColorFuture: _getBgColor(
-                                    widget.boards[index].bgColor,
-                                    widget.boards[index].bgImage),
-                              );
-                            },
+  return Scaffold(
+    appBar: AppBar(
+      title: Text(&quot;ddd&quot;)
+    ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: &lt;Widget&gt;[
+            Flexible(
+              child: ListView.builder(
+                  itemCount: widget.boards.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Row(children: [
+                      Text(widget.boards[index].name),
+                      ElevatedButton(
+                        onPressed: () =&gt; Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =&gt; BoardView(
+                                  board: widget.boards[index]
+                              )
                           ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () =&gt; disconnect(context),
-                    child: Text(AppLocalizations.of(context)!.logout),
-                  ),
-                ],
+                        ),
+                        child: Text(AppLocalizations.of(context)!.openBoard),
+                      ),
+                    ]);
+                  }
               ),
             ),
-          ),
-        ],
-      );
-    },
+            ElevatedButton(
+              onPressed: () =&gt; disconnect(context),
+              child: Text(AppLocalizations.of(context)!.logout),
+            ),
+          ],
+        ),
+      ),
   );
 }</code></pre>
 </section>
@@ -163,7 +148,7 @@ Widget build(BuildContext context) {
   </div><!--/.sidebar-offcanvas-->
 
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
-  </div><!--/.sidebar-offcanvas-->
+</div><!--/.sidebar-offcanvas-->
 
 </main>
 

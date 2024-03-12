@@ -75,8 +75,8 @@
     
 <section class="desc markdown">
   <p>Fetches the user's boards from Trello.</p>
-<p>This function calls the Trello API to fetch the user's boards.
-It requires the user's API key, token, and the workspace ID.
+<p>This method calls the Trello API to fetch the user's boards.
+It requires the user's API key and token.
 Returns a list of boards.</p>
 </section>
 
@@ -91,7 +91,6 @@ Returns a list of boards.</p>
 
   if (response.statusCode == 200) {
     var boardsJson = jsonDecode(response.body) as List;
-    print(response.body);
     return boardsJson.map((board) =&gt; Board.fromJson(board)).toList();
   } else {
     throw Exception(&#39;Failed to load boards&#39;);
