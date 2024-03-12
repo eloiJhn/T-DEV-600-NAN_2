@@ -1,5 +1,14 @@
 {
   "dashboard": "Dashboard",
   "logout": "Logout",
-  "openBoard": "Open"
+  "openBoard": "Open",
+  "addCard": "Add a card",
+  "organizationUpdated": "Organization updated",
+  "organizationUpdateFailed": "Organization update failed",
+  "editOrganization": "Edit organization",
+  "organizationName": "Organization name",
+  "requiredField": "This field is required",
+  "organizationDescription": "Organization description",
+  "organizationWebsite": "Organization website",
+  "updateOrganization": "Update organization"
 }

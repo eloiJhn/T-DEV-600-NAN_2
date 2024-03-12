@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -29,8 +27,12 @@ class DashboardViewState extends State<DashboardView> {
     Future.microtask(() async {
       await getAccessToken();
       clientId = await getClientID();
-      await getWorkspaces();
+      await getUserWorkspaces();
     });
+  }
+
+  Future<void> refreshData() async {
+    await getUserWorkspaces();
   }
 
   Future<void> getAccessToken() async {
@@ -46,40 +48,43 @@ class DashboardViewState extends State<DashboardView> {
     }
   }
 
-  Future<void> getWorkspaces() async {
-    workspaces = await getWorkspace(apiKey, accessToken, clientId);
+  Future<void> getUserWorkspaces() async {
+    workspaces = await getWorkspaces(apiKey, accessToken, clientId);
     setState(() {});
   }
 
   Widget buildUI(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.dashboard)),
+      backgroundColor: Color(0xFF1C39A1),
+      appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.dashboard),
+          backgroundColor: Colors.transparent,
+          foregroundColor: Colors.white),
       body: Center(
-        child: Column(
+        child: GridView.count(
+          crossAxisCount: 2, // Nombre de colonnes
           children: workspaces != null
               ? workspaces!.map<Widget>((workspace) {
-                  return Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 100,
-                    color: Colors.grey,
-                    child: Center(
-                      child: GestureDetector(
-                        onTap: () async {
-                          var boards = await getBoards(apiKey, accessToken!, workspace['id']);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => WorkspaceView(boards: boards),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          workspace[
-                              'displayName'], // Display the workspace name
-                          style: TextStyle(
-                            fontSize: 24,
-                            color: Colors.white,
+                  return Card(
+                    margin: EdgeInsets.all(10.0),
+                    child: InkWell(
+                      onTap: () async {
+                        var boards = await getBoards(
+                            apiKey, accessToken!, workspace['id']);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WorkspaceView(
+                                workspaceId: workspace['id'],
+                                boards: boards),
                           ),
+                        );
+                      },
+                      child: Center(
+                        child: Text(
+                          workspace['displayName'],
+                          style: TextStyle(fontSize: 24),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
@@ -99,7 +104,10 @@ class DashboardViewState extends State<DashboardView> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else {
-          return buildUI(context);
+          return RefreshIndicator(
+            onRefresh: refreshData,
+            child: buildUI(context),
+          );
         }
       },
     );
