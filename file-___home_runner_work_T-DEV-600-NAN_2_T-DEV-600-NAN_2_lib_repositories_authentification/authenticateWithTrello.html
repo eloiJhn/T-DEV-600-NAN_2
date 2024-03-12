@@ -72,11 +72,9 @@
     </section>
     
 <section class="desc markdown">
-  <p>Authenticate the user with Trello.</p>
-<p>This function initiates the authentication process with Trello, obtaining
-the user's access token upon successful authentication.</p>
-<p>@param context The context of the application.
-@return The access token if the user is authenticated, null otherwise.</p>
+  <p>Authenticate the user with Trello
+@param context The context of the application
+@return The access token if the user is authenticated, null otherwise</p>
 </section>
 
 
@@ -84,7 +82,7 @@ the user's access token upon successful authentication.</p>
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;String?&gt; authenticateWithTrello(BuildContext context) async {
-  &#47;&#47; Get the Trello API key from the environment
+  &#47;&#47; Get the Trello API key from the .env file
   final trelloAPIKey = dotenv.env[&#39;TRELLO_API_KEY&#39;];
   final trelloAPPName = dotenv.env[&#39;TRELLO_APP_NAME&#39;];
 
@@ -101,14 +99,7 @@ the user's access token upon successful authentication.</p>
 
   &#47;&#47; Verify that the Trello API key is present
   if(trelloAPIKey == null || trelloAPPName == null) {
-    if (kDebugMode) {
-      print(&#39;TRELLO_API_KEY or TRELLO_APP_NAME not found in the .env file&#39;);
-    }
-    FToast().showToast(
-      child: const Text(&#39;Une erreur est survenue lors de l\&#39;authentification. Veuillez contacter le support avec le code d\&#39;erreur ATH_NT_FND&#39;),
-      gravity: ToastGravity.BOTTOM,
-      toastDuration: const Duration(seconds: 3),
-    );
+    print(&#39;TRELLO_API_KEY or TRELLO_APP_NAME not found in the .env file&#39;);
     return null;
   }
 

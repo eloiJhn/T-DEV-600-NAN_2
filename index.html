@@ -51,66 +51,12 @@
   <div id="dartdoc-main-content" class="main-content">
       
 <section class="desc markdown">
-  <img src="https://i.imgur.com/SoMuUHz.png" alt="TrellTech" width="300" height="300" align="right">
-<h1 id="welcome-to-trelltech-rocket">Welcome to TrellTech :rocket:</h1>
-<p>The TrellTech project was executed by a group of 3 students from Epitech Nantes, employing the Flutter, C#, or React Native stack.</p>
-<h2 id="table-of-contents">Table of contents</h2>
-<ol>
-<li><a href="#prerequisites">Prerequisites</a></li>
-<li><a href="#setup-and-configuration">Setup and configuration</a></li>
-<li><a href="#running-the-project">Run the project</a></li>
-<li><a href="#technologies">Technologies</a></li>
-<li><a href="#authors">Authors</a></li>
+  <ol>
+<li>Clone the repository</li>
+<li>Open your terminal and run: flutter gen-l10n</li>
+<li>flutter pub get</li>
+<li>flutter run (Type 2 if you want to launch it by default on chrome)</li>
 </ol>
-<h2 id="prerequisites">Prerequisites</h2>
-<ul>
-<li><a href="https://flutter.dev/docs/get-started/install">Flutter</a></li>
-</ul>
-<h2 id="setup-and-configuration">Setup and configuration</h2>
-<h3 id="clone-the-repository">Clone the repository</h3>
-<pre class="language-bash"><code class="language-bash">$ git clone git@github.com:EpitechMscProPromo2026/T-DEV-600-NAN_2.git
-$ bash setup.sh # If you want to configure everything automatically
-</code></pre>
-<h3 id="manual-setup">Manual setup</h3>
-<h4 id="install-the-dependencies">Install the dependencies</h4>
-<pre class="language-bash"><code class="language-bash">$ flutter pub get
-$ flutter gen-l10n
-</code></pre>
-<h4 id="configure-the-environment-variables">Configure the environment variables</h4>
-<pre class="language-bash"><code class="language-bash">$ cp .env.example .env
-</code></pre>
-<p>Change the values of the environment variables in the <code>.env</code> file.</p>
-<h3 id="run-the-tests">Run the tests</h3>
-<pre class="language-bash"><code class="language-bash">$ cd T-DEV-600-NAN_2
-$ flutter test
-</code></pre>
-<h2 id="running-the-project">Running the project</h2>
-<h3 id="start-the-server-and-client">Start the server and client</h3>
-<pre class="language-bash"><code class="language-bash">$ flutter run
-* Select the device you want to run the app on
-Enjoy the app!
-</code></pre>
-<h2 id="build-the-project">Build the project</h2>
-<p>You can choose between mutiple OS to build the app (ios,apk,appbundle)<br>
-<code>flutter build &lt;os&gt; --release --dart-define-from-file=.env</code></p>
-<pre class="language-bash"><code class="language-bash">$ flutter build ios --release --dart-define-from-file=.env
-* You can find the build into the build/ios/iphoneos
-</code></pre>
-<h2 id="bonus">Bonus</h2>
-<ul>
-<li>Dark/light Theme</li>
-<li>Localization (English/French)</li>
-</ul>
-<h2 id="technologies">Technologies</h2>
-<p><img src="https://img.shields.io/badge/Flutter-ED8B00?style=for-the-badge&amp;logo=flutter&amp;color=20232a" alt="">
-<img src="https://img.shields.io/badge/Trello-ED8B00?style=for-the-badge&amp;logo=trello&amp;color=20232a" alt="">
-<img src="https://img.shields.io/badge/Dart-ED8B00?style=for-the-badge&amp;logo=dart&amp;color=20232a" alt=""></p>
-<h2 id="authors">Authors</h2>
-<ul>
-<li><a href="https://github.com/PikPakPik">@PikPakPik</a></li>
-<li><a href="https://github.com/BushyOff">@BushyOff</a></li>
-<li><a href="https://github.com/EloiJhn">@EloiJhn</a></li>
-</ul>
 </section>
 
 
@@ -166,13 +112,6 @@ Enjoy the app!
 <dd>
 </dd>
 
-          <dt id="empty_widget">
-  <span class="name"><a href="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_empty_widget/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_empty_widget-library.html">widgets/empty_widget</a></span> 
-
-</dt>
-<dd>
-</dd>
-
           <dt id="home_view">
   <span class="name"><a href="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_home_home_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_home_home_view-library.html">views/home/home_view</a></span> 
 
@@ -194,8 +133,15 @@ Enjoy the app!
 <dd>
 </dd>
 
-          <dt id="organization_edit_view">
-  <span class="name"><a href="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_organizations_organization_edit_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_organizations_organization_edit_view-library.html">views/organizations/organization_edit_view</a></span> 
+          <dt id="menu_widget">
+  <span class="name"><a href="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_menu_widget/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_menu_widget-library.html">widgets/menu_widget</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="profile_view">
+  <span class="name"><a href="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_profile_profile_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_profile_profile_view-library.html">views/profile/profile_view</a></span> 
 
 </dt>
 <dd>
@@ -210,13 +156,6 @@ Enjoy the app!
 
           <dt id="trello_list">
   <span class="name"><a href="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_list/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_list-library.html">models/trello_list</a></span> 
-
-</dt>
-<dd>
-</dd>
-
-          <dt id="trello_organization">
-  <span class="name"><a href="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_organization/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_organization-library.html">models/trello_organization</a></span> 
 
 </dt>
 <dd>
@@ -257,14 +196,13 @@ Enjoy the app!
       <li><a href="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_card_widget/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_card_widget-library.html">widgets/card_widget</a></li>
       <li><a href="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view-library.html">views/dashboard/dashboard_view</a></li>
       <li><a href="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_discover_app_discover_app_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_discover_app_discover_app_view-library.html">views/discover_app/discover_app_view</a></li>
-      <li><a href="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_empty_widget/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_empty_widget-library.html">widgets/empty_widget</a></li>
       <li><a href="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_home_home_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_home_home_view-library.html">views/home/home_view</a></li>
       <li><a href="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_list_widget/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_list_widget-library.html">widgets/list_widget</a></li>
       <li><a href="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main-library.html">main</a></li>
-      <li><a href="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_organizations_organization_edit_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_organizations_organization_edit_view-library.html">views/organizations/organization_edit_view</a></li>
+      <li><a href="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_menu_widget/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_menu_widget-library.html">widgets/menu_widget</a></li>
+      <li><a href="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_profile_profile_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_profile_profile_view-library.html">views/profile/profile_view</a></li>
       <li><a href="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_card/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_card-library.html">models/trello_card</a></li>
       <li><a href="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_list/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_list-library.html">models/trello_list</a></li>
-      <li><a href="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_organization/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_organization-library.html">models/trello_organization</a></li>
       <li><a href="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view-library.html">views/board/workspace_view</a></li>
 </ol>
 
