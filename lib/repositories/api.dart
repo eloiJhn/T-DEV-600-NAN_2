@@ -23,6 +23,52 @@ Future<String> getTrelloClientID(String apiKey, String token) async {
   }
 }
 
+Future<dynamic> getMember(String apiKey, String token, String memberId) async {
+  final response = await http.get(
+    Uri.parse('https://api.trello.com/1/members/$memberId?key=$apiKey&token=$token'),
+  );
+
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body);
+  } else {
+    throw Exception('Failed to load member');
+  }
+}
+
+Future<dynamic> getMembersFromCard(String apiKey, String token, String cardId) async {
+  final response = await http.get(
+    Uri.parse('https://api.trello.com/1/cards/$cardId/members?key=$apiKey&token=$token'),
+  );
+
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body);
+  } else {
+    throw Exception('Failed to load members');
+  }
+}
+
+Future<dynamic> getMembersFromBoard(String apiKey, String token, String boardId) async {
+  final response = await http.get(
+    Uri.parse('https://api.trello.com/1/boards/$boardId/members?key=$apiKey&token=$token'),
+  );
+
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body);
+  } else {
+    throw Exception('Failed to load members');
+  }
+}
+
+Future<dynamic> addMemberToCard(String apiKey, String token, String cardId, String memberId) async {
+  final response = await http.post(
+    Uri.parse('https://api.trello.com/1/cards/$cardId/idMembers?key=$apiKey&token=$token&value=$memberId'),
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to add member');
+  }
+}
+
 /**
  * Fetches the user's boards from Trello.
  *
@@ -134,9 +180,9 @@ Future<void> deleteCard(String apiKey, String token, String cardId) async {
  * This method calls the Trello API to update the name of a specific card.
  * It requires the user's API key, token, the card's ID, and the new name of the card.
  */
-Future<void> updateCard(String apiKey, String token, String cardId, String name) async {
+Future<void> updateCard(String apiKey, String token, String cardId, String desc) async {
   final response = await http.put(
-    Uri.parse('https://api.trello.com/1/cards/$cardId?key=$apiKey&token=$token&name=$name'),
+    Uri.parse('https://api.trello.com/1/cards/$cardId?key=$apiKey&token=$token&desc=$desc'),
   );
 
   if (response.statusCode != 200) {
