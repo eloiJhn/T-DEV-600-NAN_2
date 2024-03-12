@@ -1,0 +1,53 @@
+name: Unit Tests
+
+on:
+  push:
+
+jobs:
+  units-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.2'
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Create .env file
+        run: echo "TRELLO_API_KEY=${{ secrets.TRELLO_API_KEY }}" >> .env && echo "TRELLO_APP_NAME=${{ secrets.TRELLO_APP_NAME }}" >> .env
+
+      - name: Generate Localizations
+        run: flutter gen-l10n
+
+      - name: Run Tests
+        run: flutter test
+
+  integration-tests:
+    runs-on: ubuntu-latest
+    needs: units-tests
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.2'
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Create .env file
+        run: echo "TRELLO_API_KEY=${{ secrets.TRELLO_API_KEY }}" >> .env && echo "TRELLO_APP_NAME=${{ secrets.TRELLO_APP_NAME }}" >> .env
+
+      - name: Generate Localizations
+        run: flutter gen-l10n
+
+      - name: Run Integration Tests
+        run: flutter drive --target=integration_tests/app.dart
