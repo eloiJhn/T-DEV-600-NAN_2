@@ -1,4 +1,4 @@
-name: Generate and Deploy DartDoc
+name: Generate DartDoc and deploy to gh-pages
 
 on:
   push:
