@@ -20,6 +20,8 @@ class DashboardViewState extends State<DashboardView> {
   String? accessToken;
   String? clientId;
   String apiKey = dotenv.env['TRELLO_API_KEY']!;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
 
   @override
   void initState() {
@@ -55,6 +57,7 @@ class DashboardViewState extends State<DashboardView> {
 
   Widget buildUI(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Color(0xFF1C39A1),
       appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.dashboard),
@@ -93,6 +96,7 @@ class DashboardViewState extends State<DashboardView> {
               : [],
         ),
       ),
+      bottomNavigationBar: MenuWidget(),
     );
   }
 
