@@ -62,7 +62,7 @@ class DashboardViewState extends State<DashboardView> {
           foregroundColor: Colors.white),
       body: Center(
         child: GridView.count(
-          crossAxisCount: 2, // Nombre de colonnes
+          crossAxisCount: 2,
           children: workspaces != null
               ? workspaces!.map<Widget>((workspace) {
                   return Card(
