@@ -38,7 +38,11 @@ jobs:
 
       - name: Build APK
         run: flutter build apk --release --dart-define-from-file=.env
-
+        
+  deploy:
+    name: Upload apk
+    runs-on: macos-latest
+    steps:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
