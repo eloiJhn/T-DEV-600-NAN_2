@@ -42,6 +42,7 @@ jobs:
   deploy:
     name: Upload apk
     runs-on: macos-latest
+    needs: build
     steps:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
