@@ -199,17 +199,24 @@ class BoardViewState extends State<BoardView> {
                                                             .addCard,
                                                     hintStyle: const TextStyle(
                                                         color: Colors.white70),
-                                                  ),
+                                                      ),
                                                 ),
                                               ),
                                             ],
                                           ),
                                         ),
-                                      )))
-                            ]));
-                      });
+                                      )
+                                  )
+                              )
+                            ])
+                        );
+                          }
+                  );
                 }
-              }),
-        ));
+              }
+          ),
+        ),
+      bottomNavigationBar: MenuWidget(),  // Here is where you add the MenuWidget
+    );
   }
-  }
+}

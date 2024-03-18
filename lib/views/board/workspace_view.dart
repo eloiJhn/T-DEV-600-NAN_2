@@ -15,6 +15,8 @@ import 'package:trelltech/views/board/board_view.dart';
 import 'package:trelltech/views/dashboard/dashboard_view.dart';
 import 'package:trelltech/views/organizations/organization_edit_view.dart';
 import 'package:trelltech/widgets/empty_widget.dart';
+import 'package:trelltech/widgets/menu_widget.dart';
+
 
 class WorkspaceView extends StatefulWidget {
   final String workspaceId;
@@ -148,6 +150,7 @@ class WorkspaceViewState extends State<WorkspaceView> {
           ],
         ),
       ),
+      bottomNavigationBar: MenuWidget()
     );
   }
 
