@@ -46,7 +46,7 @@ class WorkspaceViewState extends State<WorkspaceView> {
     _initialize();
   }
 
-  void refresh() {
+  Future<void> refreshData() async {
     _initialize();
   }
 
@@ -107,10 +107,10 @@ class WorkspaceViewState extends State<WorkspaceView> {
     return FutureBuilder<Color>(
       future: bgColorFuture,
       builder: (BuildContext context, AsyncSnapshot<Color> snapshot) {
-        if (!isOrganizationInitialized) {
-          return const CircularProgressIndicator();
-        }
-        return _buildWorkspaceView(snapshot.data ?? Colors.grey);
+        return RefreshIndicator(
+          onRefresh: refreshData,
+          child: _buildWorkspaceView(snapshot.data ?? Colors.grey)
+        );
       },
     );
   }
@@ -325,7 +325,7 @@ class CustomPopupMenuButton extends StatelessWidget {
                               MaterialPageRoute(
                                 builder: (context) => EditOrganizationScreen(organisationId: organisationId, boards: boards),
                               ),
-                            ).then((value) => state.refresh());
+                            ).then((value) => state.refreshData());
                           },
                         ),
                         ListTile(
