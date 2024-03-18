@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:trelltech/views/board/board_view.dart';
 import 'package:trelltech/views/board/workspace_view.dart';
+import 'package:trelltech/views/dashboard/dashboard_view.dart';
+import 'package:trelltech/views/profile/profile_view.dart';
 
 class MenuWidget extends StatefulWidget {
   final int initialIndex;
@@ -22,29 +24,23 @@ class _MenuWidgetState extends State<MenuWidget> {
   void _showAddElementBottomSheet(BuildContext context) {
     Widget bottomSheetContent;
 
-    // Vérifiez le type de la vue actuelle
     if (context.findAncestorWidgetOfExactType<WorkspaceView>() != null) {
-      // Si l'utilisateur est dans DashboardView
       bottomSheetContent = ListTile(
         leading: Icon(Icons.dashboard),
         title: Text('Ajouter un board'),
         onTap: () {
           Navigator.pop(context);
-          // Logique pour ajouter un board
         },
       );
-    } else if (context.findAncestorWidgetOfExactType<BoardView>() != null) {
-      // Si l'utilisateur est dans WorkspaceView
+    } else if (context.findAncestorWidgetOfExactType<DashboardView>() != null) {
       bottomSheetContent = ListTile(
         leading: Icon(Icons.dashboard),
         title: Text('Ajouter une organisation'),
         onTap: () {
           Navigator.pop(context);
-          // Logique pour ajouter un board spécifique à WorkspaceView
         },
       );
     } else {
-      // Contenu par défaut ou vide si aucune des vues n'est détectée
       bottomSheetContent = Container();
     }
 
@@ -60,26 +56,28 @@ class _MenuWidgetState extends State<MenuWidget> {
     );
   }
 
-
   void _onItemTapped(int index) {
-      setState(() {
-        _currentIndex = index;
-      });
+    setState(() {
+      _currentIndex = index;
+    });
 
-      String? currentRoute = ModalRoute.of(context)?.settings.name;
-      String newRoute = index == 0 ? '/dashboard' : '/profile';
+    bool isOnBoardView = context.findAncestorWidgetOfExactType<BoardView>() != null;
+    bool isOnProfileView = context.findAncestorWidgetOfExactType<ProfileView>() != null;
 
-    if(currentRoute == newRoute) {
-      return;
+    // Ajustement de l'index si l'icône "Ajouter" est cachée
+    if ((isOnBoardView || isOnProfileView) && index >= 1) {
+      index += 1;
     }
 
+    // Naviguer vers la vue correspondante
     switch (index) {
       case 0:
         Navigator.pushReplacementNamed(context, '/dashboard');
         break;
       case 1:
-        // affiche une bottom sheet pour ajouter un élément (organisation, board, etc.
-        _showAddElementBottomSheet(context);
+        if (!isOnBoardView && !isOnProfileView) {
+          _showAddElementBottomSheet(context);
+        }
         break;
       case 2:
         Navigator.pushReplacementNamed(context, '/profile');
@@ -90,24 +88,41 @@ class _MenuWidgetState extends State<MenuWidget> {
   @override
   Widget build(BuildContext context) {
     print('Building with _currentIndex: $_currentIndex');
+    bool isOnBoardView = context.findAncestorWidgetOfExactType<BoardView>() != null;
+    bool isOnProfileView = context.findAncestorWidgetOfExactType<ProfileView>() != null;
+
+    bool hideAddIcon = isOnBoardView || isOnProfileView;
+
+
+    List<BottomNavigationBarItem> navBarItems = [
+      BottomNavigationBarItem(
+        icon: Icon(Icons.dashboard),
+        label: 'Dashboard',
+      ),
+    ];
+
+    if (!hideAddIcon) {
+      navBarItems.add(
+        BottomNavigationBarItem(
+          icon: Icon(Icons.add_circle),
+          label: 'Add',
+        ),
+      );
+    }
+
+    navBarItems.add(
+      BottomNavigationBarItem(
+        icon: Icon(Icons.account_circle),
+        label: 'Profile',
+      ),
+    );
+
     return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.dashboard),
-          label: 'Dashboard',
-        ),
-        BottomNavigationBarItem(icon: Icon(Icons.add_circle), label: 'Add'),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.account_circle),
-          label: 'Profile',
-        ),
-      ],
+      items: navBarItems,
       currentIndex: _currentIndex,
       onTap: _onItemTapped,
       selectedItemColor: Colors.grey,
       unselectedItemColor: Colors.grey,
     );
   }
-
 }
-
