@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:trelltech/views/dashboard/dashboard_view.dart';
-import 'package:trelltech/views/profile/profile_view.dart';
+import 'package:trelltech/views/board/board_view.dart';
+import 'package:trelltech/views/board/workspace_view.dart';
 
 class MenuWidget extends StatefulWidget {
   final int initialIndex;
@@ -20,34 +20,48 @@ class _MenuWidgetState extends State<MenuWidget> {
   }
 
   void _showAddElementBottomSheet(BuildContext context) {
+    Widget bottomSheetContent;
+
+    // Vérifiez le type de la vue actuelle
+    if (context.findAncestorWidgetOfExactType<WorkspaceView>() != null) {
+      // Si l'utilisateur est dans DashboardView
+      bottomSheetContent = ListTile(
+        leading: Icon(Icons.dashboard),
+        title: Text('Ajouter un board'),
+        onTap: () {
+          Navigator.pop(context);
+          // Logique pour ajouter un board
+        },
+      );
+    } else if (context.findAncestorWidgetOfExactType<BoardView>() != null) {
+      // Si l'utilisateur est dans WorkspaceView
+      bottomSheetContent = ListTile(
+        leading: Icon(Icons.dashboard),
+        title: Text('Ajouter une organisation'),
+        onTap: () {
+          Navigator.pop(context);
+          // Logique pour ajouter un board spécifique à WorkspaceView
+        },
+      );
+    } else {
+      // Contenu par défaut ou vide si aucune des vues n'est détectée
+      bottomSheetContent = Container();
+    }
+
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
         return Container(
           child: Wrap(
-            children: <Widget>[
-              ListTile(
-                leading: Icon(Icons.group),
-                title: Text('Ajouter une organisation'),
-                onTap: () {
-                  // Ajoutez votre logique pour ajouter une organisation ici
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.dashboard),
-                title: Text('Ajouter un board'),
-                onTap: () {
-                  // Ajoutez votre logique pour ajouter un board ici
-                },
-              ),
-            ],
+            children: [bottomSheetContent],
           ),
         );
       },
     );
   }
 
-    void _onItemTapped(int index) {
+
+  void _onItemTapped(int index) {
       setState(() {
         _currentIndex = index;
       });
@@ -90,8 +104,8 @@ class _MenuWidgetState extends State<MenuWidget> {
       ],
       currentIndex: _currentIndex,
       onTap: _onItemTapped,
-      selectedItemColor: Colors.grey, // Rendre la couleur de l'item sélectionné transparente
-      unselectedItemColor: Colors.grey, // Vous pouvez définir la couleur des autres items ici
+      selectedItemColor: Colors.grey,
+      unselectedItemColor: Colors.grey,
     );
   }
 
