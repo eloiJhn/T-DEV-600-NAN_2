@@ -86,10 +86,10 @@ Widget build(BuildContext context) {
   return FutureBuilder&lt;Color&gt;(
     future: bgColorFuture,
     builder: (BuildContext context, AsyncSnapshot&lt;Color&gt; snapshot) {
-      if (!isOrganizationInitialized) {
-        return const CircularProgressIndicator();
-      }
-      return _buildWorkspaceView(snapshot.data ?? Colors.grey);
+      return RefreshIndicator(
+        onRefresh: refreshData,
+        child: _buildWorkspaceView(snapshot.data ?? Colors.grey)
+      );
     },
   );
 }</code></pre>
