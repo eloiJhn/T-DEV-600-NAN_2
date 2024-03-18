@@ -21,6 +21,7 @@ class DashboardViewState extends State<DashboardView> {
   String? clientId;
   String apiKey = dotenv.env['TRELLO_API_KEY']!;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _isProcessing = false;
 
 
   @override
@@ -71,7 +72,10 @@ class DashboardViewState extends State<DashboardView> {
                   return Card(
                     margin: EdgeInsets.all(10.0),
                     child: InkWell(
-                      onTap: () async {
+                      onTap: _isProcessing ? null : () async { // Add this line
+                        setState(() {
+                          _isProcessing = true; // Add this line
+                        });
                         var boards = await getBoards(
                             apiKey, accessToken!, workspace['id']);
                         Navigator.push(
@@ -82,6 +86,9 @@ class DashboardViewState extends State<DashboardView> {
                                 boards: boards),
                           ),
                         );
+                        setState(() {
+                          _isProcessing = false; // Add this line
+                        });
                       },
                       child: Center(
                         child: Text(
