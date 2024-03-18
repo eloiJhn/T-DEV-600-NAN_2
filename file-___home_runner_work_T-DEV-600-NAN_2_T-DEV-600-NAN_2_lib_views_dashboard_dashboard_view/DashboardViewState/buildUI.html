@@ -78,6 +78,7 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Widget buildUI(BuildContext context) {
   return Scaffold(
+    key: _scaffoldKey,
     backgroundColor: Color(0xFF1C39A1),
     appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.dashboard),
@@ -116,7 +117,7 @@
             : [],
       ),
     ),
-  );
+        );
 }</code></pre>
 </section>
 
