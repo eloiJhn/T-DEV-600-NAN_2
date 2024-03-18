@@ -3,7 +3,7 @@ class Board {
   String name;
   //String desc;
   bool closed;
-  String idMemberCreator;
+  String? idMemberCreator;
   String idOrganization;
   bool pinned;
   String url;
@@ -33,7 +33,7 @@ class Board {
     required this.name,
     //required this.desc,
     required this.closed,
-    required this.idMemberCreator,
+    this.idMemberCreator,
     required this.idOrganization,
     required this.pinned,
     required this.url,

@@ -7,16 +7,16 @@ class TrelloCard {
   // final String coordinates;
   // final String creationMethod;
   // final DateTime dateLastActivity;
-  // final String desc;
+  final String desc;
   // final Map<String, dynamic> descData;
-  // final String due;
+  final String? due;
   // final String dueReminder;
   // final String email;
-  // final String idBoard;
+  final String idBoard;
   // final List<Map<String, String>> idChecklists;
   // final List<Map<String, String>> idLabels;
   // final String idList;
-  // final List<String> idMembers;
+  final List<String> idMembers;
   // final List<String> idMembersVoted;
   // final int idShort;
   // final List<String> labels;
@@ -40,16 +40,16 @@ class TrelloCard {
     // required this.coordinates,
     // required this.creationMethod,
     // required this.dateLastActivity,
-    // required this.desc,
+    required this.desc,
     // required this.descData,
-    // required this.due,
+    this.due,
     // required this.dueReminder,
     // required this.email,
-    // required this.idBoard,
+    required this.idBoard,
     // required this.idChecklists,
     // required this.idLabels,
     // required this.idList,
-    // required this.idMembers,
+    required this.idMembers,
     // required this.idMembersVoted,
     // required this.idShort,
     // required this.labels,
@@ -75,16 +75,16 @@ class TrelloCard {
       // coordinates: json['coordinates'],
       // creationMethod: json['creationMethod'],
       // dateLastActivity: DateTime.parse(json['dateLastActivity']),
-      // desc: json['desc'],
+      desc: json['desc'],
       // descData: json['descData'],
-      // due: json['due'],
+      due: json['due'],
       // dueReminder: json['dueReminder'],
       // email: json['email'],
-      // idBoard: json['idBoard'],
+      idBoard: json['idBoard'],
       // idChecklists: List<Map<String, String>>.from(json['idChecklists']),
       // idLabels: List<Map<String, String>>.from(json['idLabels']),
       // idList: json['idList'],
-      // idMembers: List<String>.from(json['idMembers']),
+      idMembers: List<String>.from(json['idMembers']),
       // idMembersVoted: List<String>.from(json['idMembersVoted']),
       // idShort: json['idShort'],
       // labels: List<String>.from(json['labels']),
