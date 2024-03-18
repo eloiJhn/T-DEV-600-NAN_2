@@ -34,11 +34,10 @@ class WorkspaceView extends StatefulWidget {
 
 class WorkspaceViewState extends State<WorkspaceView> {
   late String accessToken;
-  late TrelloOrganization? organization;
+  late TrelloOrganization? organization = null;
   late Future<Color> bgColorFuture;
 
   WorkspaceViewState() {
-    // Initialise bgColorFuture ici
     bgColorFuture = Future.value(Colors.grey);
   }
 
@@ -80,22 +79,28 @@ class WorkspaceViewState extends State<WorkspaceView> {
 
   bool get isOrganizationInitialized => organization != null;
 
-  Future<PaletteGenerator> _generatePalette(String? imageUrl) async {
-    if (imageUrl == null || imageUrl.isEmpty) {
+  Future<PaletteGenerator> _generatePalette(String imageUrl) async {
+    if (imageUrl.isEmpty) {
       throw ArgumentError('Image URL cannot be null or empty');
     }
-    return await PaletteGenerator.fromImageProvider(
-      CachedNetworkImageProvider(imageUrl),
-    );
+    return await compute(_generatePaletteInBackground, imageUrl);
+  }
+
+  Future<PaletteGenerator> _generatePaletteInBackground(String imageUrl) async {
+    final provider = CachedNetworkImageProvider(imageUrl);
+    return await PaletteGenerator.fromImageProvider(provider);
   }
 
   Future<Color> _getBgColor(String? color, String? imageUrl) async {
     if (color != null) {
-      return Color(int.parse(color.split('#')[1], radix: 16));
+      String colorHex = color!.split('#')[1];
+      int colorInt = int.parse(colorHex, radix: 16);
+      int colorBinary = 0xFF000000 + colorInt;
+      return Color(colorBinary);
     } else {
       try {
         PaletteGenerator paletteGenerator =
-        await compute(_generatePalette, imageUrl);
+        await _generatePalette(imageUrl!);
         return paletteGenerator.dominantColor!.color;
       } catch (e) {
         print('Failed to load image: $e');
@@ -253,14 +258,15 @@ class CustomCardContent extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
-        image: board.bgImage != null && board.bgImage!.isNotEmpty
+        image: board.bgColor == null && board.bgImage != null && board.bgImage!.isNotEmpty
             ? DecorationImage(
           image: CachedNetworkImageProvider(board.bgImage!),
           fit: BoxFit.cover,
         )
             : null,
-        color:
-        board.bgImage != null && board.bgImage!.isNotEmpty ? null : bgColor,
+        color: board.bgColor != null
+            ? Color(int.parse(board.bgColor!.split('#')[1], radix: 16)).withOpacity(1)
+            : (board.bgImage != null && board.bgImage!.isNotEmpty ? null : bgColor),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
