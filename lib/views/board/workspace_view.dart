@@ -15,8 +15,8 @@ import 'package:trelltech/views/board/board_view.dart';
 import 'package:trelltech/views/dashboard/dashboard_view.dart';
 import 'package:trelltech/views/organizations/organization_edit_view.dart';
 import 'package:trelltech/widgets/empty_widget.dart';
+import 'package:trelltech/widgets/informations_widget.dart';
 import 'package:trelltech/widgets/menu_widget.dart';
-
 
 class WorkspaceView extends StatefulWidget {
   final String workspaceId;
@@ -47,7 +47,7 @@ class WorkspaceViewState extends State<WorkspaceView> {
     _initialize();
   }
 
-  void refresh() {
+  Future<void> refreshData() async {
     _initialize();
   }
 
@@ -114,10 +114,10 @@ class WorkspaceViewState extends State<WorkspaceView> {
     return FutureBuilder<Color>(
       future: bgColorFuture,
       builder: (BuildContext context, AsyncSnapshot<Color> snapshot) {
-        if (!isOrganizationInitialized) {
-          return const CircularProgressIndicator();
-        }
-        return _buildWorkspaceView(snapshot.data ?? Colors.grey);
+        return RefreshIndicator(
+          onRefresh: refreshData,
+          child: _buildWorkspaceView(snapshot.data ?? Colors.grey)
+        );
       },
     );
   }
@@ -164,11 +164,24 @@ class WorkspaceViewState extends State<WorkspaceView> {
       itemCount: widget.boards.length,
       scrollDirection: Axis.vertical,
       itemBuilder: (BuildContext context, int index) {
-        return CustomListItem(
-          board: widget.boards[index],
-          bgColorFuture: _getBgColor(
-            widget.boards[index].bgColor,
-            widget.boards[index].bgImage,
+        return GestureDetector(
+          onLongPress: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return InformationsBottomSheet(
+                  name: widget.boards[index].name,
+                  desc: widget.boards[index].desc,
+                );
+              },
+            );
+          },
+          child: CustomListItem(
+            board: widget.boards[index],
+            bgColorFuture: _getBgColor(
+              widget.boards[index].bgColor,
+              widget.boards[index].bgImage,
+            ),
           ),
         );
       },
@@ -334,7 +347,7 @@ class CustomPopupMenuButton extends StatelessWidget {
                               MaterialPageRoute(
                                 builder: (context) => EditOrganizationScreen(organisationId: organisationId, boards: boards),
                               ),
-                            ).then((value) => state.refresh());
+                            ).then((value) => state.refreshData());
                           },
                         ),
                         ListTile(
