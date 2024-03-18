@@ -148,7 +148,7 @@ class _CardWidgetState extends State<CardWidget> {
                                         itemBuilder: (BuildContext context, int index) {
                                           return CircleAvatar(
                                             backgroundImage: NetworkImage(
-                                              snapshot.data[index]['avatarUrl'] + '/50.png',
+                                              snapshot.data[index]['avatarUrl'] != null ? snapshot.data[index]['avatarUrl'] + '/50.png' : 'https://placehold.co/50.png'
                                             ),
                                           );
                                         },
