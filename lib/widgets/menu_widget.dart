@@ -19,24 +19,55 @@ class _MenuWidgetState extends State<MenuWidget> {
     _currentIndex = widget.initialIndex;
   }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
+  void _showAddElementBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.group),
+                title: Text('Ajouter une organisation'),
+                onTap: () {
+                  // Ajoutez votre logique pour ajouter une organisation ici
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.dashboard),
+                title: Text('Ajouter un board'),
+                onTap: () {
+                  // Ajoutez votre logique pour ajouter un board ici
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
-    String currentRoute = ModalRoute.of(context)!.settings.name!;
-    String newRoute = index == 0 ? '/dashboard' : '/profile';
+    void _onItemTapped(int index) {
+      setState(() {
+        _currentIndex = index;
+      });
+
+      String? currentRoute = ModalRoute.of(context)?.settings.name;
+      String newRoute = index == 0 ? '/dashboard' : '/profile';
 
     if(currentRoute == newRoute) {
       return;
     }
 
-    // Naviguer vers la vue correspondante en fonction de l'index
     switch (index) {
       case 0:
         Navigator.pushReplacementNamed(context, '/dashboard');
         break;
       case 1:
+        // affiche une bottom sheet pour ajouter un élément (organisation, board, etc.
+        _showAddElementBottomSheet(context);
+        break;
+      case 2:
         Navigator.pushReplacementNamed(context, '/profile');
         break;
     }
@@ -51,6 +82,7 @@ class _MenuWidgetState extends State<MenuWidget> {
           icon: Icon(Icons.dashboard),
           label: 'Dashboard',
         ),
+        BottomNavigationBarItem(icon: Icon(Icons.add_circle), label: 'Add'),
         BottomNavigationBarItem(
           icon: Icon(Icons.account_circle),
           label: 'Profile',
