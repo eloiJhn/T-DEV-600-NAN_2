@@ -9,6 +9,8 @@ import 'package:trelltech/models/trello_list.dart';
 import 'package:trelltech/repositories/api.dart';
 import 'package:trelltech/widgets/card_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trelltech/widgets/menu_widget.dart';
+
 
 class BoardView extends StatefulWidget {
   final Board board;
@@ -197,17 +199,24 @@ class BoardViewState extends State<BoardView> {
                                                             .addCard,
                                                     hintStyle: const TextStyle(
                                                         color: Colors.white70),
-                                                  ),
+                                                      ),
                                                 ),
                                               ),
                                             ],
                                           ),
                                         ),
-                                      )))
-                            ]));
-                      });
+                                      )
+                                  )
+                              )
+                            ])
+                        );
+                          }
+                  );
                 }
-              }),
-        ));
+              }
+          ),
+        ),
+      bottomNavigationBar: MenuWidget(),  // Here is where you add the MenuWidget
+    );
   }
-  }
+}
