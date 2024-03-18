@@ -6,7 +6,7 @@ import 'package:trelltech/repositories/api.dart';
 import 'package:trelltech/repositories/authentification.dart';
 import 'package:trelltech/views/board/workspace_view.dart';
 import 'package:trelltech/widgets/menu_widget.dart';
-
+import 'package:trelltech/views/organizations/organization_create_view.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -23,40 +23,34 @@ class DashboardViewState extends State<DashboardView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _isProcessing = false;
 
-
   @override
   void initState() {
     super.initState();
-    Future.microtask(() async {
-      await getAccessToken();
-      clientId = await getClientID();
-      await getUserWorkspaces();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    accessToken = await getAccessToken();
+    clientId = await getClientID();
+    await _getUserWorkspaces();
+  }
+
+  Future<void> _getUserWorkspaces() async {
+    setState(() {
+      _isProcessing = true;
+    });
+    workspaces = await getWorkspaces(apiKey, accessToken, clientId);
+    setState(() {
+      _isProcessing = false;
     });
   }
 
-  Future<void> refreshData() async {
-    await getUserWorkspaces();
+  Future<void> _refreshData() async {
+    await _getUserWorkspaces();
   }
 
-  Future<void> getAccessToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    accessToken = prefs.getString('accessToken');
-    print(accessToken);
-    navigateIfNoToken();
-  }
-
-  void navigateIfNoToken() {
-    if (accessToken == null) {
-      Navigator.pushReplacementNamed(context, '/');
-    }
-  }
-
-  Future<void> getUserWorkspaces() async {
-    workspaces = await getWorkspaces(apiKey, accessToken, clientId);
-    setState(() {});
-  }
-
-  Widget buildUI(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Color(0xFF1C39A1),
@@ -64,63 +58,59 @@ class DashboardViewState extends State<DashboardView> {
           title: Text(AppLocalizations.of(context)!.dashboard),
           backgroundColor: Colors.transparent,
           foregroundColor: Colors.white),
-      body: Center(
+      body: _isProcessing
+          ? const Center(child: CircularProgressIndicator())
+          : RefreshIndicator(
+        onRefresh: _refreshData,
         child: GridView.count(
           crossAxisCount: 2,
           children: workspaces != null
               ? workspaces!.map<Widget>((workspace) {
-                  return Card(
-                    margin: EdgeInsets.all(10.0),
-                    child: InkWell(
-                      onTap: _isProcessing ? null : () async { // Add this line
-                        setState(() {
-                          _isProcessing = true; // Add this line
-                        });
-                        var boards = await getBoards(
-                            apiKey, accessToken!, workspace['id']);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => WorkspaceView(
-                                workspaceId: workspace['id'],
-                                boards: boards),
-                          ),
-                        );
-                        setState(() {
-                          _isProcessing = false; // Add this line
-                        });
-                      },
-                      child: Center(
-                        child: Text(
-                          workspace['displayName'],
-                          style: TextStyle(fontSize: 24),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+            return Card(
+              margin: EdgeInsets.all(10.0),
+              child: InkWell(
+                onTap: () async {
+                  setState(() {
+                    _isProcessing = true;
+                  });
+                  var boards = await getBoards(apiKey, accessToken!, workspace['id']);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => WorkspaceView(workspaceId: workspace['id'], boards: boards),
                     ),
                   );
-                }).toList()
+                  setState(() {
+                    _isProcessing = false;
+                  });
+                },
+                child: Center(
+                  child: Text(
+                    workspace['displayName'],
+                    style: TextStyle(fontSize: 24),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            );
+          }).toList()
               : [],
         ),
       ),
       bottomNavigationBar: MenuWidget(),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: getAccessToken(),
-      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else {
-          return RefreshIndicator(
-            onRefresh: refreshData,
-            child: buildUI(context),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          var result = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateOrganizationScreen()),
           );
-        }
-      },
+          if (result == 'organizationCreated') {
+            _refreshData();
+          }
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.blue,
+      ),
     );
   }
 }

@@ -3,6 +3,8 @@ import 'package:trelltech/views/board/board_view.dart';
 import 'package:trelltech/views/board/workspace_view.dart';
 import 'package:trelltech/views/dashboard/dashboard_view.dart';
 import 'package:trelltech/views/profile/profile_view.dart';
+import 'package:trelltech/views/organizations/organization_create_view.dart';
+
 
 class MenuWidget extends StatefulWidget {
   final int initialIndex;
@@ -26,8 +28,8 @@ class _MenuWidgetState extends State<MenuWidget> {
 
     if (context.findAncestorWidgetOfExactType<WorkspaceView>() != null) {
       bottomSheetContent = ListTile(
-        leading: Icon(Icons.dashboard),
-        title: Text('Ajouter un board'),
+        leading: const Icon(Icons.dashboard),
+        title: const Text('Ajouter un board'),
         onTap: () {
           Navigator.pop(context);
         },
@@ -37,7 +39,11 @@ class _MenuWidgetState extends State<MenuWidget> {
         leading: Icon(Icons.dashboard),
         title: Text('Ajouter une organisation'),
         onTap: () {
-          Navigator.pop(context);
+          Navigator.pop(context); // Ferme le BottomSheet
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateOrganizationScreen()), // Navigue vers OrganizationCreateView
+          );
         },
       );
     } else {
@@ -46,10 +52,15 @@ class _MenuWidgetState extends State<MenuWidget> {
 
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
+      // Permet au BottomSheet de prendre plus de hauteur
       builder: (BuildContext context) {
-        return Container(
-          child: Wrap(
-            children: [bottomSheetContent],
+        return FractionallySizedBox(
+          heightFactor: 0.3,
+          child: Container(
+            child: Wrap(
+              children: [bottomSheetContent],
+            ),
           ),
         );
       },
@@ -61,25 +72,12 @@ class _MenuWidgetState extends State<MenuWidget> {
       _currentIndex = index;
     });
 
-    bool isOnBoardView = context.findAncestorWidgetOfExactType<BoardView>() != null;
-    bool isOnProfileView = context.findAncestorWidgetOfExactType<ProfileView>() != null;
-
-    // Ajustement de l'index si l'icône "Ajouter" est cachée
-    if ((isOnBoardView || isOnProfileView) && index >= 1) {
-      index += 1;
-    }
-
     // Naviguer vers la vue correspondante
     switch (index) {
       case 0:
         Navigator.pushReplacementNamed(context, '/dashboard');
         break;
       case 1:
-        if (!isOnBoardView && !isOnProfileView) {
-          _showAddElementBottomSheet(context);
-        }
-        break;
-      case 2:
         Navigator.pushReplacementNamed(context, '/profile');
         break;
     }
@@ -88,30 +86,17 @@ class _MenuWidgetState extends State<MenuWidget> {
   @override
   Widget build(BuildContext context) {
     print('Building with _currentIndex: $_currentIndex');
-    bool isOnBoardView = context.findAncestorWidgetOfExactType<BoardView>() != null;
-    bool isOnProfileView = context.findAncestorWidgetOfExactType<ProfileView>() != null;
-
-    bool hideAddIcon = isOnBoardView || isOnProfileView;
 
 
     List<BottomNavigationBarItem> navBarItems = [
-      BottomNavigationBarItem(
+      const BottomNavigationBarItem(
         icon: Icon(Icons.dashboard),
         label: 'Dashboard',
       ),
     ];
 
-    if (!hideAddIcon) {
-      navBarItems.add(
-        BottomNavigationBarItem(
-          icon: Icon(Icons.add_circle),
-          label: 'Add',
-        ),
-      );
-    }
-
     navBarItems.add(
-      BottomNavigationBarItem(
+      const BottomNavigationBarItem(
         icon: Icon(Icons.account_circle),
         label: 'Profile',
       ),
@@ -126,3 +111,4 @@ class _MenuWidgetState extends State<MenuWidget> {
     );
   }
 }
+
