@@ -78,6 +78,7 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Widget buildUI(BuildContext context) {
   return Scaffold(
+    key: _scaffoldKey,
     backgroundColor: Color(0xFF1C39A1),
     appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.dashboard),
@@ -91,7 +92,10 @@
                 return Card(
                   margin: EdgeInsets.all(10.0),
                   child: InkWell(
-                    onTap: () async {
+                    onTap: _isProcessing ? null : () async { &#47;&#47; Add this line
+                      setState(() {
+                        _isProcessing = true; &#47;&#47; Add this line
+                      });
                       var boards = await getBoards(
                           apiKey, accessToken!, workspace[&#39;id&#39;]);
                       Navigator.push(
@@ -102,6 +106,9 @@
                               boards: boards),
                         ),
                       );
+                      setState(() {
+                        _isProcessing = false; &#47;&#47; Add this line
+                      });
                     },
                     child: Center(
                       child: Text(
@@ -116,6 +123,7 @@
             : [],
       ),
     ),
+    bottomNavigationBar: MenuWidget(),
   );
 }</code></pre>
 </section>
