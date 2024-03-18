@@ -23,13 +23,21 @@ class _MenuWidgetState extends State<MenuWidget> {
     setState(() {
       _currentIndex = index;
     });
+
+    String currentRoute = ModalRoute.of(context)!.settings.name!;
+    String newRoute = index == 0 ? '/dashboard' : '/profile';
+
+    if(currentRoute == newRoute) {
+      return;
+    }
+
     // Naviguer vers la vue correspondante en fonction de l'index
     switch (index) {
       case 0:
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DashboardView()));
+        Navigator.pushReplacementNamed(context, '/dashboard');
         break;
       case 1:
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProfileView()));
+        Navigator.pushReplacementNamed(context, '/profile');
         break;
     }
   }
