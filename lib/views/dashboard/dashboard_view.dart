@@ -96,8 +96,7 @@ class DashboardViewState extends State<DashboardView> {
               : [],
         ),
       ),
-      bottomNavigationBar: MenuWidget(), //Ajout du MenuWidget
-    );
+          );
   }
 
   @override
