@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the build method from the InformationsBottomSheet class, for the Dart programming language.">
-  <title>build method - InformationsBottomSheet class - informations_widget library - Dart API</title>
+  <meta name="description" content="API docs for the build method from the ProfileView class, for the Dart programming language.">
+  <title>build method - ProfileView class - profile_view library - Dart API</title>
 
 
   
@@ -29,8 +29,8 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_informations_widget/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_informations_widget-library.html">widgets&#47;informations_widget.dart</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_informations_widget/InformationsBottomSheet-class.html">InformationsBottomSheet</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_profile_profile_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_profile_profile_view-library.html">views&#47;profile&#47;profile_view.dart</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_profile_profile_view/ProfileView-class.html">ProfileView</a></li>
     <li class="self-crumb">build method</li>
   </ol>
   <div class="self-name">build</div>
@@ -54,7 +54,7 @@
 <div
     id="dartdoc-main-content"
     class="main-content"
-    data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_informations_widget&#47;InformationsBottomSheet-class-sidebar.html"
+    data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_profile_profile_view&#47;ProfileView-class-sidebar.html"
     data-below-sidebar="">
     <div>
 <h1><span class="kind-method">build</span> method 
@@ -83,23 +83,46 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
-  return Container(
-    width: MediaQuery.of(context).size.width,
-    padding: EdgeInsets.all(20),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: &lt;Widget&gt;[
-        Text(
-          &#39;${name}&#39;,
-          style: TextStyle(fontSize: 24),
-        ),
-        SizedBox(height: 10),
-        Text(
-          &#39;${desc == &#39;&#39; ? &#39;Aucune description&#39; : desc}&#39;,
-          style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic),
-        ),
-      ],
+  return Scaffold(
+    appBar: AppBar(
+      title: Text(&quot;Profile&quot;),
+      centerTitle: true,
     ),
+    body: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children:  &lt;Widget&gt;[
+          const CircleAvatar(
+            radius: 50,
+            backgroundImage: NetworkImage(&quot;https:&#47;&#47;via.placeholder.com&#47;150&quot;),
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            &quot;Nom de l&#39;utilisateur&quot;,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            &quot;user@example.com&quot;, &#47;&#47; Exemple d&#39;email
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey[50],
+            ),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {
+              print(&#39;Modifier le profil&#39;);
+            },
+            child: Text(&#39;Modifier le profil&#39;),
+          ),
+        ],
+      ),
+    ),
+    bottomNavigationBar: MenuWidget(),
   );
 }</code></pre>
 </section>
@@ -117,13 +140,13 @@ Widget build(BuildContext context) {
 
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_informations_widget/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_informations_widget-library.html">informations_widget</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_informations_widget/InformationsBottomSheet-class.html">InformationsBottomSheet</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_profile_profile_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_profile_profile_view-library.html">profile_view</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_profile_profile_view/ProfileView-class.html">ProfileView</a></li>
     <li class="self-crumb">build method</li>
 </ol>
 
 
-    <h5>InformationsBottomSheet class</h5>
+    <h5>ProfileView class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-->
 

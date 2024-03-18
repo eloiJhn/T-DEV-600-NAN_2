@@ -78,6 +78,7 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Widget buildUI(BuildContext context) {
   return Scaffold(
+    key: _scaffoldKey,
     backgroundColor: Color(0xFF1C39A1),
     appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.dashboard),
@@ -88,47 +89,41 @@
         crossAxisCount: 2,
         children: workspaces != null
             ? workspaces!.map&lt;Widget&gt;((workspace) {
-          return Card(
-            margin: EdgeInsets.all(10.0),
-            child: GestureDetector(
-              onLongPress: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (context) {
-                    return InformationsBottomSheet(
-                      name: workspace[&#39;displayName&#39;],
-                      desc: workspace[&#39;desc&#39;],
-                    );
-                  },
-                );
-              },
-              child: InkWell(
-                onTap: () async {
-                  var boards = await getBoards(
-                      apiKey, accessToken!, workspace[&#39;id&#39;]);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =&gt; WorkspaceView(
-                          workspaceId: workspace[&#39;id&#39;],
-                          boards: boards),
+                return Card(
+                  margin: EdgeInsets.all(10.0),
+                  child: InkWell(
+                    onTap: _isProcessing ? null : () async { &#47;&#47; Add this line
+                      setState(() {
+                        _isProcessing = true; &#47;&#47; Add this line
+                      });
+                      var boards = await getBoards(
+                          apiKey, accessToken!, workspace[&#39;id&#39;]);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =&gt; WorkspaceView(
+                              workspaceId: workspace[&#39;id&#39;],
+                              boards: boards),
+                        ),
+                      );
+                      setState(() {
+                        _isProcessing = false; &#47;&#47; Add this line
+                      });
+                    },
+                    child: Center(
+                      child: Text(
+                        workspace[&#39;displayName&#39;],
+                        style: TextStyle(fontSize: 24),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                  );
-                },
-                child: Center(
-                  child: Text(
-                    workspace[&#39;displayName&#39;],
-                    style: TextStyle(fontSize: 24),
-                    textAlign: TextAlign.center,
                   ),
-                ),
-              ),
-            ),
-          );
-        }).toList()
+                );
+              }).toList()
             : [],
       ),
     ),
+    bottomNavigationBar: MenuWidget(),
   );
 }</code></pre>
 </section>

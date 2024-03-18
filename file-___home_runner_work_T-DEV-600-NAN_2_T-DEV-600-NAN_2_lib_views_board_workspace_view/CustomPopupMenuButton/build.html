@@ -112,7 +112,7 @@ Widget build(BuildContext context) {
                             MaterialPageRoute(
                               builder: (context) =&gt; EditOrganizationScreen(organisationId: organisationId, boards: boards),
                             ),
-                          ).then((value) =&gt; state.refreshData());
+                          ).then((value) =&gt; state.refresh());
                         },
                       ),
                       ListTile(
