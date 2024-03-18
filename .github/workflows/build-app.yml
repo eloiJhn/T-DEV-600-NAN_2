@@ -1,0 +1,52 @@
+name: Build app flutter
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build & Release
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set Up Java
+        uses: actions/setup-java@v3.12.0
+        with:
+          distribution: 'oracle'
+          java-version: '17'
+
+      - name: Set Up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.1'
+          channel: 'stable'
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Generate Localizations
+        run: flutter gen-l10n
+
+      - name: Create .env file
+        run: echo "TRELLO_API_KEY=${{ secrets.TRELLO_API_KEY }}" >> .env && echo "TRELLO_APP_NAME=${{ secrets.TRELLO_APP_NAME }}" >> .env
+
+      - name: Build APK
+        run: flutter build apk --release --dart-define-from-file=.env
+        
+  deploy:
+    name: Upload apk
+    runs-on: macos-latest
+    needs: build
+    steps:
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: Releases
+          path: |
+            build/app/outputs/flutter-apk/app-release.apk

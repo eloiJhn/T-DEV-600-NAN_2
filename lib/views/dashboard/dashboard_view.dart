@@ -5,6 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trelltech/repositories/api.dart';
 import 'package:trelltech/repositories/authentification.dart';
 import 'package:trelltech/views/board/workspace_view.dart';
+import 'package:trelltech/widgets/menu_widget.dart';
+
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -60,7 +62,7 @@ class DashboardViewState extends State<DashboardView> {
           foregroundColor: Colors.white),
       body: Center(
         child: GridView.count(
-          crossAxisCount: 2, // Nombre de colonnes
+          crossAxisCount: 2,
           children: workspaces != null
               ? workspaces!.map<Widget>((workspace) {
                   return Card(
