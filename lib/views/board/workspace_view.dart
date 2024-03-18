@@ -15,6 +15,7 @@ import 'package:trelltech/views/board/board_view.dart';
 import 'package:trelltech/views/dashboard/dashboard_view.dart';
 import 'package:trelltech/views/organizations/organization_edit_view.dart';
 import 'package:trelltech/widgets/empty_widget.dart';
+import 'package:trelltech/widgets/informations_widget.dart';
 
 class WorkspaceView extends StatefulWidget {
   final String workspaceId;
@@ -156,11 +157,24 @@ class WorkspaceViewState extends State<WorkspaceView> {
       itemCount: widget.boards.length,
       scrollDirection: Axis.vertical,
       itemBuilder: (BuildContext context, int index) {
-        return CustomListItem(
-          board: widget.boards[index],
-          bgColorFuture: _getBgColor(
-            widget.boards[index].bgColor,
-            widget.boards[index].bgImage,
+        return GestureDetector(
+          onLongPress: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return InformationsBottomSheet(
+                  name: widget.boards[index].name,
+                  desc: widget.boards[index].desc,
+                );
+              },
+            );
+          },
+          child: CustomListItem(
+            board: widget.boards[index],
+            bgColorFuture: _getBgColor(
+              widget.boards[index].bgColor,
+              widget.boards[index].bgImage,
+            ),
           ),
         );
       },
