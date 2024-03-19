@@ -14,7 +14,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:trelltech/widgets/empty_widget.dart';
 import 'package:trelltech/widgets/menu_widget.dart';
 
-
 class BoardView extends StatefulWidget {
   final Board board;
 
@@ -50,7 +49,7 @@ class BoardViewState extends State<BoardView> {
     var apiKey = dotenv.env['TRELLO_API_KEY'];
     var lists = await getLists(apiKey!, accessToken!, widget.board.id);
     List<TrelloList> listList =
-    lists.map((item) => TrelloList.fromJson(item)).toList();
+        lists.map((item) => TrelloList.fromJson(item)).toList();
     return listList;
   }
 
@@ -58,15 +57,14 @@ class BoardViewState extends State<BoardView> {
     var apiKey = dotenv.env['TRELLO_API_KEY'];
     var cards = await getCards(apiKey!, accessToken!, trelloListId);
     List<TrelloCard> listCard =
-    cards.map((item) => TrelloCard.fromJson(item)).toList();
+        cards.map((item) => TrelloCard.fromJson(item)).toList();
     return listCard;
   }
 
   Future<void> _updateList(String name, String listId) async {
-
     TrelloList list = TrelloList(
-        id: listId,
-        name: name,
+      id: listId,
+      name: name,
     );
     var apiKey = dotenv.env['TRELLO_API_KEY'];
     await updateList(apiKey!, accessToken!, listId, list);
@@ -74,246 +72,250 @@ class BoardViewState extends State<BoardView> {
   }
 
   Future<void> _updateBoard(String name) async {
-
     Board board = Board(
-        id: widget.board.id,
-        name: name,
-        idOrganization: widget.board.idOrganization,
-        closed: widget.board.closed,
-        pinned: widget.board.pinned,
-        url: widget.board.url,
-        shortUrl: widget.board.shortUrl,
+      id: widget.board.id,
+      name: name,
+      idOrganization: widget.board.idOrganization,
+      closed: widget.board.closed,
+      pinned: widget.board.pinned,
+      url: widget.board.url,
+      shortUrl: widget.board.shortUrl,
     );
     var apiKey = dotenv.env['TRELLO_API_KEY'];
     await updateBoard(apiKey!, accessToken!, widget.board.id, board);
   }
 
+  Future<void> _createCard(String name, String listId) async {
+    var apiKey = dotenv.env['TRELLO_API_KEY'];
+    await createCard(apiKey!, accessToken!, listId, name);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title:
-        TextFormField(
-          onChanged: (String value) {
-            setState(() {
-              _updateBoard(value);
-            });
-          },
-          decoration: const InputDecoration(
-            border: InputBorder.none,
-          ),
-          initialValue: widget.board.name,
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-          )
-        )),
-        body: Container(
-          decoration: BoxDecoration(
-            image: widget.board.bgImage != null
-                ? DecorationImage(
-                    image: NetworkImage(widget.board.bgImage!),
-                    fit: BoxFit.cover,
-                  )
-                : null,
-            color: widget.board.bgColor != null
-                ? Color(int.parse('0xff${widget.board.bgColor!.split('#')[1]}'))
-                : null,
-          ),
-          child: FutureBuilder(
-              future: _getLists(),
-              builder: (context, AsyncSnapshot<List<TrelloList>> snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.data!.isEmpty) {
-                  return EmptyBoardWidget(
-                      itemType: 'Listes',
-                      message:
+      appBar: AppBar(
+          title: TextFormField(
+              onChanged: (String value) {
+                setState(() {
+                  _updateBoard(value);
+                });
+              },
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+              ),
+              initialValue: widget.board.name,
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+              ))),
+      body: Container(
+        decoration: BoxDecoration(
+          image: widget.board.bgImage != null
+              ? DecorationImage(
+                  image: NetworkImage(widget.board.bgImage!),
+                  fit: BoxFit.cover,
+                )
+              : null,
+          color: widget.board.bgColor != null
+              ? Color(int.parse('0xff${widget.board.bgColor!.split('#')[1]}'))
+              : null,
+        ),
+        child: FutureBuilder(
+            future: _getLists(),
+            builder: (context, AsyncSnapshot<List<TrelloList>> snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.data!.isEmpty) {
+                return EmptyBoardWidget(
+                  itemType: 'Listes',
+                  message:
                       "Vous n'avez actuellement aucune liste dans ce tableau",
-                      iconData: Icons.list,
-                      witheColor: true,
-                      onTap: () {
+                  iconData: Icons.list,
+                  witheColor: true,
+                  onTap: () {
                     print('Tableau clicked');
                   },
-                isMasculine: false,
+                  isMasculine: false,
                 );
-                } else {
-                  return CarouselSlider.builder(
-                      itemCount: snapshot.data?.length,
-                      options: CarouselOptions(
-                          autoPlay: false,
-                          enlargeCenterPage: false,
-                          height: MediaQuery.of(context).size.height),
-                      itemBuilder:
-                          (BuildContext context, int item, int pageViewIndex) {
-                        return Card(
-                            margin: const EdgeInsets.fromLTRB(15, 30, 15, 30),
-                            child: Column(children: [
-                              Expanded(
-                                flex: 1,
+              } else {
+                return CarouselSlider.builder(
+                    itemCount: snapshot.data?.length,
+                    options: CarouselOptions(
+                        autoPlay: false,
+                        enlargeCenterPage: false,
+                        height: MediaQuery.of(context).size.height),
+                    itemBuilder:
+                        (BuildContext context, int item, int pageViewIndex) {
+                      return Card(
+                          margin: const EdgeInsets.fromLTRB(15, 30, 15, 30),
+                          child: Column(children: [
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10)),
+                                    color: Color(0xff162B62)),
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(10),
-                                          topRight: Radius.circular(10)),
-                                      color: Color(0xff162B62)),
-                                  child: Container(
-                                    margin: const EdgeInsets.only(
-                                        right: 20, left: 20),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: TextFormField(
-                                                onChanged: (String value) {
-                                                  _updateList(value, snapshot
-                                                      .data![item].id);
-                                                },
-                                                decoration: const InputDecoration(
-                                                  border: InputBorder.none,
-                                                ),
-                                                initialValue: snapshot.data![item].name.toUpperCase(),
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20,
-                                                )
-                                            ),
-                                          ),
-                                          IconButton(
-                                            icon: const Icon(Icons.edit),
-                                            color: Colors.white,
-                                            onPressed: () => {
-                                              setState(() {
-                                                _editList = !_editList;
-                                              })
-                                            },
-                                          )
-                                        ]),
-                                  ),
+                                  margin: const EdgeInsets.only(
+                                      right: 20, left: 20),
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: TextFormField(
+                                              onChanged: (String value) {
+                                                _updateList(value,
+                                                    snapshot.data![item].id);
+                                              },
+                                              decoration: const InputDecoration(
+                                                border: InputBorder.none,
+                                              ),
+                                              initialValue: snapshot
+                                                  .data![item].name
+                                                  .toUpperCase(),
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                              )),
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.edit),
+                                          color: Colors.white,
+                                          onPressed: () => {
+                                            setState(() {
+                                              _editList = !_editList;
+                                            })
+                                          },
+                                        )
+                                      ]),
                                 ),
                               ),
-                              Expanded(
-                                  flex: 8,
-                                  child: FutureBuilder(
-                                      future: _getCardsByList(
-                                          snapshot.data![item].id),
-                                      builder: (context,
-                                          AsyncSnapshot<List<TrelloCard>>
-                                              snapshot) {
-                                        if (!snapshot.hasData) {
-                                          return const Center(
-                                              child:
-                                                  CircularProgressIndicator());
-                                        } else {
-                                          return ListView.builder(
-                                              itemCount: snapshot.data?.length,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                return Row(
-                                                  children: [
-                                                    Expanded(
-                                                      flex: 7,
-                                                      child: Card(
-                                                        margin:
-                                                            const EdgeInsets.all(10),
+                            ),
+                            Expanded(
+                                flex: 8,
+                                child: FutureBuilder(
+                                    future: _getCardsByList(
+                                        snapshot.data![item].id),
+                                    builder: (context,
+                                        AsyncSnapshot<List<TrelloCard>>
+                                            snapshot) {
+                                      if (!snapshot.hasData) {
+                                        return const Center(
+                                            child: CircularProgressIndicator());
+                                      } else {
+                                        return ListView.builder(
+                                            itemCount: snapshot.data?.length,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return Row(
+                                                children: [
+                                                  Expanded(
+                                                    flex: 7,
+                                                    child: Card(
+                                                        margin: const EdgeInsets
+                                                            .all(10),
                                                         color: Colors.grey[200],
                                                         child: ListTile(
                                                             title: Text(snapshot
-                                                                .data![index].name),
+                                                                .data![index]
+                                                                .name),
                                                             onTap: () =>
                                                                 showModalBottomSheet(
                                                                     isScrollControlled:
                                                                         true,
-                                                                    context: context,
+                                                                    context:
+                                                                        context,
                                                                     builder:
                                                                         (BuildContext
                                                                             context) {
                                                                       return CardWidget(
-                                                                          card: snapshot
-                                                                                  .data![
-                                                                              index]);
-                                                                    }).whenComplete( () {
-                                                                      setState(() {
-                                                                        _getCardsByList(
-                                                                            snapshot
-                                                                                .data![
-                                                                                    index]
-                                                                                .id);
-                                                                      });
-                                                                    }))
-                                                      ),
-                                                    ),
-                                                    _editList
-                                                        ? Expanded(
-                                                            flex: 3,
-                                                            child: Card(
-                                                              color: Colors
-                                                                  .redAccent,
-                                                              child: IconButton(
-                                                                icon: const Icon(
-                                                                    Icons.delete, color: Colors.white,),
-                                                                onPressed: () => {},
+                                                                          card:
+                                                                              snapshot.data![index]);
+                                                                    }).whenComplete(() {
+                                                                  setState(() {
+                                                                    _getCardsByList(
+                                                                        snapshot
+                                                                            .data![index]
+                                                                            .id);
+                                                                  });
+                                                                }))),
+                                                  ),
+                                                  _editList
+                                                      ? Expanded(
+                                                          flex: 3,
+                                                          child: Card(
+                                                            color: Colors
+                                                                .redAccent,
+                                                            child: IconButton(
+                                                              icon: const Icon(
+                                                                Icons.delete,
+                                                                color: Colors
+                                                                    .white,
                                                               ),
+                                                              onPressed: () =>
+                                                                  {},
                                                             ),
-                                                          )
-                                                        : const SizedBox()
-                                                  ],
-                                                );
-                                              });
-                                        }
-                                      })),
-                              Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                      decoration: const BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                              bottomLeft: Radius.circular(10),
-                                              bottomRight: Radius.circular(10)),
-                                          color: Color(0xff162B62)),
-                                      child: Center(
-                                        child: Container(
-                                          margin:
-                                              const EdgeInsets.only(left: 10),
-                                          child: Row(
-                                            children: [
-                                              const Icon(
-                                                Icons.add,
-                                                color: Colors.white,
-                                              ),
-                                              const SizedBox(
-                                                width: 8,
-                                              ),
-                                              Expanded(
-                                                child: TextField(
-                                                  style: const TextStyle(
-                                                      color: Colors.white),
-                                                  decoration:
-                                                      InputDecoration.collapsed(
-                                                    hintText:
-                                                        AppLocalizations.of(
-                                                                context)!
-                                                            .addCard,
-                                                    hintStyle: const TextStyle(
-                                                        color: Colors.white70),
-                                                      ),
+                                                          ),
+                                                        )
+                                                      : const SizedBox()
+                                                ],
+                                              );
+                                            });
+                                      }
+                                    })),
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                    decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(10),
+                                            bottomRight: Radius.circular(10)),
+                                        color: Color(0xff162B62)),
+                                    child: Center(
+                                      child: Container(
+                                        margin: const EdgeInsets.only(left: 10),
+                                        child: Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.add,
+                                              color: Colors.white,
+                                            ),
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            Expanded(
+                                              child: TextField(
+                                                onSubmitted:
+                                                    (String value) async {
+                                                  await _createCard(value,
+                                                      snapshot.data![item].id);
+                                                },
+                                                style: const TextStyle(
+                                                    color: Colors.white),
+                                                decoration:
+                                                    InputDecoration.collapsed(
+                                                  hintText: AppLocalizations.of(
+                                                          context)!
+                                                      .addCard,
+                                                  hintStyle: const TextStyle(
+                                                      color: Colors.white70),
                                                 ),
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
-                                      )
-                                  )
-                              )
-                            ])
-                        );
-                          }
-                  );
-                }
+                                      ),
+                                    )))
+                          ]));
+                    });
               }
-          ),
-        ),
-      bottomNavigationBar: MenuWidget(),  // Here is where you add the MenuWidget
+            }),
+      ),
+      bottomNavigationBar: MenuWidget(), // Here is where you add the MenuWidget
     );
   }
 }

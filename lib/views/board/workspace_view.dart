@@ -147,10 +147,6 @@ class WorkspaceViewState extends State<WorkspaceView> {
               )
                   : _buildBoardList(),
             ),
-            ElevatedButton(
-              onPressed: () => disconnect(context),
-              child: Text(AppLocalizations.of(context)!.logout),
-            ),
           ],
         ),
       ),
