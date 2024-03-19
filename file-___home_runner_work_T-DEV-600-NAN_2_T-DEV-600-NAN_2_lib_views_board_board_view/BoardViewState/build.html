@@ -246,16 +246,7 @@ Widget build(BuildContext context) {
                                                             child: IconButton(
                                                               icon: const Icon(
                                                                   Icons.delete, color: Colors.white,),
-                                                              onPressed: () =&gt; {
-                                                                &#47;&#47; _deleteCard(snapshot.data![index].id),
-                                                                setState(() {
-                                                                  deleteCard(
-                                                                      dotenv.env[&#39;TRELLO_API_KEY&#39;]!,
-                                                                      accessToken!,
-                                                                      snapshot.data![index].id);
-                                                                  _editList = false;
-                                                                })
-                                                              },
+                                                              onPressed: () =&gt; {},
                                                             ),
                                                           ),
                                                         )

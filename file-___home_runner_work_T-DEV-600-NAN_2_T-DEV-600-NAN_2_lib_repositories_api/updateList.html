@@ -79,9 +79,11 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; updateList(String apiKey, String token, String listId, TrelloList list) async {
+  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; updateList(
+    String apiKey, String token, String listId, TrelloList list) async {
   final response = await http.put(
-     Uri.parse(&#39;https:&#47;&#47;api.trello.com&#47;1&#47;lists&#47;$listId?key=$apiKey&amp;token=$token&amp;name=${list.name}&#39;),
+    Uri.parse(
+        &#39;https:&#47;&#47;api.trello.com&#47;1&#47;lists&#47;$listId?key=$apiKey&amp;token=$token&amp;name=${list.name}&#39;),
   );
 
   if (response.statusCode != 200) {

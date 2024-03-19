@@ -100,12 +100,13 @@ the user's access token upon successful authentication.</p>
   });
 
   &#47;&#47; Verify that the Trello API key is present
-  if(trelloAPIKey == null || trelloAPPName == null) {
+  if (trelloAPIKey == null || trelloAPPName == null) {
     if (kDebugMode) {
       print(&#39;TRELLO_API_KEY or TRELLO_APP_NAME not found in the .env file&#39;);
     }
     FToast().showToast(
-      child: const Text(&#39;Une erreur est survenue lors de l\&#39;authentification. Veuillez contacter le support avec le code d\&#39;erreur ATH_NT_FND&#39;),
+      child: const Text(
+          &#39;Une erreur est survenue lors de l\&#39;authentification. Veuillez contacter le support avec le code d\&#39;erreur ATH_NT_FND&#39;),
       gravity: ToastGravity.BOTTOM,
       toastDuration: const Duration(seconds: 3),
     );
@@ -141,7 +142,7 @@ the user's access token upon successful authentication.</p>
       &#47;&#47; Redirect the user to the dashboard page once authenticated (and remove the possibility to go back)
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) =&gt; DashboardView()),
-            (Route&lt;dynamic&gt; route) =&gt; false,
+        (Route&lt;dynamic&gt; route) =&gt; false,
       );
       return accessToken;
     }

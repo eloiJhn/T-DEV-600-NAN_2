@@ -84,9 +84,11 @@ Returns a list of cards.</p>
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;dynamic&gt;&gt; getCards(String apiKey, String token, String listId) async {
+  <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;dynamic&gt;&gt; getCards(
+    String apiKey, String token, String listId) async {
   final response = await http.get(
-    Uri.parse(&#39;https:&#47;&#47;api.trello.com&#47;1&#47;lists&#47;$listId&#47;cards?key=$apiKey&amp;token=$token&#39;),
+    Uri.parse(
+        &#39;https:&#47;&#47;api.trello.com&#47;1&#47;lists&#47;$listId&#47;cards?key=$apiKey&amp;token=$token&#39;),
   );
 
   if (response.statusCode == 200) {

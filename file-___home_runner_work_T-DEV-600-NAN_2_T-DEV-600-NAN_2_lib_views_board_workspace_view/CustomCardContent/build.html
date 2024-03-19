@@ -86,15 +86,20 @@ Widget build(BuildContext context) {
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10.0),
-      image: board.bgColor == null &amp;&amp; board.bgImage != null &amp;&amp; board.bgImage!.isNotEmpty
+      image: board.bgColor == null &amp;&amp;
+              board.bgImage != null &amp;&amp;
+              board.bgImage!.isNotEmpty
           ? DecorationImage(
               image: CachedNetworkImageProvider(board.bgImage!),
               fit: BoxFit.cover,
             )
           : null,
       color: board.bgColor != null
-          ? Color(int.parse(board.bgColor!.split(&#39;#&#39;)[1], radix: 16)).withOpacity(1)
-          : (board.bgImage != null &amp;&amp; board.bgImage!.isNotEmpty ? null : bgColor),
+          ? Color(int.parse(board.bgColor!.split(&#39;#&#39;)[1], radix: 16))
+              .withOpacity(1)
+          : (board.bgImage != null &amp;&amp; board.bgImage!.isNotEmpty
+              ? null
+              : bgColor),
     ),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
