@@ -11,10 +11,13 @@ import 'package:trelltech/models/trello_organization.dart';
 import 'package:trelltech/repositories/api.dart';
 import 'package:trelltech/repositories/authentification.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:trelltech/views/board/board_create_view.dart';
 import 'package:trelltech/views/board/board_view.dart';
 import 'package:trelltech/views/dashboard/dashboard_view.dart';
 import 'package:trelltech/views/organizations/organization_edit_view.dart';
 import 'package:trelltech/widgets/empty_widget.dart';
+import 'package:trelltech/widgets/informations_widget.dart';
+import 'package:trelltech/widgets/menu_widget.dart';
 
 class WorkspaceView extends StatefulWidget {
   final String workspaceId;
@@ -32,7 +35,7 @@ class WorkspaceView extends StatefulWidget {
 
 class WorkspaceViewState extends State<WorkspaceView> {
   late String accessToken;
-  late TrelloOrganization? organization;
+  late TrelloOrganization? organization = null;
   late Future<Color> bgColorFuture;
 
   WorkspaceViewState() {
@@ -44,9 +47,8 @@ class WorkspaceViewState extends State<WorkspaceView> {
     super.initState();
     _initialize();
   }
-
-  Future<void> refresh() async {
-    await _initialize();
+  Future<void> refreshData() async {
+    _initialize();
   }
 
   Future<void> _initialize() async {
@@ -77,22 +79,27 @@ class WorkspaceViewState extends State<WorkspaceView> {
 
   bool get isOrganizationInitialized => organization != null;
 
-  Future<PaletteGenerator> _generatePalette(String? imageUrl) async {
-    if (imageUrl == null || imageUrl.isEmpty) {
+  Future<PaletteGenerator> _generatePalette(String imageUrl) async {
+    if (imageUrl.isEmpty) {
       throw ArgumentError('Image URL cannot be null or empty');
     }
-    return await PaletteGenerator.fromImageProvider(
-      CachedNetworkImageProvider(imageUrl),
-    );
+    return await compute(_generatePaletteInBackground, imageUrl);
+  }
+
+  Future<PaletteGenerator> _generatePaletteInBackground(String imageUrl) async {
+    final provider = CachedNetworkImageProvider(imageUrl);
+    return await PaletteGenerator.fromImageProvider(provider);
   }
 
   Future<Color> _getBgColor(String? color, String? imageUrl) async {
     if (color != null) {
-      return Color(int.parse(color.split('#')[1], radix: 16));
+      String colorHex = color!.split('#')[1];
+      int colorInt = int.parse(colorHex, radix: 16);
+      int colorBinary = 0xFF000000 + colorInt;
+      return Color(colorBinary);
     } else {
       try {
-        PaletteGenerator paletteGenerator =
-            await compute(_generatePalette, imageUrl);
+        PaletteGenerator paletteGenerator = await _generatePalette(imageUrl!);
         return paletteGenerator.dominantColor!.color;
       } catch (e) {
         print('Failed to load image: $e');
@@ -106,50 +113,63 @@ class WorkspaceViewState extends State<WorkspaceView> {
     return FutureBuilder<Color>(
       future: bgColorFuture,
       builder: (BuildContext context, AsyncSnapshot<Color> snapshot) {
-        if (!isOrganizationInitialized) {
-          return const CircularProgressIndicator();
-        }
-        return Scaffold(
-            appBar: AppBar(
-              title: Text(organization?.displayName ?? 'Loading...'),
-              actions: <Widget>[
-                CustomPopupMenuButton(
-                    organisationId: widget.workspaceId,
-                    boards: widget.boards,
-                    state: this),
-              ],
-            ),
-            body: RefreshIndicator(
-              onRefresh: () async {
-                refresh();
-              },
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Flexible(
-                      child: widget.boards.isEmpty
-                          ? EmptyBoardWidget(
-                              itemType: 'Tableau',
-                              message:
-                                  "Vous n'avez actuellement aucun tableau de créé pour cette organisation. Veuillez cliquer pour en ajouter un",
-                              iconData: Icons.dashboard,
-                              onTap: () {
-                                print('Tableau clicked');
-                              },
-                              isMasculine: true,
-                            )
-                          : _buildBoardList(),
-                    ),
-                    ElevatedButton(
-                      onPressed: () => disconnect(context),
-                      child: Text(AppLocalizations.of(context)!.logout),
-                    ),
-                  ],
-                ),
-              ),
-            ));
+        return RefreshIndicator(
+          onRefresh: refreshData,
+          child: _buildWorkspaceView(snapshot.data ?? Colors.grey)
+        );
       },
+    );
+  }
+
+  Widget _buildWorkspaceView(Color bgColor) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(organization?.displayName ?? 'Loading...'),
+        actions: <Widget>[
+          CustomPopupMenuButton(organisationId: widget.workspaceId, boards: widget.boards, state: this),
+        ],
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Flexible(
+              child: widget.boards.isEmpty
+                  ? EmptyBoardWidget(
+                itemType: 'Tableau',
+                message:
+                "Vous n'avez actuellement aucun tableau de créé pour cette organisation. Veuillez cliquer pour en ajouter un",
+                iconData: Icons.dashboard,
+                onTap: () {
+                  print('Tableau clicked');
+                },
+                isMasculine: true,
+              )
+                  : _buildBoardList(),
+            ),
+            ElevatedButton(
+              onPressed: () => disconnect(context),
+              child: Text(AppLocalizations.of(context)!.logout),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: MenuWidget(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          var result = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateBoardScreen()),
+          );
+          if (result == 'organizationCreated') {
+            refreshData();
+          }
+        },
+        backgroundColor: const Color(0xFF0D1B50),
+        foregroundColor: Colors.white,
+        shape: const CircleBorder(),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 
@@ -158,11 +178,24 @@ class WorkspaceViewState extends State<WorkspaceView> {
       itemCount: widget.boards.length,
       scrollDirection: Axis.vertical,
       itemBuilder: (BuildContext context, int index) {
-        return CustomListItem(
-          board: widget.boards[index],
-          bgColorFuture: _getBgColor(
-            widget.boards[index].bgColor,
-            widget.boards[index].bgImage,
+        return GestureDetector(
+          onLongPress: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return InformationsBottomSheet(
+                  name: widget.boards[index].name,
+                  desc: widget.boards[index].desc,
+                );
+              },
+            );
+          },
+          child: CustomListItem(
+            board: widget.boards[index],
+            bgColorFuture: _getBgColor(
+              widget.boards[index].bgColor,
+              widget.boards[index].bgImage,
+            ),
           ),
         );
       },
@@ -252,14 +285,15 @@ class CustomCardContent extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
-        image: board.bgImage != null && board.bgImage!.isNotEmpty
+        image: board.bgColor == null && board.bgImage != null && board.bgImage!.isNotEmpty
             ? DecorationImage(
                 image: CachedNetworkImageProvider(board.bgImage!),
                 fit: BoxFit.cover,
               )
             : null,
-        color:
-            board.bgImage != null && board.bgImage!.isNotEmpty ? null : bgColor,
+        color: board.bgColor != null
+            ? Color(int.parse(board.bgColor!.split('#')[1], radix: 16)).withOpacity(1)
+            : (board.bgImage != null && board.bgImage!.isNotEmpty ? null : bgColor),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -329,7 +363,7 @@ class CustomPopupMenuButton extends StatelessWidget {
                                     organisationId: organisationId,
                                     boards: boards),
                               ),
-                            ).then((value) => state.refresh());
+                            ).then((value) => state.refreshData());
                           },
                         ),
                         ListTile(

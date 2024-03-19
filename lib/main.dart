@@ -4,6 +4,7 @@ import 'package:trelltech/views/discover_app/discover_app_view.dart';
 import 'package:trelltech/views/home/home_view.dart';
 import 'package:trelltech/views/dashboard/dashboard_view.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:trelltech/views/profile/profile_view.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const HomeView(),
         '/discover': (context) => const DiscoverAppView(),
         '/dashboard': (context) => const DashboardView(),
+        '/profile': (context) => ProfileView(),
       },
     );
   }
