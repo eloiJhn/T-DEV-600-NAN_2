@@ -47,11 +47,9 @@ class WorkspaceViewState extends State<WorkspaceView> {
     super.initState();
     _initialize();
   }
-
   Future<void> refreshData() async {
     _initialize();
   }
-
 
   Future<void> _initialize() async {
     accessToken = (await getAccessToken())!;
@@ -63,7 +61,8 @@ class WorkspaceViewState extends State<WorkspaceView> {
         widget.workspaceId,
       );
     } catch (e) {
-      print('Erreur lors de la récupération des détails de l\'organisation: $e');
+      print(
+          'Erreur lors de la récupération des détails de l\'organisation: $e');
     }
 
     if (widget.boards.isNotEmpty) {
@@ -100,8 +99,7 @@ class WorkspaceViewState extends State<WorkspaceView> {
       return Color(colorBinary);
     } else {
       try {
-        PaletteGenerator paletteGenerator =
-        await _generatePalette(imageUrl!);
+        PaletteGenerator paletteGenerator = await _generatePalette(imageUrl!);
         return paletteGenerator.dominantColor!.color;
       } catch (e) {
         print('Failed to load image: $e');
@@ -289,9 +287,9 @@ class CustomCardContent extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0),
         image: board.bgColor == null && board.bgImage != null && board.bgImage!.isNotEmpty
             ? DecorationImage(
-          image: CachedNetworkImageProvider(board.bgImage!),
-          fit: BoxFit.cover,
-        )
+                image: CachedNetworkImageProvider(board.bgImage!),
+                fit: BoxFit.cover,
+              )
             : null,
         color: board.bgColor != null
             ? Color(int.parse(board.bgColor!.split('#')[1], radix: 16)).withOpacity(1)
@@ -307,7 +305,7 @@ class CustomCardContent extends StatelessWidget {
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: ThemeData.estimateBrightnessForColor(bgColor) ==
-                    Brightness.light
+                        Brightness.light
                     ? Colors.white
                     : Colors.black,
               ),
@@ -361,7 +359,9 @@ class CustomPopupMenuButton extends StatelessWidget {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EditOrganizationScreen(organisationId: organisationId, boards: boards),
+                                builder: (context) => EditOrganizationScreen(
+                                    organisationId: organisationId,
+                                    boards: boards),
                               ),
                             ).then((value) => state.refreshData());
                           },
@@ -370,31 +370,42 @@ class CustomPopupMenuButton extends StatelessWidget {
                           leading: const Icon(Icons.delete),
                           title: const Text('Supprimer'),
                           onTap: () {
-                            showDialog(context: context, builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text('Supprimer l\'organisation'),
-                                content: const Text('Êtes-vous sûr de vouloir supprimer cette organisation ?'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text('Annuler'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () async {
-                                      deleteWorkspace(dotenv.env['TRELLO_API_KEY']!, (await getAccessToken())!, organisationId).then((value) {
-                                        Navigator.of(context).pushAndRemoveUntil(
-                                          MaterialPageRoute(builder: (context) => DashboardView()),
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title:
+                                        const Text('Supprimer l\'organisation'),
+                                    content: const Text(
+                                        'Êtes-vous sûr de vouloir supprimer cette organisation ?'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('Annuler'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () async {
+                                          deleteWorkspace(
+                                                  dotenv.env['TRELLO_API_KEY']!,
+                                                  (await getAccessToken())!,
+                                                  organisationId)
+                                              .then((value) {
+                                            Navigator.of(context)
+                                                .pushAndRemoveUntil(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DashboardView()),
                                               (Route<dynamic> route) => false,
-                                        );
-                                      });
-                                    },
-                                    child: const Text('Supprimer'),
-                                  ),
-                                ],
-                              );
-                            });
+                                            );
+                                          });
+                                        },
+                                        child: const Text('Supprimer'),
+                                      ),
+                                    ],
+                                  );
+                                });
                           },
                         ),
                       ],
