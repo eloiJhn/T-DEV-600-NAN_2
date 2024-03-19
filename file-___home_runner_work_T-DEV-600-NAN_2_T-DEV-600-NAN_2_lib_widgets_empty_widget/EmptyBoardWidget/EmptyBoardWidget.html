@@ -67,8 +67,7 @@
 <li><span class="parameter" id="-param-message"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">message</span>, </span></li>
 <li><span class="parameter" id="-param-iconData"><span>required</span> <span class="type-annotation">dynamic</span> <span class="parameter-name">iconData</span>, </span></li>
 <li><span class="parameter" id="-param-onTap"><span>required</span> <span class="type-annotation">dynamic</span> <span class="parameter-name">onTap</span>, </span></li>
-<li><span class="parameter" id="-param-isMasculine"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isMasculine</span>, </span></li>
-<li><span class="parameter" id="-param-witheColor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">witheColor</span> = <span class="default-value">false</span>}</span></li>
+<li><span class="parameter" id="-param-isMasculine"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isMasculine</span>}</span></li>
 </ol>)
     </section>
 
@@ -79,14 +78,13 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">const EmptyBoardWidget({
-  Key? key,
+  super.key,
   required this.itemType,
   required this.message,
   required this.iconData,
   required this.onTap,
   required this.isMasculine,
-  this.witheColor = false,
-}) : super(key: key);</code></pre>
+});</code></pre>
 </section>
 
 
