@@ -121,7 +121,7 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
                             filter = value;
                           });
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: "Rechercher",
                           hintText: "Rechercher",
                           prefixIcon: Icon(Icons.search),
@@ -366,7 +366,7 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
                                             child: Text(
                                               _selectedTemplate!.name,
                                               textAlign: TextAlign.center,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 24,
                                                 fontWeight: FontWeight.bold,
