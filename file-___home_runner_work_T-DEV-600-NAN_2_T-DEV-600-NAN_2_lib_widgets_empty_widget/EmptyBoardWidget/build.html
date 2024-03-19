@@ -88,6 +88,7 @@ Widget build(BuildContext context) {
     child: Padding(
       padding: const EdgeInsets.all(10),
       child: DottedBorder(
+        color: witheColor ? Colors.white : Colors.grey,
         borderType: BorderType.RRect,
         radius: const Radius.circular(10),
         padding: const EdgeInsets.all(6),
@@ -100,21 +101,23 @@ Widget build(BuildContext context) {
               children: &lt;Widget&gt;[
                 Icon(
                   iconData,
-                  color: Colors.grey,
+                  color: witheColor ? Colors.white : Colors.grey,
                   size: 100,
                 ),
                 Text(
                   &quot;${isMasculine ? &#39;Aucun&#39; : &#39;Aucune&#39;} $itemType&quot;,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
+                    color: witheColor ? Colors.white : Colors.black,
                   ),
                 ),
                 const SizedBox(height: 10),
                 Text(
                   message,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
+                    color: witheColor ? Colors.white : Colors.black,
                   ),
                   textAlign: TextAlign.center,
                 ),

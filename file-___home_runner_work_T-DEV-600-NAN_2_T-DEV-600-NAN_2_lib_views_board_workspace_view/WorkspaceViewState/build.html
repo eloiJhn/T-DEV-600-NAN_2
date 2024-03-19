@@ -86,49 +86,10 @@ Widget build(BuildContext context) {
   return FutureBuilder&lt;Color&gt;(
     future: bgColorFuture,
     builder: (BuildContext context, AsyncSnapshot&lt;Color&gt; snapshot) {
-      if (!isOrganizationInitialized) {
-        return const CircularProgressIndicator();
-      }
-      return Scaffold(
-          appBar: AppBar(
-            title: Text(organization?.displayName ?? &#39;Loading...&#39;),
-            actions: &lt;Widget&gt;[
-              CustomPopupMenuButton(
-                  organisationId: widget.workspaceId,
-                  boards: widget.boards,
-                  state: this),
-            ],
-          ),
-          body: RefreshIndicator(
-            onRefresh: () async {
-              refresh();
-            },
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: &lt;Widget&gt;[
-                  Flexible(
-                    child: widget.boards.isEmpty
-                        ? EmptyBoardWidget(
-                            itemType: &#39;Tableau&#39;,
-                            message:
-                                &quot;Vous n&#39;avez actuellement aucun tableau de créé pour cette organisation. Veuillez cliquer pour en ajouter un&quot;,
-                            iconData: Icons.dashboard,
-                            onTap: () {
-                              print(&#39;Tableau clicked&#39;);
-                            },
-                            isMasculine: true,
-                          )
-                        : _buildBoardList(),
-                  ),
-                  ElevatedButton(
-                    onPressed: () =&gt; disconnect(context),
-                    child: Text(AppLocalizations.of(context)!.logout),
-                  ),
-                ],
-              ),
-            ),
-          ));
+      return RefreshIndicator(
+        onRefresh: refreshData,
+        child: _buildWorkspaceView(snapshot.data ?? Colors.grey)
+      );
     },
   );
 }</code></pre>

@@ -64,6 +64,7 @@
       
       <span class="name ">Board</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="-param-id">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span>, </span></li>
 <li><span class="parameter" id="-param-name"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span>, </span></li>
+<li><span class="parameter" id="-param-desc"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">desc</span>, </span></li>
 <li><span class="parameter" id="-param-closed"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">closed</span>, </span></li>
 <li><span class="parameter" id="-param-idMemberCreator"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">idMemberCreator</span>, </span></li>
 <li><span class="parameter" id="-param-idOrganization"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">idOrganization</span>, </span></li>
@@ -84,7 +85,7 @@
   <pre class="language-dart"><code class="language-dart">Board({
   required this.id,
   required this.name,
-  &#47;&#47;required this.desc,
+  this.desc,
   required this.closed,
   this.idMemberCreator,
   required this.idOrganization,

@@ -110,53 +110,40 @@ Widget build(BuildContext context) {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =&gt; EditOrganizationScreen(
-                                  organisationId: organisationId,
-                                  boards: boards),
+                              builder: (context) =&gt; EditOrganizationScreen(organisationId: organisationId, boards: boards),
                             ),
-                          ).then((value) =&gt; state.refresh());
+                          ).then((value) =&gt; state.refreshData());
                         },
                       ),
                       ListTile(
                         leading: const Icon(Icons.delete),
                         title: const Text(&#39;Supprimer&#39;),
                         onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title:
-                                      const Text(&#39;Supprimer l\&#39;organisation&#39;),
-                                  content: const Text(
-                                      &#39;Êtes-vous sûr de vouloir supprimer cette organisation ?&#39;),
-                                  actions: &lt;Widget&gt;[
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text(&#39;Annuler&#39;),
-                                    ),
-                                    TextButton(
-                                      onPressed: () async {
-                                        deleteWorkspace(
-                                                dotenv.env[&#39;TRELLO_API_KEY&#39;]!,
-                                                (await getAccessToken())!,
-                                                organisationId)
-                                            .then((value) {
-                                          Navigator.of(context)
-                                              .pushAndRemoveUntil(
-                                            MaterialPageRoute(
-                                                builder: (context) =&gt;
-                                                    DashboardView()),
+                          showDialog(context: context, builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text(&#39;Supprimer l\&#39;organisation&#39;),
+                              content: const Text(&#39;Êtes-vous sûr de vouloir supprimer cette organisation ?&#39;),
+                              actions: &lt;Widget&gt;[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text(&#39;Annuler&#39;),
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    deleteWorkspace(dotenv.env[&#39;TRELLO_API_KEY&#39;]!, (await getAccessToken())!, organisationId).then((value) {
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(builder: (context) =&gt; DashboardView()),
                                             (Route&lt;dynamic&gt; route) =&gt; false,
-                                          );
-                                        });
-                                      },
-                                      child: const Text(&#39;Supprimer&#39;),
-                                    ),
-                                  ],
-                                );
-                              });
+                                      );
+                                    });
+                                  },
+                                  child: const Text(&#39;Supprimer&#39;),
+                                ),
+                              ],
+                            );
+                          });
                         },
                       ),
                     ],
