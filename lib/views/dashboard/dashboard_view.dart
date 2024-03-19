@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trelltech/repositories/api.dart';
 import 'package:trelltech/repositories/authentification.dart';
 import 'package:trelltech/views/board/workspace_view.dart';
+import 'package:trelltech/widgets/informations_widget.dart';
 import 'package:trelltech/widgets/menu_widget.dart';
 import 'package:trelltech/views/organizations/organization_create_view.dart';
 
@@ -68,27 +69,37 @@ class DashboardViewState extends State<DashboardView> {
               ? workspaces!.map<Widget>((workspace) {
             return Card(
               margin: EdgeInsets.all(10.0),
-              child: InkWell(
-                onTap: () async {
-                  setState(() {
-                    _isProcessing = true;
-                  });
-                  var boards = await getBoards(apiKey, accessToken!, workspace['id']);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => WorkspaceView(workspaceId: workspace['id'], boards: boards),
-                    ),
+              child: GestureDetector(
+                onLongPress: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return InformationsBottomSheet(
+                        name: workspace['displayName'],
+                        desc: workspace['desc'],
+                      );
+                    },
                   );
-                  setState(() {
-                    _isProcessing = false;
-                  });
                 },
-                child: Center(
-                  child: Text(
-                    workspace['displayName'],
-                    style: TextStyle(fontSize: 24),
-                    textAlign: TextAlign.center,
+                child: InkWell(
+                  onTap: () async {
+                    var boards = await getBoards(
+                        apiKey, accessToken!, workspace['id']);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => WorkspaceView(
+                            workspaceId: workspace['id'],
+                            boards: boards),
+                      ),
+                    );
+                  },
+                  child: Center(
+                    child: Text(
+                      workspace['displayName'],
+                      style: TextStyle(fontSize: 24),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
               ),

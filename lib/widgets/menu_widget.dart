@@ -72,6 +72,11 @@ class _MenuWidgetState extends State<MenuWidget> {
       _currentIndex = index;
     });
 
+    // si sur dashboard et on clique sur dashboard, on ne fait rien
+    if(index == 0 && context.findAncestorWidgetOfExactType<DashboardView>() != null || index == 1 && context.findAncestorWidgetOfExactType<ProfileView>() != null){
+      return;
+    }
+
     // Naviguer vers la vue correspondante
     switch (index) {
       case 0:
