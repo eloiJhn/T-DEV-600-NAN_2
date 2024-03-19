@@ -11,6 +11,7 @@ import 'package:trelltech/models/trello_organization.dart';
 import 'package:trelltech/repositories/api.dart';
 import 'package:trelltech/repositories/authentification.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:trelltech/views/board/board_create_view.dart';
 import 'package:trelltech/views/board/board_view.dart';
 import 'package:trelltech/views/dashboard/dashboard_view.dart';
 import 'package:trelltech/views/organizations/organization_edit_view.dart';
@@ -155,7 +156,22 @@ class WorkspaceViewState extends State<WorkspaceView> {
           ],
         ),
       ),
-      bottomNavigationBar: MenuWidget()
+      bottomNavigationBar: MenuWidget(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          var result = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CreateBoardScreen()),
+          );
+          if (result == 'organizationCreated') {
+            refreshData();
+          }
+        },
+        backgroundColor: const Color(0xFF0D1B50),
+        foregroundColor: Colors.white,
+        shape: const CircleBorder(),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 
