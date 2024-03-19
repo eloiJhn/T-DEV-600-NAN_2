@@ -10,5 +10,13 @@
   "requiredField": "This field is required",
   "organizationDescription": "Organization description",
   "organizationWebsite": "Organization website",
-  "updateOrganization": "Update organization"
+  "updateOrganization": "Update organization",
+  "organizationCreated": "Create Organization",
+  "createOrganization": "Create",
+  "organizationCreationFailed": "Failed Organization",
+  "boardCreated": "Create board",
+  "boardCreationFailed": "Failed to create board",
+  "boardUpdated": "Board updated",
+  "boardName": "Board name",
+  "boardDescription": "Board description"
 }

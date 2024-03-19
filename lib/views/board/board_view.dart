@@ -9,6 +9,9 @@ import 'package:trelltech/models/trello_list.dart';
 import 'package:trelltech/repositories/api.dart';
 import 'package:trelltech/widgets/card_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trelltech/widgets/empty_widget.dart';
+import 'package:trelltech/widgets/menu_widget.dart';
+
 
 class BoardView extends StatefulWidget {
   final Board board;
@@ -77,6 +80,18 @@ class BoardViewState extends State<BoardView> {
               builder: (context, AsyncSnapshot<List<TrelloList>> snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.data!.isEmpty) {
+                  return EmptyBoardWidget(
+                      itemType: 'Listes',
+                      message:
+                      "Vous n'avez actuellement aucune liste dans ce tableau",
+                      iconData: Icons.list,
+                      witheColor: true,
+                      onTap: () {
+                    print('Tableau clicked');
+                  },
+                isMasculine: false,
+                );
                 } else {
                   return CarouselSlider.builder(
                       itemCount: snapshot.data?.length,
@@ -197,17 +212,24 @@ class BoardViewState extends State<BoardView> {
                                                             .addCard,
                                                     hintStyle: const TextStyle(
                                                         color: Colors.white70),
-                                                  ),
+                                                      ),
                                                 ),
                                               ),
                                             ],
                                           ),
                                         ),
-                                      )))
-                            ]));
-                      });
+                                      )
+                                  )
+                              )
+                            ])
+                        );
+                          }
+                  );
                 }
-              }),
-        ));
+              }
+          ),
+        ),
+      bottomNavigationBar: MenuWidget(),  // Here is where you add the MenuWidget
+    );
   }
-  }
+}
