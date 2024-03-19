@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -185,7 +187,15 @@ Future<void> deleteCard(String apiKey, String token, String cardId) async {
     Uri.parse('https://api.trello.com/1/cards/$cardId?key=$apiKey&token=$token'),
   );
 
-  if (response.statusCode != 200) {
+  if (response.statusCode == 200) {
+    Fluttertoast.showToast(
+      msg: "Suppression effectuée",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+    );
+  } else {
     throw Exception('Failed to delete card');
   }
 }
