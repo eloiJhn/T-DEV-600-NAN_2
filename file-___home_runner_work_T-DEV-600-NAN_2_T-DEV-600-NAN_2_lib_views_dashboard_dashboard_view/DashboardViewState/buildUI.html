@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the build method from the ProfileView class, for the Dart programming language.">
-  <title>build method - ProfileView class - profile_view library - Dart API</title>
+  <meta name="description" content="API docs for the buildUI method from the DashboardViewState class, for the Dart programming language.">
+  <title>buildUI method - DashboardViewState class - dashboard_view library - Dart API</title>
 
 
   
@@ -29,11 +29,11 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_profile_profile_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_profile_profile_view-library.html">views&#47;profile&#47;profile_view.dart</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_profile_profile_view/ProfileView-class.html">ProfileView</a></li>
-    <li class="self-crumb">build method</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view-library.html">views&#47;dashboard&#47;dashboard_view.dart</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/DashboardViewState-class.html">DashboardViewState</a></li>
+    <li class="self-crumb">buildUI method</li>
   </ol>
-  <div class="self-name">build</div>
+  <div class="self-name">buildUI</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -54,22 +54,17 @@
 <div
     id="dartdoc-main-content"
     class="main-content"
-    data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_profile_profile_view&#47;ProfileView-class-sidebar.html"
+    data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view&#47;DashboardViewState-class-sidebar.html"
     data-below-sidebar="">
     <div>
-<h1><span class="kind-method">build</span> method 
+<h1><span class="kind-method">buildUI</span> method 
 </h1></div>
 
     <section class="multi-line-signature">
       
-  <div>
-    <ol class="annotation-list">
-        <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
-    </ol>
-  </div>
 
 <span class="returntype">dynamic</span>
-<span class="name ">build</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="build-param-context"><span class="type-annotation">dynamic</span> <span class="parameter-name">context</span></span></li>
+<span class="name ">buildUI</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="buildUI-param-context"><span class="type-annotation">dynamic</span> <span class="parameter-name">context</span></span></li>
 </ol>)
 
       
@@ -81,48 +76,46 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">@override
-Widget build(BuildContext context) {
+  <pre class="language-dart"><code class="language-dart">Widget buildUI(BuildContext context) {
   return Scaffold(
+    backgroundColor: Color(0xFF1C39A1),
     appBar: AppBar(
-      title: Text(&quot;Profile&quot;),
-      centerTitle: true,
-    ),
+        title: Text(AppLocalizations.of(context)!.dashboard),
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white),
     body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children:  &lt;Widget&gt;[
-          const CircleAvatar(
-            radius: 50,
-            backgroundImage: NetworkImage(&quot;https:&#47;&#47;via.placeholder.com&#47;150&quot;),
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            &quot;Nom de l&#39;utilisateur&quot;,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            &quot;user@example.com&quot;, &#47;&#47; Exemple d&#39;email
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey[50],
-            ),
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              print(&#39;Modifier le profil&#39;);
-            },
-            child: Text(&#39;Modifier le profil&#39;),
-          ),
-        ],
+      child: GridView.count(
+        crossAxisCount: 2,
+        children: workspaces != null
+            ? workspaces!.map&lt;Widget&gt;((workspace) {
+                return Card(
+                  margin: EdgeInsets.all(10.0),
+                  child: InkWell(
+                    onTap: () async {
+                      var boards = await getBoards(
+                          apiKey, accessToken!, workspace[&#39;id&#39;]);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =&gt; WorkspaceView(
+                              workspaceId: workspace[&#39;id&#39;],
+                              boards: boards),
+                        ),
+                      );
+                    },
+                    child: Center(
+                      child: Text(
+                        workspace[&#39;displayName&#39;],
+                        style: TextStyle(fontSize: 24),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                );
+              }).toList()
+            : [],
       ),
     ),
-    bottomNavigationBar: MenuWidget(),
   );
 }</code></pre>
 </section>
@@ -140,13 +133,13 @@ Widget build(BuildContext context) {
 
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_profile_profile_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_profile_profile_view-library.html">profile_view</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_profile_profile_view/ProfileView-class.html">ProfileView</a></li>
-    <li class="self-crumb">build method</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view-library.html">dashboard_view</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/DashboardViewState-class.html">DashboardViewState</a></li>
+    <li class="self-crumb">buildUI method</li>
 </ol>
 
 
-    <h5>ProfileView class</h5>
+    <h5>DashboardViewState class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-->
 
