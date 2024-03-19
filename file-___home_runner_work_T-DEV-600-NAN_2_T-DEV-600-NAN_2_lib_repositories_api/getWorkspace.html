@@ -90,7 +90,6 @@ It requires the user's API key, token, the workspace's ID, and the new name of t
 
   if (response.statusCode == 200) {
     var data = jsonDecode(response.body);
-    print(data);
     return TrelloOrganization.fromJson(data);
   } else {
     throw Exception(&#39;Failed to load workspace&#39;);
