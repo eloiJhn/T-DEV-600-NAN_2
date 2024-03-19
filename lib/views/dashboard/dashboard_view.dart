@@ -112,8 +112,10 @@ class DashboardViewState extends State<DashboardView> {
       bottomNavigationBar: MenuWidget(),
       floatingActionButton: FloatingActionButton(
         onPressed: _addNewOrganization,
-        child: Icon(Icons.add),
-        backgroundColor: Colors.blue,
+        backgroundColor: const Color(0xFF0D1B50),
+        foregroundColor: Colors.white,
+        shape: const CircleBorder(),
+        child: const Icon(Icons.add),
       ),
     );
   }
