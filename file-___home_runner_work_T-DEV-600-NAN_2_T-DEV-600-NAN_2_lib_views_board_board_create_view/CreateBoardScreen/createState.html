@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the build method from the EmptyBoardWidget class, for the Dart programming language.">
-  <title>build method - EmptyBoardWidget class - empty_widget library - Dart API</title>
+  <meta name="description" content="API docs for the createState method from the CreateBoardScreen class, for the Dart programming language.">
+  <title>createState method - CreateBoardScreen class - board_create_view library - Dart API</title>
 
 
   
@@ -29,11 +29,11 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_empty_widget/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_empty_widget-library.html">widgets&#47;empty_widget.dart</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_empty_widget/EmptyBoardWidget-class.html">EmptyBoardWidget</a></li>
-    <li class="self-crumb">build method</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_create_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_create_view-library.html">views&#47;board&#47;board_create_view.dart</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_create_view/CreateBoardScreen-class.html">CreateBoardScreen</a></li>
+    <li class="self-crumb">createState method</li>
   </ol>
-  <div class="self-name">build</div>
+  <div class="self-name">createState</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -54,10 +54,10 @@
 <div
     id="dartdoc-main-content"
     class="main-content"
-    data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_empty_widget&#47;EmptyBoardWidget-class-sidebar.html"
+    data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_create_view&#47;CreateBoardScreen-class-sidebar.html"
     data-below-sidebar="">
     <div>
-<h1><span class="kind-method">build</span> method 
+<h1><span class="kind-method">createState</span> method 
 </h1></div>
 
     <section class="multi-line-signature">
@@ -68,9 +68,8 @@
     </ol>
   </div>
 
-<span class="returntype">dynamic</span>
-<span class="name ">build</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="build-param-context"><span class="type-annotation">dynamic</span> <span class="parameter-name">context</span></span></li>
-</ol>)
+<span class="returntype">_CreateBoardScreenState</span>
+<span class="name ">createState</span>(<wbr>)
 
       
 
@@ -82,53 +81,7 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
-Widget build(BuildContext context) {
-  return GestureDetector(
-    onTap: onTap,
-    child: Padding(
-      padding: const EdgeInsets.all(10),
-      child: DottedBorder(
-        color: witheColor ? Colors.white : Colors.grey,
-        borderType: BorderType.RRect,
-        radius: const Radius.circular(10),
-        padding: const EdgeInsets.all(6),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: &lt;Widget&gt;[
-                Icon(
-                  iconData,
-                  color: witheColor ? Colors.white : Colors.grey,
-                  size: 100,
-                ),
-                Text(
-                  &quot;${isMasculine ? &#39;Aucun&#39; : &#39;Aucune&#39;} $itemType&quot;,
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: witheColor ? Colors.white : Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  message,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: witheColor ? Colors.white : Colors.black,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    ),
-  );
-}</code></pre>
+_CreateBoardScreenState createState() =&gt; _CreateBoardScreenState();</code></pre>
 </section>
 
 
@@ -144,13 +97,13 @@ Widget build(BuildContext context) {
 
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_empty_widget/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_empty_widget-library.html">empty_widget</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_empty_widget/EmptyBoardWidget-class.html">EmptyBoardWidget</a></li>
-    <li class="self-crumb">build method</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_create_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_create_view-library.html">board_create_view</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_create_view/CreateBoardScreen-class.html">CreateBoardScreen</a></li>
+    <li class="self-crumb">createState method</li>
 </ol>
 
 
-    <h5>EmptyBoardWidget class</h5>
+    <h5>CreateBoardScreen class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-->
 

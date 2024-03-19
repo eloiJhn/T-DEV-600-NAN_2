@@ -84,7 +84,22 @@
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
   return Scaffold(
-      appBar: AppBar(title: Text(widget.board.name)),
+      appBar: AppBar(title:
+      TextFormField(
+        onChanged: (String value) {
+          setState(() {
+            _updateBoard(value);
+          });
+        },
+        decoration: const InputDecoration(
+          border: InputBorder.none,
+        ),
+        initialValue: widget.board.name,
+        style: const TextStyle(
+          color: Colors.black,
+          fontSize: 20,
+        )
+      )),
       body: Container(
         decoration: BoxDecoration(
           image: widget.board.bgImage != null
@@ -102,6 +117,18 @@ Widget build(BuildContext context) {
             builder: (context, AsyncSnapshot&lt;List&lt;TrelloList&gt;&gt; snapshot) {
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.data!.isEmpty) {
+                return EmptyBoardWidget(
+                    itemType: &#39;Listes&#39;,
+                    message:
+                    &quot;Vous n&#39;avez actuellement aucune liste dans ce tableau&quot;,
+                    iconData: Icons.list,
+                    witheColor: true,
+                    onTap: () {
+                  print(&#39;Tableau clicked&#39;);
+                },
+              isMasculine: false,
+              );
               } else {
                 return CarouselSlider.builder(
                     itemCount: snapshot.data?.length,
@@ -118,6 +145,9 @@ Widget build(BuildContext context) {
                               flex: 1,
                               child: Container(
                                 decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10)),
                                     color: Color(0xff162B62)),
                                 child: Container(
                                   margin: const EdgeInsets.only(
@@ -126,17 +156,30 @@ Widget build(BuildContext context) {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          snapshot.data![item].name
-                                              .toUpperCase(),
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20),
+                                        Expanded(
+                                          child: TextFormField(
+                                              onChanged: (String value) {
+                                                _updateList(value, snapshot
+                                                    .data![item].id);
+                                              },
+                                              decoration: const InputDecoration(
+                                                border: InputBorder.none,
+                                              ),
+                                              initialValue: snapshot.data![item].name.toUpperCase(),
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                              )
+                                          ),
                                         ),
                                         IconButton(
-                                          icon: const Icon(Icons.more_horiz),
+                                          icon: const Icon(Icons.edit),
                                           color: Colors.white,
-                                          onPressed: () =&gt; {},
+                                          onPressed: () =&gt; {
+                                            setState(() {
+                                              _editList = !_editList;
+                                            })
+                                          },
                                         )
                                       ]),
                                 ),
@@ -160,34 +203,55 @@ Widget build(BuildContext context) {
                                             itemBuilder:
                                                 (BuildContext context,
                                                     int index) {
-                                              return Card(
-                                                margin:
-                                                    const EdgeInsets.all(10),
-                                                color: Colors.grey[200],
-                                                child: ListTile(
-                                                    title: Text(snapshot
-                                                        .data![index].name),
-                                                    onTap: () =&gt;
-                                                        showModalBottomSheet(
-                                                            isScrollControlled:
-                                                                true,
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return CardWidget(
-                                                                  card: snapshot
-                                                                          .data![
-                                                                      index]);
-                                                            }).whenComplete( () {
-                                                              setState(() {
-                                                                _getCardsByList(
-                                                                    snapshot
-                                                                        .data![
-                                                                            index]
-                                                                        .id);
-                                                              });
-                                                            }))
+                                              return Row(
+                                                children: [
+                                                  Expanded(
+                                                    flex: 7,
+                                                    child: Card(
+                                                      margin:
+                                                          const EdgeInsets.all(10),
+                                                      color: Colors.grey[200],
+                                                      child: ListTile(
+                                                          title: Text(snapshot
+                                                              .data![index].name),
+                                                          onTap: () =&gt;
+                                                              showModalBottomSheet(
+                                                                  isScrollControlled:
+                                                                      true,
+                                                                  context: context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                                    return CardWidget(
+                                                                        card: snapshot
+                                                                                .data![
+                                                                            index]);
+                                                                  }).whenComplete( () {
+                                                                    setState(() {
+                                                                      _getCardsByList(
+                                                                          snapshot
+                                                                              .data![
+                                                                                  index]
+                                                                              .id);
+                                                                    });
+                                                                  }))
+                                                    ),
+                                                  ),
+                                                  _editList
+                                                      ? Expanded(
+                                                          flex: 3,
+                                                          child: Card(
+                                                            color: Colors
+                                                                .redAccent,
+                                                            child: IconButton(
+                                                              icon: const Icon(
+                                                                  Icons.delete, color: Colors.white,),
+                                                              onPressed: () =&gt; {},
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : const SizedBox()
+                                                ],
                                               );
                                             });
                                       }
@@ -196,6 +260,9 @@ Widget build(BuildContext context) {
                                 flex: 1,
                                 child: Container(
                                     decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(10),
+                                            bottomRight: Radius.circular(10)),
                                         color: Color(0xff162B62)),
                                     child: Center(
                                       child: Container(
