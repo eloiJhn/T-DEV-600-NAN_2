@@ -83,18 +83,76 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
-  return FutureBuilder(
-    future: getAccessToken(),
-    builder: (BuildContext context, AsyncSnapshot&lt;void&gt; snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Center(child: CircularProgressIndicator());
-      } else {
-        return RefreshIndicator(
-          onRefresh: refreshData,
-          child: buildUI(context),
+  return Scaffold(
+    key: _scaffoldKey,
+    backgroundColor: Color(0xFF1C39A1),
+    appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.dashboard),
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white),
+    body: _isProcessing
+        ? const Center(child: CircularProgressIndicator())
+        : RefreshIndicator(
+      onRefresh: _refreshData,
+      child: GridView.count(
+        crossAxisCount: 2,
+        children: workspaces != null
+            ? workspaces!.map&lt;Widget&gt;((workspace) {
+          return Card(
+            margin: EdgeInsets.all(10.0),
+            child: GestureDetector(
+              onLongPress: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return InformationsBottomSheet(
+                      name: workspace[&#39;displayName&#39;],
+                      desc: workspace[&#39;desc&#39;],
+                    );
+                  },
+                );
+              },
+              child: InkWell(
+                onTap: () async {
+                  var boards = await getBoards(
+                      apiKey, accessToken!, workspace[&#39;id&#39;]);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =&gt; WorkspaceView(
+                          workspaceId: workspace[&#39;id&#39;],
+                          boards: boards),
+                    ),
+                  );
+                },
+                child: Center(
+                  child: Text(
+                    workspace[&#39;displayName&#39;],
+                    style: TextStyle(fontSize: 24),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }).toList()
+            : [],
+      ),
+    ),
+    bottomNavigationBar: MenuWidget(),
+    floatingActionButton: FloatingActionButton(
+      onPressed: () async {
+        var result = await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) =&gt; CreateOrganizationScreen()),
         );
-      }
-    },
+        if (result == &#39;organizationCreated&#39;) {
+          _refreshData();
+        }
+      },
+      child: Icon(Icons.add),
+      backgroundColor: Colors.blue,
+    ),
   );
 }</code></pre>
 </section>
