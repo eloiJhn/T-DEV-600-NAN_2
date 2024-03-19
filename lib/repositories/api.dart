@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:trelltech/models/board.dart';
+import 'package:trelltech/models/trello_board_template.dart';
 import 'package:trelltech/models/trello_organization.dart';
 
 import '../models/trello_card.dart';
@@ -279,9 +280,26 @@ Future<TrelloOrganization> getWorkspace(String apiKey, String? token, String wor
 
   if (response.statusCode == 200) {
     var data = jsonDecode(response.body);
-    print(data);
     return TrelloOrganization.fromJson(data);
   } else {
     throw Exception('Failed to load workspace');
+  }
+}
+
+/// Fetches the templates of boards in the gallery from Trello.
+///
+/// This function calls the Trello API to fetch the templates of boards in the gallery.
+/// It requires the user's API key and token.
+/// Returns a list of board templates.
+Future<List<TrelloBoardTemplate>> getBoardTemplates(String apiKey, String token) async {
+  final response = await http.get(
+    Uri.parse('https://api.trello.com/1/boards/templates/gallery?key=$apiKey&token=$token'),
+  );
+
+  if (response.statusCode == 200) {
+    var boardTemplatesJson = jsonDecode(response.body) as List;
+    return boardTemplatesJson.map((boardTemplate) => TrelloBoardTemplate.fromJson(boardTemplate)).toList();
+  } else {
+    throw Exception('Failed to load board templates');
   }
 }

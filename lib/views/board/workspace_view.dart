@@ -91,6 +91,17 @@ class WorkspaceViewState extends State<WorkspaceView> {
     return await PaletteGenerator.fromImageProvider(provider);
   }
 
+  Future<void> _addNewBoard() async {
+    var result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CreateBoardScreen()),
+    );
+
+    if (result == 'boardCreated') {
+      await refreshData();
+    }
+  }
+
   Future<Color> _getBgColor(String? color, String? imageUrl) async {
     if (color != null) {
       String colorHex = color!.split('#')[1];
@@ -141,7 +152,7 @@ class WorkspaceViewState extends State<WorkspaceView> {
                 "Vous n'avez actuellement aucun tableau de créé pour cette organisation. Veuillez cliquer pour en ajouter un",
                 iconData: Icons.dashboard,
                 onTap: () {
-                  print('Tableau clicked');
+                  _addNewBoard();
                 },
                 isMasculine: true,
               )
@@ -157,13 +168,7 @@ class WorkspaceViewState extends State<WorkspaceView> {
       bottomNavigationBar: MenuWidget(),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          var result = await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CreateBoardScreen()),
-          );
-          if (result == 'organizationCreated') {
-            refreshData();
-          }
+          _addNewBoard();
         },
         backgroundColor: const Color(0xFF0D1B50),
         foregroundColor: Colors.white,
