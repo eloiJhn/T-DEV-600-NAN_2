@@ -5,8 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trelltech/repositories/api.dart';
 import 'package:trelltech/repositories/authentification.dart';
 import 'package:trelltech/views/board/workspace_view.dart';
-import 'package:trelltech/widgets/menu_widget.dart';
 import 'package:trelltech/views/organizations/organization_create_view.dart';
+import 'package:trelltech/widgets/menu_widget.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -73,11 +73,14 @@ class DashboardViewState extends State<DashboardView> {
                   setState(() {
                     _isProcessing = true;
                   });
-                  var boards = await getBoards(apiKey, accessToken!, workspace['id']);
+                  var boards = await getBoards(
+                      apiKey, accessToken!, workspace['id']);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => WorkspaceView(workspaceId: workspace['id'], boards: boards),
+                      builder: (context) =>
+                          WorkspaceView(
+                              workspaceId: workspace['id'], boards: boards),
                     ),
                   );
                   setState(() {
@@ -99,18 +102,29 @@ class DashboardViewState extends State<DashboardView> {
       ),
       bottomNavigationBar: MenuWidget(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          var result = await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CreateOrganizationScreen()),
-          );
-          if (result == 'organizationCreated') {
-            _refreshData();
-          }
-        },
+        onPressed: _addNewOrganization,
         child: Icon(Icons.add),
         backgroundColor: Colors.blue,
       ),
     );
   }
+
+  Future<void> _addNewOrganization() async {
+    var result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CreateOrganizationScreen()),
+    );
+
+    if (result == 'organizationCreated') {
+      await _refreshData();
+
+      if (workspaces != null && workspaces!.isNotEmpty) {
+        setState(() {
+          var newOrganization = workspaces!.removeAt(0); // Supposer que la nouvelle org est en première position
+          workspaces!.add(newOrganization); // Ajouter la nouvelle organisation à la fin de la liste
+        });
+      }
+    }
+  }
 }
+
