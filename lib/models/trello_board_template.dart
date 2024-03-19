@@ -1,5 +1,4 @@
 class TrelloBoardTemplate {
-
   final String id;
   final String name;
   final String description;
@@ -25,8 +24,8 @@ class TrelloBoardTemplate {
       description: json['desc'],
       backgroundImage: json['prefs']['backgroundImage'],
       backgroundColor: json['prefs']['backgroundColor'],
-      viewCount: json['prefs']['viewCount'],
-      copyCount: json['prefs']['copyCount'],
+      viewCount: json['templateGallery']['stats']['viewCount'],
+      copyCount: json['templateGallery']['stats']['copyCount'],
     );
   }
 }

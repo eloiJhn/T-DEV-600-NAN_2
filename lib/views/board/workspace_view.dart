@@ -47,6 +47,7 @@ class WorkspaceViewState extends State<WorkspaceView> {
     super.initState();
     _initialize();
   }
+
   Future<void> refreshData() async {
     _initialize();
   }
@@ -94,7 +95,9 @@ class WorkspaceViewState extends State<WorkspaceView> {
   Future<void> _addNewBoard() async {
     var result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => CreateBoardScreen()),
+      MaterialPageRoute(
+          builder: (context) =>
+              CreateBoardScreen(organizationId: widget.workspaceId)),
     );
 
     if (result == 'boardCreated') {
@@ -125,9 +128,8 @@ class WorkspaceViewState extends State<WorkspaceView> {
       future: bgColorFuture,
       builder: (BuildContext context, AsyncSnapshot<Color> snapshot) {
         return RefreshIndicator(
-          onRefresh: refreshData,
-          child: _buildWorkspaceView(snapshot.data ?? Colors.grey)
-        );
+            onRefresh: refreshData,
+            child: _buildWorkspaceView(snapshot.data ?? Colors.grey));
       },
     );
   }
@@ -137,7 +139,10 @@ class WorkspaceViewState extends State<WorkspaceView> {
       appBar: AppBar(
         title: Text(organization?.displayName ?? 'Loading...'),
         actions: <Widget>[
-          CustomPopupMenuButton(organisationId: widget.workspaceId, boards: widget.boards, state: this),
+          CustomPopupMenuButton(
+              organisationId: widget.workspaceId,
+              boards: widget.boards,
+              state: this),
         ],
       ),
       body: Center(
@@ -147,15 +152,15 @@ class WorkspaceViewState extends State<WorkspaceView> {
             Flexible(
               child: widget.boards.isEmpty
                   ? EmptyBoardWidget(
-                itemType: 'Tableau',
-                message:
-                "Vous n'avez actuellement aucun tableau de créé pour cette organisation. Veuillez cliquer pour en ajouter un",
-                iconData: Icons.dashboard,
-                onTap: () {
-                  _addNewBoard();
-                },
-                isMasculine: true,
-              )
+                      itemType: 'Tableau',
+                      message:
+                          "Vous n'avez actuellement aucun tableau de créé pour cette organisation. Veuillez cliquer pour en ajouter un",
+                      iconData: Icons.dashboard,
+                      onTap: () {
+                        _addNewBoard();
+                      },
+                      isMasculine: true,
+                    )
                   : _buildBoardList(),
             ),
             ElevatedButton(
@@ -290,15 +295,20 @@ class CustomCardContent extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
-        image: board.bgColor == null && board.bgImage != null && board.bgImage!.isNotEmpty
+        image: board.bgColor == null &&
+                board.bgImage != null &&
+                board.bgImage!.isNotEmpty
             ? DecorationImage(
                 image: CachedNetworkImageProvider(board.bgImage!),
                 fit: BoxFit.cover,
               )
             : null,
         color: board.bgColor != null
-            ? Color(int.parse(board.bgColor!.split('#')[1], radix: 16)).withOpacity(1)
-            : (board.bgImage != null && board.bgImage!.isNotEmpty ? null : bgColor),
+            ? Color(int.parse(board.bgColor!.split('#')[1], radix: 16))
+                .withOpacity(1)
+            : (board.bgImage != null && board.bgImage!.isNotEmpty
+                ? null
+                : bgColor),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
