@@ -141,7 +141,15 @@ Widget build(BuildContext context) {
     ),
     bottomNavigationBar: MenuWidget(),
     floatingActionButton: FloatingActionButton(
-      onPressed: _addNewOrganization,
+      onPressed: () async {
+        var result = await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) =&gt; CreateOrganizationScreen()),
+        );
+        if (result == &#39;organizationCreated&#39;) {
+          _refreshData();
+        }
+      },
       backgroundColor: const Color(0xFF0D1B50),
       foregroundColor: Colors.white,
       shape: const CircleBorder(),
