@@ -137,7 +137,7 @@ Future<List<Board>> getBoards(
 }
 
 Future<void> updateBoard(
-    String apiKey, String token, String boardId, Board board) async {
+    String apiKey, String? token, String boardId, Board board) async {
   final response = await http.put(
     Uri.parse(
         'https://api.trello.com/1/boards/$boardId?key=$apiKey&token=$token&name=${board.name}'),
@@ -174,7 +174,7 @@ Future<List<dynamic>> getWorkspaces(
 /// It requires the user's API key, token, and the board's ID.
 /// Returns a list of lists.
 Future<List<dynamic>> getLists(
-    String apiKey, String token, String boardId) async {
+    String apiKey, String? token, String boardId) async {
   final response = await http.get(
     Uri.parse(
         'https://api.trello.com/1/boards/$boardId/lists?key=$apiKey&token=$token'),
@@ -188,7 +188,7 @@ Future<List<dynamic>> getLists(
 }
 
 Future<void> updateList(
-    String apiKey, String token, String listId, TrelloList list) async {
+    String apiKey, String? token, String listId, TrelloList list) async {
   final response = await http.put(
     Uri.parse(
         'https://api.trello.com/1/lists/$listId?key=$apiKey&token=$token&name=${list.name}'),
@@ -205,7 +205,7 @@ Future<void> updateList(
 /// It requires the user's API key, token, and the list's ID.
 /// Returns a list of cards.
 Future<List<dynamic>> getCards(
-    String apiKey, String token, String listId) async {
+    String apiKey, String? token, String listId) async {
   final response = await http.get(
     Uri.parse(
         'https://api.trello.com/1/lists/$listId/cards?key=$apiKey&token=$token'),
@@ -238,7 +238,7 @@ Future<void> createCard(
 ///
 /// This function calls the Trello API to delete a specific card.
 /// It requires the user's API key, token, and the card's ID.
-Future<void> deleteCard(String apiKey, String token, String cardId) async {
+Future<void> deleteCard(String apiKey, String? token, String cardId) async {
   final response = await http.delete(
     Uri.parse(
         'https://api.trello.com/1/cards/$cardId?key=$apiKey&token=$token'),
