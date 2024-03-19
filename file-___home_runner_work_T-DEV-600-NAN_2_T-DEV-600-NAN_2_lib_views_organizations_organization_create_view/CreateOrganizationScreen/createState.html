@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the getAccessToken method from the DashboardViewState class, for the Dart programming language.">
-  <title>getAccessToken method - DashboardViewState class - dashboard_view library - Dart API</title>
+  <meta name="description" content="API docs for the createState method from the CreateOrganizationScreen class, for the Dart programming language.">
+  <title>createState method - CreateOrganizationScreen class - organization_create_view library - Dart API</title>
 
 
   
@@ -29,11 +29,11 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view-library.html">views&#47;dashboard&#47;dashboard_view.dart</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/DashboardViewState-class.html">DashboardViewState</a></li>
-    <li class="self-crumb">getAccessToken method</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_organizations_organization_create_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_organizations_organization_create_view-library.html">views&#47;organizations&#47;organization_create_view.dart</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_organizations_organization_create_view/CreateOrganizationScreen-class.html">CreateOrganizationScreen</a></li>
+    <li class="self-crumb">createState method</li>
   </ol>
-  <div class="self-name">getAccessToken</div>
+  <div class="self-name">createState</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -54,17 +54,22 @@
 <div
     id="dartdoc-main-content"
     class="main-content"
-    data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view&#47;DashboardViewState-class-sidebar.html"
+    data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_organizations_organization_create_view&#47;CreateOrganizationScreen-class-sidebar.html"
     data-below-sidebar="">
     <div>
-<h1><span class="kind-method">getAccessToken</span> method 
+<h1><span class="kind-method">createState</span> method 
 </h1></div>
 
     <section class="multi-line-signature">
       
+  <div>
+    <ol class="annotation-list">
+        <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
+    </ol>
+  </div>
 
-<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
-<span class="name ">getAccessToken</span>(<wbr>)
+<span class="returntype">_CreateOrganizationScreenState</span>
+<span class="name ">createState</span>(<wbr>)
 
       
 
@@ -75,12 +80,8 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; getAccessToken() async {
-  final prefs = await SharedPreferences.getInstance();
-  accessToken = prefs.getString(&#39;accessToken&#39;);
-  print(accessToken);
-  navigateIfNoToken();
-}</code></pre>
+  <pre class="language-dart"><code class="language-dart">@override
+_CreateOrganizationScreenState createState() =&gt; _CreateOrganizationScreenState();</code></pre>
 </section>
 
 
@@ -96,13 +97,13 @@
 
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view-library.html">dashboard_view</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/DashboardViewState-class.html">DashboardViewState</a></li>
-    <li class="self-crumb">getAccessToken method</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_organizations_organization_create_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_organizations_organization_create_view-library.html">organization_create_view</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_organizations_organization_create_view/CreateOrganizationScreen-class.html">CreateOrganizationScreen</a></li>
+    <li class="self-crumb">createState method</li>
 </ol>
 
 
-    <h5>DashboardViewState class</h5>
+    <h5>CreateOrganizationScreen class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-->
 
