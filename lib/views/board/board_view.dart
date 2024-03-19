@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +24,7 @@ class BoardView extends StatefulWidget {
 class BoardViewState extends State<BoardView> {
   String? accessToken;
   late CarouselController carouselController;
+  bool _editList = false;
 
   @override
   void initState() {
@@ -56,10 +59,51 @@ class BoardViewState extends State<BoardView> {
     return listCard;
   }
 
+  Future<void> _updateList(String name, String listId) async {
+
+    TrelloList list = TrelloList(
+        id: listId,
+        name: name,
+    );
+    var apiKey = dotenv.env['TRELLO_API_KEY'];
+    await updateList(apiKey!, accessToken!, listId, list);
+    setState(() {});
+  }
+
+  Future<void> _updateBoard(String name) async {
+
+    Board board = Board(
+        id: widget.board.id,
+        name: name,
+        idOrganization: widget.board.idOrganization,
+        closed: widget.board.closed,
+        pinned: widget.board.pinned,
+        url: widget.board.url,
+        shortUrl: widget.board.shortUrl,
+    );
+    var apiKey = dotenv.env['TRELLO_API_KEY'];
+    await updateBoard(apiKey!, accessToken!, widget.board.id, board);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(widget.board.name)),
+        appBar: AppBar(title:
+        TextFormField(
+          onChanged: (String value) {
+            setState(() {
+              _updateBoard(value);
+            });
+          },
+          decoration: const InputDecoration(
+            border: InputBorder.none,
+          ),
+          initialValue: widget.board.name,
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+          )
+        )),
         body: Container(
           decoration: BoxDecoration(
             image: widget.board.bgImage != null
@@ -101,17 +145,30 @@ class BoardViewState extends State<BoardView> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
-                                            snapshot.data![item].name
-                                                .toUpperCase(),
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20),
+                                          Expanded(
+                                            child: TextFormField(
+                                                onChanged: (String value) {
+                                                  _updateList(value, snapshot
+                                                      .data![item].id);
+                                                },
+                                                decoration: const InputDecoration(
+                                                  border: InputBorder.none,
+                                                ),
+                                                initialValue: snapshot.data![item].name.toUpperCase(),
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20,
+                                                )
+                                            ),
                                           ),
                                           IconButton(
-                                            icon: const Icon(Icons.more_horiz),
+                                            icon: const Icon(Icons.edit),
                                             color: Colors.white,
-                                            onPressed: () => {},
+                                            onPressed: () => {
+                                              setState(() {
+                                                _editList = !_editList;
+                                              })
+                                            },
                                           )
                                         ]),
                                   ),
@@ -135,34 +192,55 @@ class BoardViewState extends State<BoardView> {
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int index) {
-                                                return Card(
-                                                  margin:
-                                                      const EdgeInsets.all(10),
-                                                  color: Colors.grey[200],
-                                                  child: ListTile(
-                                                      title: Text(snapshot
-                                                          .data![index].name),
-                                                      onTap: () =>
-                                                          showModalBottomSheet(
-                                                              isScrollControlled:
-                                                                  true,
-                                                              context: context,
-                                                              builder:
-                                                                  (BuildContext
-                                                                      context) {
-                                                                return CardWidget(
-                                                                    card: snapshot
-                                                                            .data![
-                                                                        index]);
-                                                              }).whenComplete( () {
-                                                                setState(() {
-                                                                  _getCardsByList(
-                                                                      snapshot
-                                                                          .data![
-                                                                              index]
-                                                                          .id);
-                                                                });
-                                                              }))
+                                                return Row(
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 7,
+                                                      child: Card(
+                                                        margin:
+                                                            const EdgeInsets.all(10),
+                                                        color: Colors.grey[200],
+                                                        child: ListTile(
+                                                            title: Text(snapshot
+                                                                .data![index].name),
+                                                            onTap: () =>
+                                                                showModalBottomSheet(
+                                                                    isScrollControlled:
+                                                                        true,
+                                                                    context: context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return CardWidget(
+                                                                          card: snapshot
+                                                                                  .data![
+                                                                              index]);
+                                                                    }).whenComplete( () {
+                                                                      setState(() {
+                                                                        _getCardsByList(
+                                                                            snapshot
+                                                                                .data![
+                                                                                    index]
+                                                                                .id);
+                                                                      });
+                                                                    }))
+                                                      ),
+                                                    ),
+                                                    _editList
+                                                        ? Expanded(
+                                                            flex: 3,
+                                                            child: Card(
+                                                              color: Colors
+                                                                  .redAccent,
+                                                              child: IconButton(
+                                                                icon: const Icon(
+                                                                    Icons.delete, color: Colors.white,),
+                                                                onPressed: () => {},
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : const SizedBox()
+                                                  ],
                                                 );
                                               });
                                         }

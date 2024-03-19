@@ -46,8 +46,8 @@ class WorkspaceViewState extends State<WorkspaceView> {
     _initialize();
   }
 
-  void refresh() {
-    _initialize();
+  Future<void> refresh() async {
+    await _initialize();
   }
 
 
@@ -110,46 +110,50 @@ class WorkspaceViewState extends State<WorkspaceView> {
         if (!isOrganizationInitialized) {
           return const CircularProgressIndicator();
         }
-        return _buildWorkspaceView(snapshot.data ?? Colors.grey);
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(organization?.displayName ?? 'Loading...'),
+            actions: <Widget>[
+              CustomPopupMenuButton(organisationId: widget.workspaceId, boards: widget.boards, state: this),
+            ],
+          ),
+          body:
+          RefreshIndicator(
+            onRefresh: () async {
+              refresh();
+            },
+            child:
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Flexible(
+                  child: widget.boards.isEmpty
+                      ? EmptyBoardWidget(
+                    itemType: 'Tableau',
+                    message:
+                    "Vous n'avez actuellement aucun tableau de créé pour cette organisation. Veuillez cliquer pour en ajouter un",
+                    iconData: Icons.dashboard,
+                    onTap: () {
+                      print('Tableau clicked');
+                    },
+                    isMasculine: true,
+                  )
+                      : _buildBoardList(),
+                ),
+                ElevatedButton(
+                  onPressed: () => disconnect(context),
+                  child: Text(AppLocalizations.of(context)!.logout),
+                ),
+              ],
+            ),
+          ),
+          )
+        );
       },
     );
   }
 
-  Widget _buildWorkspaceView(Color bgColor) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(organization?.displayName ?? 'Loading...'),
-        actions: <Widget>[
-          CustomPopupMenuButton(organisationId: widget.workspaceId, boards: widget.boards, state: this),
-        ],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Flexible(
-              child: widget.boards.isEmpty
-                  ? EmptyBoardWidget(
-                itemType: 'Tableau',
-                message:
-                "Vous n'avez actuellement aucun tableau de créé pour cette organisation. Veuillez cliquer pour en ajouter un",
-                iconData: Icons.dashboard,
-                onTap: () {
-                  print('Tableau clicked');
-                },
-                isMasculine: true,
-              )
-                  : _buildBoardList(),
-            ),
-            ElevatedButton(
-              onPressed: () => disconnect(context),
-              child: Text(AppLocalizations.of(context)!.logout),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _buildBoardList() {
     return ListView.builder(

@@ -5,6 +5,7 @@ import 'package:trelltech/models/board.dart';
 import 'package:trelltech/models/trello_organization.dart';
 
 import '../models/trello_card.dart';
+import '../models/trello_list.dart';
 
 /// Fetches the user's ID from Trello.
 ///
@@ -89,6 +90,16 @@ Future<List<Board>> getBoards(String apiKey, String token, String workspaceId) a
   }
 }
 
+Future<void> updateBoard(String apiKey, String token, String boardId, Board board) async {
+  final response = await http.put(
+    Uri.parse('https://api.trello.com/1/boards/$boardId?key=$apiKey&token=$token&name=${board.name}'),
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to update board');
+  }
+}
+
 /// Fetches the user's workspaces from Trello.
 ///
 /// This function calls the Trello API to fetch the user's workspaces.
@@ -121,6 +132,16 @@ Future<List<dynamic>> getLists(String apiKey, String token, String boardId) asyn
     return jsonDecode(response.body);
   } else {
     throw Exception('Failed to load lists');
+  }
+}
+
+Future<void> updateList(String apiKey, String token, String listId, TrelloList list) async {
+  final response = await http.put(
+     Uri.parse('https://api.trello.com/1/lists/$listId?key=$apiKey&token=$token&name=${list.name}'),
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to update list');
   }
 }
 
