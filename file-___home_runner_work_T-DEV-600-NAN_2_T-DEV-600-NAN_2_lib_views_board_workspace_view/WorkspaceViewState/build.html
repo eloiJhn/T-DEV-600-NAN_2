@@ -87,7 +87,7 @@ Widget build(BuildContext context) {
     future: bgColorFuture,
     builder: (BuildContext context, AsyncSnapshot&lt;Color&gt; snapshot) {
       return RefreshIndicator(
-          onRefresh: refreshData,
+          onRefresh: _initialize,
           child: _buildWorkspaceView(snapshot.data ?? Colors.grey));
     },
   );
