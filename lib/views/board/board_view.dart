@@ -137,6 +137,9 @@ class BoardViewState extends State<BoardView> {
                                 flex: 1,
                                 child: Container(
                                   decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          topRight: Radius.circular(10)),
                                       color: Color(0xff162B62)),
                                   child: Container(
                                     margin: const EdgeInsets.only(
@@ -249,6 +252,9 @@ class BoardViewState extends State<BoardView> {
                                   flex: 1,
                                   child: Container(
                                       decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(10),
+                                              bottomRight: Radius.circular(10)),
                                           color: Color(0xff162B62)),
                                       child: Center(
                                         child: Container(

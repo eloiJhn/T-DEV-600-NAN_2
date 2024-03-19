@@ -36,7 +36,6 @@ class WorkspaceViewState extends State<WorkspaceView> {
   late Future<Color> bgColorFuture;
 
   WorkspaceViewState() {
-    // Initialise bgColorFuture ici
     bgColorFuture = Future.value(Colors.grey);
   }
 
@@ -50,7 +49,6 @@ class WorkspaceViewState extends State<WorkspaceView> {
     await _initialize();
   }
 
-
   Future<void> _initialize() async {
     accessToken = (await getAccessToken())!;
 
@@ -61,7 +59,8 @@ class WorkspaceViewState extends State<WorkspaceView> {
         widget.workspaceId,
       );
     } catch (e) {
-      print('Erreur lors de la récupération des détails de l\'organisation: $e');
+      print(
+          'Erreur lors de la récupération des détails de l\'organisation: $e');
     }
 
     if (widget.boards.isNotEmpty) {
@@ -93,7 +92,7 @@ class WorkspaceViewState extends State<WorkspaceView> {
     } else {
       try {
         PaletteGenerator paletteGenerator =
-        await compute(_generatePalette, imageUrl);
+            await compute(_generatePalette, imageUrl);
         return paletteGenerator.dominantColor!.color;
       } catch (e) {
         print('Failed to load image: $e');
@@ -111,49 +110,48 @@ class WorkspaceViewState extends State<WorkspaceView> {
           return const CircularProgressIndicator();
         }
         return Scaffold(
-          appBar: AppBar(
-            title: Text(organization?.displayName ?? 'Loading...'),
-            actions: <Widget>[
-              CustomPopupMenuButton(organisationId: widget.workspaceId, boards: widget.boards, state: this),
-            ],
-          ),
-          body:
-          RefreshIndicator(
-            onRefresh: () async {
-              refresh();
-            },
-            child:
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Flexible(
-                  child: widget.boards.isEmpty
-                      ? EmptyBoardWidget(
-                    itemType: 'Tableau',
-                    message:
-                    "Vous n'avez actuellement aucun tableau de créé pour cette organisation. Veuillez cliquer pour en ajouter un",
-                    iconData: Icons.dashboard,
-                    onTap: () {
-                      print('Tableau clicked');
-                    },
-                    isMasculine: true,
-                  )
-                      : _buildBoardList(),
-                ),
-                ElevatedButton(
-                  onPressed: () => disconnect(context),
-                  child: Text(AppLocalizations.of(context)!.logout),
-                ),
+            appBar: AppBar(
+              title: Text(organization?.displayName ?? 'Loading...'),
+              actions: <Widget>[
+                CustomPopupMenuButton(
+                    organisationId: widget.workspaceId,
+                    boards: widget.boards,
+                    state: this),
               ],
             ),
-          ),
-          )
-        );
+            body: RefreshIndicator(
+              onRefresh: () async {
+                refresh();
+              },
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Flexible(
+                      child: widget.boards.isEmpty
+                          ? EmptyBoardWidget(
+                              itemType: 'Tableau',
+                              message:
+                                  "Vous n'avez actuellement aucun tableau de créé pour cette organisation. Veuillez cliquer pour en ajouter un",
+                              iconData: Icons.dashboard,
+                              onTap: () {
+                                print('Tableau clicked');
+                              },
+                              isMasculine: true,
+                            )
+                          : _buildBoardList(),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => disconnect(context),
+                      child: Text(AppLocalizations.of(context)!.logout),
+                    ),
+                  ],
+                ),
+              ),
+            ));
       },
     );
   }
-
 
   Widget _buildBoardList() {
     return ListView.builder(
@@ -256,12 +254,12 @@ class CustomCardContent extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0),
         image: board.bgImage != null && board.bgImage!.isNotEmpty
             ? DecorationImage(
-          image: CachedNetworkImageProvider(board.bgImage!),
-          fit: BoxFit.cover,
-        )
+                image: CachedNetworkImageProvider(board.bgImage!),
+                fit: BoxFit.cover,
+              )
             : null,
         color:
-        board.bgImage != null && board.bgImage!.isNotEmpty ? null : bgColor,
+            board.bgImage != null && board.bgImage!.isNotEmpty ? null : bgColor,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -273,7 +271,7 @@ class CustomCardContent extends StatelessWidget {
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: ThemeData.estimateBrightnessForColor(bgColor) ==
-                    Brightness.light
+                        Brightness.light
                     ? Colors.white
                     : Colors.black,
               ),
@@ -327,7 +325,9 @@ class CustomPopupMenuButton extends StatelessWidget {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EditOrganizationScreen(organisationId: organisationId, boards: boards),
+                                builder: (context) => EditOrganizationScreen(
+                                    organisationId: organisationId,
+                                    boards: boards),
                               ),
                             ).then((value) => state.refresh());
                           },
@@ -336,31 +336,42 @@ class CustomPopupMenuButton extends StatelessWidget {
                           leading: const Icon(Icons.delete),
                           title: const Text('Supprimer'),
                           onTap: () {
-                            showDialog(context: context, builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text('Supprimer l\'organisation'),
-                                content: const Text('Êtes-vous sûr de vouloir supprimer cette organisation ?'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text('Annuler'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () async {
-                                      deleteWorkspace(dotenv.env['TRELLO_API_KEY']!, (await getAccessToken())!, organisationId).then((value) {
-                                        Navigator.of(context).pushAndRemoveUntil(
-                                          MaterialPageRoute(builder: (context) => DashboardView()),
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title:
+                                        const Text('Supprimer l\'organisation'),
+                                    content: const Text(
+                                        'Êtes-vous sûr de vouloir supprimer cette organisation ?'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('Annuler'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () async {
+                                          deleteWorkspace(
+                                                  dotenv.env['TRELLO_API_KEY']!,
+                                                  (await getAccessToken())!,
+                                                  organisationId)
+                                              .then((value) {
+                                            Navigator.of(context)
+                                                .pushAndRemoveUntil(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DashboardView()),
                                               (Route<dynamic> route) => false,
-                                        );
-                                      });
-                                    },
-                                    child: const Text('Supprimer'),
-                                  ),
-                                ],
-                              );
-                            });
+                                            );
+                                          });
+                                        },
+                                        child: const Text('Supprimer'),
+                                      ),
+                                    ],
+                                  );
+                                });
                           },
                         ),
                       ],
