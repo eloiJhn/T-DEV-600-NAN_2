@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the initState method from the DashboardViewState class, for the Dart programming language.">
-  <title>initState method - DashboardViewState class - dashboard_view library - Dart API</title>
+  <meta name="description" content="API docs for the buildUI method from the DashboardViewState class, for the Dart programming language.">
+  <title>buildUI method - DashboardViewState class - dashboard_view library - Dart API</title>
 
 
   
@@ -31,9 +31,9 @@
     <li><a href="../../index.html">trelltech</a></li>
     <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view-library.html">views&#47;dashboard&#47;dashboard_view.dart</a></li>
     <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/DashboardViewState-class.html">DashboardViewState</a></li>
-    <li class="self-crumb">initState method</li>
+    <li class="self-crumb">buildUI method</li>
   </ol>
-  <div class="self-name">initState</div>
+  <div class="self-name">buildUI</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -57,19 +57,15 @@
     data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view&#47;DashboardViewState-class-sidebar.html"
     data-below-sidebar="">
     <div>
-<h1><span class="kind-method">initState</span> method 
+<h1><span class="kind-method">buildUI</span> method 
 </h1></div>
 
     <section class="multi-line-signature">
       
-  <div>
-    <ol class="annotation-list">
-        <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
-    </ol>
-  </div>
 
-<span class="returntype">void</span>
-<span class="name ">initState</span>(<wbr>)
+<span class="returntype">dynamic</span>
+<span class="name ">buildUI</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="buildUI-param-context"><span class="type-annotation">dynamic</span> <span class="parameter-name">context</span></span></li>
+</ol>)
 
       
 
@@ -80,14 +76,62 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">@override
-void initState() {
-  super.initState();
-  Future.microtask(() async {
-    await getAccessToken();
-    clientId = await getClientID();
-    await getUserWorkspaces();
-  });
+  <pre class="language-dart"><code class="language-dart">Widget buildUI(BuildContext context) {
+  return Scaffold(
+    key: _scaffoldKey,
+    backgroundColor: Color(0xFF1C39A1),
+    appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.dashboard),
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white),
+    body: Center(
+      child: GridView.count(
+        crossAxisCount: 2,
+        children: workspaces != null
+            ? workspaces!.map&lt;Widget&gt;((workspace) {
+          return Card(
+            margin: EdgeInsets.all(10.0),
+            child: GestureDetector(
+              onLongPress: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return InformationsBottomSheet(
+                      name: workspace[&#39;displayName&#39;],
+                      desc: workspace[&#39;desc&#39;],
+                    );
+                  },
+                );
+              },
+              child: InkWell(
+                onTap: () async {
+                  var boards = await getBoards(
+                      apiKey, accessToken!, workspace[&#39;id&#39;]);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =&gt; WorkspaceView(
+                          workspaceId: workspace[&#39;id&#39;],
+                          boards: boards),
+                    ),
+                  );
+                },
+                child: Center(
+                  child: Text(
+                    workspace[&#39;displayName&#39;],
+                    style: TextStyle(fontSize: 24),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }).toList()
+            : [],
+      ),
+    ),
+    bottomNavigationBar: MenuWidget(),
+  );
 }</code></pre>
 </section>
 
@@ -106,7 +150,7 @@ void initState() {
     <li><a href="../../index.html">trelltech</a></li>
     <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view-library.html">dashboard_view</a></li>
     <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_dashboard_dashboard_view/DashboardViewState-class.html">DashboardViewState</a></li>
-    <li class="self-crumb">initState method</li>
+    <li class="self-crumb">buildUI method</li>
 </ol>
 
 
