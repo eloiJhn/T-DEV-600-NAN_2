@@ -48,10 +48,6 @@ class WorkspaceViewState extends State<WorkspaceView> {
     _initialize();
   }
 
-  Future<void> refreshData() async {
-    _initialize();
-  }
-
   Future<void> _initialize() async {
     accessToken = (await getAccessToken())!;
 
@@ -101,13 +97,13 @@ class WorkspaceViewState extends State<WorkspaceView> {
     );
 
     if (result == 'boardCreated') {
-      await refreshData();
+      await _initialize();
     }
   }
 
   Future<Color> _getBgColor(String? color, String? imageUrl) async {
     if (color != null) {
-      String colorHex = color!.split('#')[1];
+      String colorHex = color.split('#')[1];
       int colorInt = int.parse(colorHex, radix: 16);
       int colorBinary = 0xFF000000 + colorInt;
       return Color(colorBinary);
@@ -128,7 +124,7 @@ class WorkspaceViewState extends State<WorkspaceView> {
       future: bgColorFuture,
       builder: (BuildContext context, AsyncSnapshot<Color> snapshot) {
         return RefreshIndicator(
-            onRefresh: refreshData,
+            onRefresh: _initialize,
             child: _buildWorkspaceView(snapshot.data ?? Colors.grey));
       },
     );
@@ -378,7 +374,7 @@ class CustomPopupMenuButton extends StatelessWidget {
                                     organisationId: organisationId,
                                     boards: boards),
                               ),
-                            ).then((value) => state.refreshData());
+                            ).then((value) => state._initialize());
                           },
                         ),
                         ListTile(
