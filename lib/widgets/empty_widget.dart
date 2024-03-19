@@ -7,15 +7,17 @@ class EmptyBoardWidget extends StatelessWidget {
   final IconData iconData;
   final VoidCallback onTap;
   final bool isMasculine;
+  final bool witheColor;
 
   const EmptyBoardWidget({
-    super.key,
+    Key? key,
     required this.itemType,
     required this.message,
     required this.iconData,
     required this.onTap,
     required this.isMasculine,
-  });
+    this.witheColor = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +26,7 @@ class EmptyBoardWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: DottedBorder(
+          color: witheColor ? Colors.white : Colors.grey,
           borderType: BorderType.RRect,
           radius: const Radius.circular(10),
           padding: const EdgeInsets.all(6),
@@ -36,21 +39,23 @@ class EmptyBoardWidget extends StatelessWidget {
                 children: <Widget>[
                   Icon(
                     iconData,
-                    color: Colors.grey,
+                    color: witheColor ? Colors.white : Colors.grey,
                     size: 100,
                   ),
                   Text(
                     "${isMasculine ? 'Aucun' : 'Aucune'} $itemType",
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
+                      color: witheColor ? Colors.white : Colors.black,
                     ),
                   ),
                   const SizedBox(height: 10),
                   Text(
                     message,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
+                      color: witheColor ? Colors.white : Colors.black,
                     ),
                     textAlign: TextAlign.center,
                   ),

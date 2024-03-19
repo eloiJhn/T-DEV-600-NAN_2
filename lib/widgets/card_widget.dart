@@ -27,18 +27,22 @@ class _CardWidgetState extends State<CardWidget> {
 
   Future<void> _initialize() async {
     await _getAccessToken();
-    await _getMembersBoard();
-    setState(() {});
+    if (mounted) { // Check if widget is mounted before calling setState
+      await _getMembersBoard();
+      setState(() {});
+    }
   }
 
   Future<void> _getMembersBoard() async {
     var apiKey = dotenv.env['TRELLO_API_KEY'];
     var members = await getMembersFromBoard(apiKey!, accessToken!, widget.card.idBoard);
-    setState(() {
-      members.forEach((member) {
-        membersList.add({"id": member['id'], "username": member['username']});
+    if (mounted) {
+      setState(() {
+        members.forEach((member) {
+          membersList.add({"id": member['id'], "username": member['username']});
+        });
       });
-    });
+    }
   }
 
   Future<void> _getAccessToken() async {
@@ -57,9 +61,19 @@ class _CardWidgetState extends State<CardWidget> {
     await addMemberToCard(apiKey!, accessToken!, widget.card.id, memberId);
   }
 
-  Future<void> _updateCard(String desc) async {
+  Future<void> _updateCard(String name, String desc) async {
+
+    TrelloCard card = TrelloCard(
+      id: widget.card.id,
+      name: name,
+      desc: desc,
+      due: widget.card.due,
+      idBoard: widget.card.idBoard,
+      idMembers: widget.card.idMembers,
+    );
     var apiKey = dotenv.env['TRELLO_API_KEY'];
-    await updateCard(apiKey!, accessToken!, widget.card.id, desc);
+    await updateCard(apiKey!, accessToken!, widget.card.id, card);
+    setState(() {});
   }
 
   @override
@@ -79,9 +93,20 @@ class _CardWidgetState extends State<CardWidget> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        widget.card.name,
-                        style: const TextStyle(fontSize: 30, color: Color(0xFF1C39A1)),
+                      Expanded(
+                        child: TextFormField(
+                          onChanged: (String value) {
+                            _updateCard(value, widget.card.desc);
+                          },
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                          ),
+                          initialValue: widget.card.name,
+                          style: const TextStyle(
+                            color: Color(0xFF1C39A1),
+                            fontSize: 20,
+                          )
+                        ),
                       ),
                       IconButton(
                         icon: const Icon(
@@ -99,7 +124,7 @@ class _CardWidgetState extends State<CardWidget> {
                   padding: const EdgeInsets.all(16),
                   child: TextFormField(
                     onChanged: (String value) {
-                      _updateCard(value);
+                      _updateCard(widget.card.name, value);
                     },
                     decoration: const InputDecoration(
                       enabledBorder: OutlineInputBorder(
@@ -148,7 +173,7 @@ class _CardWidgetState extends State<CardWidget> {
                                         itemBuilder: (BuildContext context, int index) {
                                           return CircleAvatar(
                                             backgroundImage: NetworkImage(
-                                              snapshot.data[index]['avatarUrl'] + '/50.png',
+                                              snapshot.data[index]['avatarUrl'] != null ? snapshot.data[index]['avatarUrl'] + '/50.png' : 'https://placehold.co/50.png'
                                             ),
                                           );
                                         },

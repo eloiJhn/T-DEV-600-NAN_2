@@ -7,7 +7,7 @@ class TrelloCard {
   // final String coordinates;
   // final String creationMethod;
   // final DateTime dateLastActivity;
-  final String desc;
+  final String name;
   // final Map<String, dynamic> descData;
   final String? due;
   // final String dueReminder;
@@ -23,7 +23,7 @@ class TrelloCard {
   // final Map<String, dynamic> limits;
   // final String locationName;
   // final bool manualCoverAttachment;
-  final String name;
+  final String desc;
   // final int pos;
   // final String shortLink;
   // final String shortUrl;
