@@ -89,8 +89,16 @@ It requires the user's API key, token, the list's ID, and the name of the card.<
     Uri.parse(&#39;https:&#47;&#47;api.trello.com&#47;1&#47;cards?key=$apiKey&amp;token=$token&amp;idList=$listId&amp;name=$name&#39;),
   );
 
-  if (response.statusCode != 200) {
-    throw Exception(&#39;Failed to create card&#39;);
+  if (response.statusCode == 200) {
+    Fluttertoast.showToast(
+      msg: &quot;Ajout effectué&quot;,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.green,
+      textColor: Colors.white,
+    );
+  } else {
+    throw Exception(&#39;Failed to create a card&#39;);
   }
 }</code></pre>
 </section>
