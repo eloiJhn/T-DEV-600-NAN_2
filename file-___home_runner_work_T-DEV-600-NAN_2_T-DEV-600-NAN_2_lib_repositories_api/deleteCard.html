@@ -85,8 +85,7 @@ It requires the user's API key, token, and the card's ID.</p>
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; deleteCard(String apiKey, String token, String cardId) async {
   final response = await http.delete(
-    Uri.parse(
-        &#39;https:&#47;&#47;api.trello.com&#47;1&#47;cards&#47;$cardId?key=$apiKey&amp;token=$token&#39;),
+    Uri.parse(&#39;https:&#47;&#47;api.trello.com&#47;1&#47;cards&#47;$cardId?key=$apiKey&amp;token=$token&#39;),
   );
 
   if (response.statusCode != 200) {

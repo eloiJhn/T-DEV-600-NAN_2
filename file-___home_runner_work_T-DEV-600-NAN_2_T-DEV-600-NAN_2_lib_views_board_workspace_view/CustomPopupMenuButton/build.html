@@ -114,7 +114,7 @@ Widget build(BuildContext context) {
                                   organisationId: organisationId,
                                   boards: boards),
                             ),
-                          ).then((value) =&gt; state._initialize());
+                          ).then((value) =&gt; state.refreshData());
                         },
                       ),
                       ListTile(

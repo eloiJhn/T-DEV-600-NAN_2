@@ -279,6 +279,11 @@ Widget build(BuildContext context) {
                                           ),
                                           Expanded(
                                             child: TextField(
+                                              onSubmitted:
+                                                  (String value) async {
+                                                await _createCard(value,
+                                                    snapshot.data![item].id);
+                                              },
                                               style: const TextStyle(
                                                   color: Colors.white),
                                               decoration:

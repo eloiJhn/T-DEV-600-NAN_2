@@ -78,11 +78,9 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;dynamic&gt; getMembersFromBoard(
-    String apiKey, String token, String boardId) async {
+  <pre class="language-dart"><code class="language-dart">Future&lt;dynamic&gt; getMembersFromBoard(String apiKey, String token, String boardId) async {
   final response = await http.get(
-    Uri.parse(
-        &#39;https:&#47;&#47;api.trello.com&#47;1&#47;boards&#47;$boardId&#47;members?key=$apiKey&amp;token=$token&#39;),
+    Uri.parse(&#39;https:&#47;&#47;api.trello.com&#47;1&#47;boards&#47;$boardId&#47;members?key=$apiKey&amp;token=$token&#39;),
   );
 
   if (response.statusCode == 200) {
