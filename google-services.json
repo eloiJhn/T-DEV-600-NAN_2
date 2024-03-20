@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "87151672734",
+    "project_id": "trelltech-5a6ad",
+    "storage_bucket": "trelltech-5a6ad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:87151672734:android:caa5026e4ffad71dc42a8f",
+        "android_client_info": {
+          "package_name": "com.dev600.nan2.trelltech"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwW21JzPiNAG1Hfa6btTwE0muge-GbBVg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

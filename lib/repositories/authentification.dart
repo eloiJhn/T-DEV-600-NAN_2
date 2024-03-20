@@ -9,7 +9,6 @@ import 'package:trelltech/repositories/api.dart';
 import 'package:trelltech/views/dashboard/dashboard_view.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-
 /// Authenticate the user with Trello.
 ///
 /// This function initiates the authentication process with Trello, obtaining
@@ -34,12 +33,13 @@ Future<String?> authenticateWithTrello(BuildContext context) async {
   });
 
   // Verify that the Trello API key is present
-  if(trelloAPIKey == null || trelloAPPName == null) {
+  if (trelloAPIKey == null || trelloAPPName == null) {
     if (kDebugMode) {
       print('TRELLO_API_KEY or TRELLO_APP_NAME not found in the .env file');
     }
     FToast().showToast(
-      child: const Text('Une erreur est survenue lors de l\'authentification. Veuillez contacter le support avec le code d\'erreur ATH_NT_FND'),
+      child: const Text(
+          'Une erreur est survenue lors de l\'authentification. Veuillez contacter le support avec le code d\'erreur ATH_NT_FND'),
       gravity: ToastGravity.BOTTOM,
       toastDuration: const Duration(seconds: 3),
     );
@@ -75,7 +75,7 @@ Future<String?> authenticateWithTrello(BuildContext context) async {
       // Redirect the user to the dashboard page once authenticated (and remove the possibility to go back)
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => DashboardView()),
-            (Route<dynamic> route) => false,
+        (Route<dynamic> route) => false,
       );
       return accessToken;
     }
@@ -102,7 +102,8 @@ Future<void> disconnect(BuildContext context) async {
 /// @return True if the user is connected, false otherwise.
 Future<bool> isConnected() async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.containsKey('accessToken') && prefs.getString('accessToken') != null;
+  return prefs.containsKey('accessToken') &&
+      prefs.getString('accessToken') != null;
 }
 
 /// Get the access token of the user.
