@@ -4,10 +4,10 @@ class Board {
   String? desc;
   bool closed;
   String? idMemberCreator;
-  String idOrganization;
-  bool pinned;
-  String url;
-  String shortUrl;
+  String? idOrganization;
+  bool? pinned;
+  String? url;
+  String? shortUrl;
   String? bgImage;
   String? bgColor;
   /*
@@ -34,10 +34,10 @@ class Board {
     this.desc,
     required this.closed,
     this.idMemberCreator,
-    required this.idOrganization,
-    required this.pinned,
-    required this.url,
-    required this.shortUrl,
+    this.idOrganization,
+    this.pinned,
+    this.url,
+    this.shortUrl,
     this.bgImage,
     this.bgColor,
     /*

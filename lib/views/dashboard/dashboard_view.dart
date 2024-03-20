@@ -8,6 +8,7 @@ import 'package:trelltech/views/board/workspace_view.dart';
 import 'package:trelltech/widgets/informations_widget.dart';
 import 'package:trelltech/widgets/menu_widget.dart';
 import 'package:trelltech/views/organizations/organization_create_view.dart';
+import 'package:trelltech/widgets/menu_widget.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -110,15 +111,7 @@ class DashboardViewState extends State<DashboardView> {
       ),
       bottomNavigationBar: MenuWidget(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          var result = await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CreateOrganizationScreen()),
-          );
-          if (result == 'organizationCreated') {
-            _refreshData();
-          }
-        },
+        onPressed: _addNewOrganization,
         backgroundColor: const Color(0xFF0D1B50),
         foregroundColor: Colors.white,
         shape: const CircleBorder(),
@@ -126,4 +119,23 @@ class DashboardViewState extends State<DashboardView> {
       ),
     );
   }
+
+  Future<void> _addNewOrganization() async {
+    var result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CreateOrganizationScreen()),
+    );
+
+    if (result == 'organizationCreated') {
+      await _refreshData();
+
+      if (workspaces != null && workspaces!.isNotEmpty) {
+        setState(() {
+          var newOrganization = workspaces!.removeAt(0); // Supposer que la nouvelle org est en première position
+          workspaces!.add(newOrganization); // Ajouter la nouvelle organisation à la fin de la liste
+        });
+      }
+    }
+  }
 }
+
