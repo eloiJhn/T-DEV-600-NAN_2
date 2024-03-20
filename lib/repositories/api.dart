@@ -42,7 +42,7 @@ Future<dynamic> getMember(String apiKey, String token, String memberId) async {
 }
 
 Future<dynamic> getMembersFromCard(
-    String apiKey, String token, String cardId) async {
+    String apiKey, String? token, String cardId) async {
   final response = await http.get(
     Uri.parse(
         'https://api.trello.com/1/cards/$cardId/members?key=$apiKey&token=$token'),
@@ -56,7 +56,7 @@ Future<dynamic> getMembersFromCard(
 }
 
 Future<dynamic> getMembersFromBoard(
-    String apiKey, String token, String boardId) async {
+    String apiKey, String? token, String boardId) async {
   final response = await http.get(
     Uri.parse(
         'https://api.trello.com/1/boards/$boardId/members?key=$apiKey&token=$token'),
@@ -70,7 +70,7 @@ Future<dynamic> getMembersFromBoard(
 }
 
 Future<dynamic> addMemberToCard(
-    String apiKey, String token, String cardId, String memberId) async {
+    String apiKey, String? token, String cardId, String memberId) async {
   final response = await http.post(
     Uri.parse(
         'https://api.trello.com/1/cards/$cardId/idMembers?key=$apiKey&token=$token&value=$memberId'),
@@ -262,7 +262,7 @@ Future<void> deleteCard(String apiKey, String? token, String cardId) async {
 /// This function calls the Trello API to update the name of a specific card.
 /// It requires the user's API key, token, the card's ID, and the new name of the card.
 Future<void> updateCard(
-    String apiKey, String token, String cardId, TrelloCard card) async {
+    String apiKey, String? token, String cardId, TrelloCard card) async {
   final response = await http.put(
     Uri.parse(
         'https://api.trello.com/1/cards/$cardId?key=$apiKey&token=$token&desc=${card.desc}&name=${card.name}'),

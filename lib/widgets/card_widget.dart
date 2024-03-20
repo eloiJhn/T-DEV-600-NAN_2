@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trelltech/repositories/api.dart';
+import 'package:trelltech/repositories/authentification.dart';
 
 import '../models/trello_card.dart';
 
@@ -15,7 +16,6 @@ class CardWidget extends StatefulWidget {
 }
 
 class _CardWidgetState extends State<CardWidget> {
-  String? accessToken;
   String? selectedItem;
   List<Map<String, dynamic>> membersList = [];
 
@@ -26,8 +26,7 @@ class _CardWidgetState extends State<CardWidget> {
   }
 
   Future<void> _initialize() async {
-    await _getAccessToken();
-    if (mounted) { // Check if widget is mounted before calling setState
+    if (mounted) {
       await _getMembersBoard();
       setState(() {});
     }
@@ -35,7 +34,8 @@ class _CardWidgetState extends State<CardWidget> {
 
   Future<void> _getMembersBoard() async {
     var apiKey = dotenv.env['TRELLO_API_KEY'];
-    var members = await getMembersFromBoard(apiKey!, accessToken!, widget.card.idBoard);
+    var members = await getMembersFromBoard(
+        apiKey!, await getAccessToken(), widget.card.idBoard);
     if (mounted) {
       setState(() {
         members.forEach((member) {
@@ -45,24 +45,20 @@ class _CardWidgetState extends State<CardWidget> {
     }
   }
 
-  Future<void> _getAccessToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    accessToken = prefs.getString('accessToken');
-  }
-
   Future<dynamic> _getMembers(String cardId) async {
     var apiKey = dotenv.env['TRELLO_API_KEY'];
-    var members = await getMembersFromCard(apiKey!, accessToken!, cardId);
+    var members =
+        await getMembersFromCard(apiKey!, await getAccessToken(), cardId);
     return members;
   }
 
   Future<void> _addMember(String memberId) async {
     var apiKey = dotenv.env['TRELLO_API_KEY'];
-    await addMemberToCard(apiKey!, accessToken!, widget.card.id, memberId);
+    await addMemberToCard(
+        apiKey!, await getAccessToken(), widget.card.id, memberId);
   }
 
   Future<void> _updateCard(String name, String desc) async {
-
     TrelloCard card = TrelloCard(
       id: widget.card.id,
       name: name,
@@ -72,7 +68,7 @@ class _CardWidgetState extends State<CardWidget> {
       idMembers: widget.card.idMembers,
     );
     var apiKey = dotenv.env['TRELLO_API_KEY'];
-    await updateCard(apiKey!, accessToken!, widget.card.id, card);
+    await updateCard(apiKey!, await getAccessToken(), widget.card.id, card);
     setState(() {});
   }
 
@@ -95,18 +91,17 @@ class _CardWidgetState extends State<CardWidget> {
                     children: [
                       Expanded(
                         child: TextFormField(
-                          onChanged: (String value) {
-                            _updateCard(value, widget.card.desc);
-                          },
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                          ),
-                          initialValue: widget.card.name,
-                          style: const TextStyle(
-                            color: Color(0xFF1C39A1),
-                            fontSize: 20,
-                          )
-                        ),
+                            onChanged: (String value) {
+                              _updateCard(value, widget.card.desc);
+                            },
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                            ),
+                            initialValue: widget.card.name,
+                            style: const TextStyle(
+                              color: Color(0xFF1C39A1),
+                              fontSize: 20,
+                            )),
                       ),
                       IconButton(
                         icon: const Icon(
@@ -134,7 +129,8 @@ class _CardWidgetState extends State<CardWidget> {
                         ),
                       ),
                       labelText: 'Description',
-                      labelStyle: TextStyle(color: Color(0xFF1C39A1), fontSize: 20),
+                      labelStyle:
+                          TextStyle(color: Color(0xFF1C39A1), fontSize: 20),
                       border: OutlineInputBorder(),
                     ),
                     initialValue: widget.card.desc,
@@ -151,7 +147,8 @@ class _CardWidgetState extends State<CardWidget> {
                     height: 50,
                     child: FutureBuilder(
                       future: _getMembers(widget.card.id),
-                      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                      builder: (BuildContext context,
+                          AsyncSnapshot<dynamic> snapshot) {
                         if (snapshot.hasError) {
                           return Container();
                         } else {
@@ -169,18 +166,27 @@ class _CardWidgetState extends State<CardWidget> {
                                     Expanded(
                                       child: ListView.builder(
                                         scrollDirection: Axis.horizontal,
-                                        itemCount: snapshot.data != null ? snapshot.data.length : 0,
-                                        itemBuilder: (BuildContext context, int index) {
+                                        itemCount: snapshot.data != null
+                                            ? snapshot.data.length
+                                            : 0,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
                                           return CircleAvatar(
-                                            backgroundImage: NetworkImage(
-                                              snapshot.data[index]['avatarUrl'] != null ? snapshot.data[index]['avatarUrl'] + '/50.png' : 'https://placehold.co/50.png'
-                                            ),
+                                            backgroundImage: NetworkImage(snapshot
+                                                            .data[index]
+                                                        ['avatarUrl'] !=
+                                                    null
+                                                ? snapshot.data[index]
+                                                        ['avatarUrl'] +
+                                                    '/50.png'
+                                                : 'https://placehold.co/50.png'),
                                           );
                                         },
                                       ),
                                     ),
                                     IconButton(
-                                      icon: const Icon(Icons.add, size: 25, color: Color(0xFF1C39A1)),
+                                      icon: const Icon(Icons.add,
+                                          size: 25, color: Color(0xFF1C39A1)),
                                       onPressed: () {
                                         showDialog(
                                           context: context,
@@ -188,16 +194,23 @@ class _CardWidgetState extends State<CardWidget> {
                                             return StatefulBuilder(
                                               builder: (context, setState) {
                                                 return AlertDialog(
-                                                  title: const Text('Add Member'),
-                                                  content: DropdownButton<String>(
+                                                  title:
+                                                      const Text('Add Member'),
+                                                  content:
+                                                      DropdownButton<String>(
                                                     value: selectedItem,
-                                                    items: membersList.map((Map<String, dynamic> member) {
-                                                      return DropdownMenuItem<String>(
+                                                    items: membersList.map(
+                                                        (Map<String, dynamic>
+                                                            member) {
+                                                      return DropdownMenuItem<
+                                                          String>(
                                                         value: member["id"],
-                                                        child: Text(member["username"]),
+                                                        child: Text(
+                                                            member["username"]),
                                                       );
                                                     }).toList(),
-                                                    onChanged: (String? newValue) {
+                                                    onChanged:
+                                                        (String? newValue) {
                                                       setState(() {
                                                         selectedItem = newValue;
                                                       });
@@ -207,9 +220,12 @@ class _CardWidgetState extends State<CardWidget> {
                                                     TextButton(
                                                       child: const Text('Add'),
                                                       onPressed: () {
-                                                        if (selectedItem != null) {
-                                                          _addMember(selectedItem!);
-                                                          Navigator.of(context).pop();
+                                                        if (selectedItem !=
+                                                            null) {
+                                                          _addMember(
+                                                              selectedItem!);
+                                                          Navigator.of(context)
+                                                              .pop();
                                                         }
                                                       },
                                                     ),
@@ -226,7 +242,8 @@ class _CardWidgetState extends State<CardWidget> {
                               ),
                               Row(
                                 children: [
-                                  const Icon(Icons.calendar_today, size: 20, color: Color(0xFF1C39A1)),
+                                  const Icon(Icons.calendar_today,
+                                      size: 20, color: Color(0xFF1C39A1)),
                                   const SizedBox(width: 10),
                                   Text(widget.card.due ?? "No due date"),
                                 ],
