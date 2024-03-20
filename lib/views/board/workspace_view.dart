@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trelltech/models/board.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:palette_generator/palette_generator.dart';
@@ -37,6 +38,7 @@ class WorkspaceViewState extends State<WorkspaceView> {
   late String accessToken;
   late TrelloOrganization? organization = null;
   late Future<Color> bgColorFuture;
+  List<Board> _boards = [];
 
   WorkspaceViewState() {
     bgColorFuture = Future.value(Colors.grey);
@@ -47,12 +49,28 @@ class WorkspaceViewState extends State<WorkspaceView> {
     super.initState();
     _initialize();
   }
+
   Future<void> refreshData() async {
     _initialize();
   }
 
   Future<void> _initialize() async {
     accessToken = (await getAccessToken())!;
+
+    final prefs = await SharedPreferences.getInstance();
+    List<Board> updatedBoards = [];
+    for (var board in _boards) {
+      String? updatedName = prefs.getString('board_${board.id}_name');
+      if (updatedName != null) {
+        updatedBoards.add(board.copyWith(name: updatedName));
+      } else {
+        updatedBoards.add(board);
+      }
+    }
+
+    setState(() {
+      _boards = updatedBoards;
+    });
 
     try {
       organization = await getWorkspace(
@@ -61,8 +79,7 @@ class WorkspaceViewState extends State<WorkspaceView> {
         widget.workspaceId,
       );
     } catch (e) {
-      print(
-          'Erreur lors de la récupération des détails de l\'organisation: $e');
+      print('Erreur lors de la récupération des détails de l\'organisation: $e');
     }
 
     if (widget.boards.isNotEmpty) {
@@ -76,6 +93,7 @@ class WorkspaceViewState extends State<WorkspaceView> {
       setState(() {});
     }
   }
+
 
   bool get isOrganizationInitialized => organization != null;
 

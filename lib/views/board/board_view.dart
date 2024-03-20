@@ -106,6 +106,9 @@ class BoardViewState extends State<BoardView> {
     );
     var apiKey = dotenv.env['TRELLO_API_KEY'];
     await updateBoard(apiKey!, accessToken!, widget.board.id, board);
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('board_${widget.board.id}_name', name);
   }
 
   @override
