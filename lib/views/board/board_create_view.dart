@@ -95,7 +95,7 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
     }
   }
 
-  void _showTemplatePicker() async {
+  void _showTemplatePicker(Function(TrelloBoardTemplate) onSelect) async {
     final templates = await getBoardTemplates(
         dotenv.env['TRELLO_API_KEY']!, await getAccessToken());
 
@@ -153,10 +153,7 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
                                               height: 240,
                                               child: InkWell(
                                                 onTap: () {
-                                                  setState(() {
-                                                    _selectedTemplate =
-                                                        templates[index];
-                                                  });
+                                                  onSelect(templates[index]);
                                                   Navigator.of(context).pop();
                                                 },
                                               ),
@@ -313,7 +310,11 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
                                     setState(() {
                                       _selectedOption = 'template';
                                     });
-                                    _showTemplatePicker();
+                                    _showTemplatePicker((template) {
+                                      setState(() {
+                                        _selectedTemplate = template;
+                                      });
+                                    });
                                   },
                                   child: AspectRatio(
                                     aspectRatio: 1.0,
@@ -386,7 +387,11 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
                                       _selectedOption = 'template';
                                       _selectedTemplate = null;
                                     });
-                                    _showTemplatePicker();
+                                    _showTemplatePicker((template) {
+                                      setState(() {
+                                        _selectedTemplate = template;
+                                      });
+                                    });
                                   },
                                   child: AspectRatio(
                                     aspectRatio: 1.0,
