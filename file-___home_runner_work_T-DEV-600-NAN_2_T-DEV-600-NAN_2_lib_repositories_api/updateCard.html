@@ -84,9 +84,11 @@ It requires the user's API key, token, the card's ID, and the new name of the ca
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; updateCard(String apiKey, String token, String cardId, TrelloCard card) async {
+  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; updateCard(
+    String apiKey, String token, String cardId, TrelloCard card) async {
   final response = await http.put(
-    Uri.parse(&#39;https:&#47;&#47;api.trello.com&#47;1&#47;cards&#47;$cardId?key=$apiKey&amp;token=$token&amp;desc=${card.desc}&amp;name=${card.name}&#39;),
+    Uri.parse(
+        &#39;https:&#47;&#47;api.trello.com&#47;1&#47;cards&#47;$cardId?key=$apiKey&amp;token=$token&amp;desc=${card.desc}&amp;name=${card.name}&#39;),
   );
 
   if (response.statusCode != 200) {

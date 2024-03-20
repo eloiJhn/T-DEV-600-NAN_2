@@ -79,9 +79,11 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;dynamic&gt; addMemberToCard(String apiKey, String token, String cardId, String memberId) async {
+  <pre class="language-dart"><code class="language-dart">Future&lt;dynamic&gt; addMemberToCard(
+    String apiKey, String token, String cardId, String memberId) async {
   final response = await http.post(
-    Uri.parse(&#39;https:&#47;&#47;api.trello.com&#47;1&#47;cards&#47;$cardId&#47;idMembers?key=$apiKey&amp;token=$token&amp;value=$memberId&#39;),
+    Uri.parse(
+        &#39;https:&#47;&#47;api.trello.com&#47;1&#47;cards&#47;$cardId&#47;idMembers?key=$apiKey&amp;token=$token&amp;value=$memberId&#39;),
   );
 
   if (response.statusCode != 200) {

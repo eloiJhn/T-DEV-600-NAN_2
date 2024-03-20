@@ -79,9 +79,11 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;bool&gt; updateWorkspace(String apiKey, String? token, String workspaceId, TrelloOrganization organization) async {
+  <pre class="language-dart"><code class="language-dart">Future&lt;bool&gt; updateWorkspace(String apiKey, String? token, String workspaceId,
+    TrelloOrganization organization) async {
   final response = await http.put(
-    Uri.parse(&#39;https:&#47;&#47;api.trello.com&#47;1&#47;organizations&#47;$workspaceId?key=$apiKey&amp;token=$token&amp;displayName=${organization.displayName}&amp;desc=${organization.description}&#39;),
+    Uri.parse(
+        &#39;https:&#47;&#47;api.trello.com&#47;1&#47;organizations&#47;$workspaceId?key=$apiKey&amp;token=$token&amp;displayName=${organization.displayName}&amp;desc=${organization.description}&#39;),
   );
 
   if (response.statusCode != 200) {

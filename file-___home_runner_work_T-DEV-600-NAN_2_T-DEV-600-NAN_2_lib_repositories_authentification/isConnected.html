@@ -81,7 +81,8 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;bool&gt; isConnected() async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.containsKey(&#39;accessToken&#39;) &amp;&amp; prefs.getString(&#39;accessToken&#39;) != null;
+  return prefs.containsKey(&#39;accessToken&#39;) &amp;&amp;
+      prefs.getString(&#39;accessToken&#39;) != null;
 }</code></pre>
 </section>
 

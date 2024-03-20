@@ -85,7 +85,8 @@ It requires the user's API key, token, and the name of the workspace.</p>
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; createWorkspace(String apiKey, String token, String name) async {
   final response = await http.post(
-    Uri.parse(&#39;https:&#47;&#47;api.trello.com&#47;1&#47;organizations?key=$apiKey&amp;token=$token&amp;displayName=$name&#39;),
+    Uri.parse(
+        &#39;https:&#47;&#47;api.trello.com&#47;1&#47;organizations?key=$apiKey&amp;token=$token&amp;displayName=$name&#39;),
   );
 
   if (response.statusCode != 200) {
