@@ -9,6 +9,7 @@ import 'package:trelltech/models/trello_organization.dart';
 import 'package:trelltech/repositories/api.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:trelltech/repositories/authentification.dart';
+import 'package:trelltech/views/board/board_view.dart';
 
 class CreateBoardScreen extends StatefulWidget {
   String organizationId;
@@ -59,7 +60,7 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
       }
 
       try {
-        await createBoard(
+        Board board = await createBoard(
             apiKey,
             accessToken,
             _nameController.text,
@@ -76,7 +77,12 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
           textColor: Colors.white,
           fontSize: 16.0,
         );
-        Navigator.pop(context, 'boardCreated');
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BoardView(board: board),
+          ),
+        );
       } catch (e) {
         Fluttertoast.showToast(
           msg: AppLocalizations.of(context)!.boardCreationFailed,

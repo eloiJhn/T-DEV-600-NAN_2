@@ -86,7 +86,7 @@ Future<dynamic> addMemberToCard(
 /// It requires the user's API key, token, and the name of the board.
 /// Returns the ID of the new board.
 /// Throws an exception if the request fails.
-Future<String> createBoard(String apiKey, String token, String name,
+Future<Board> createBoard(String apiKey, String token, String name,
     String description, String workspaceId, String? templateId) async {
   if (templateId != null) {
     final response = await http.post(
@@ -96,7 +96,7 @@ Future<String> createBoard(String apiKey, String token, String name,
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      return data['id'];
+      return Board.fromJson(data);
     } else {
       throw Exception('Failed to create board');
     }
