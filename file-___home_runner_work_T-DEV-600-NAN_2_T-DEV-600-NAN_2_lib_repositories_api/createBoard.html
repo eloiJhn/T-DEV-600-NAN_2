@@ -63,7 +63,7 @@
     <section class="multi-line-signature">
         
 
-<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a></span>
 <span class="name ">createBoard</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="createBoard-param-apiKey"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">apiKey</span>, </span></li>
 <li><span class="parameter" id="createBoard-param-token"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">token</span>, </span></li>
 <li><span class="parameter" id="createBoard-param-name"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span>, </span></li>
@@ -88,7 +88,7 @@ Throws an exception if the request fails.</p>
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;String&gt; createBoard(String apiKey, String token, String name,
+  <pre class="language-dart"><code class="language-dart">Future&lt;Board&gt; createBoard(String apiKey, String token, String name,
     String description, String workspaceId, String? templateId) async {
   if (templateId != null) {
     final response = await http.post(
@@ -98,7 +98,7 @@ Throws an exception if the request fails.</p>
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      return data[&#39;id&#39;];
+      return Board.fromJson(data);
     } else {
       throw Exception(&#39;Failed to create board&#39;);
     }
