@@ -116,7 +116,7 @@ Widget build(BuildContext context) {
                 MaterialPageRoute(
                   builder: (context) =&gt; BoardView(board: board),
                 ),
-              );
+              ).then((value) =&gt; refresh());
             }
           },
           child: Opacity(
