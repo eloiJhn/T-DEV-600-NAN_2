@@ -10,11 +10,14 @@ import 'package:trelltech/models/board.dart';
 import 'package:trelltech/models/trello_card.dart';
 import 'package:trelltech/models/trello_list.dart';
 import 'package:trelltech/repositories/api.dart';
+import 'package:trelltech/views/board/workspace_view.dart';
 import 'package:trelltech/repositories/authentification.dart';
 import 'package:trelltech/widgets/card_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:trelltech/widgets/empty_widget.dart';
 import 'package:trelltech/widgets/menu_widget.dart';
+import '../dashboard/dashboard_view.dart';
+import 'board_edit_view.dart';
 
 class BoardView extends StatefulWidget {
   final Board board;
@@ -28,18 +31,35 @@ class BoardView extends StatefulWidget {
 class BoardViewState extends State<BoardView> {
   late CarouselController carouselController;
   bool _editList = false;
+  late Board board;
+  final TextEditingController _nameController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _initialize();
     carouselController = CarouselController();
+    _nameController.text = widget.board.name;
   }
-
+  
   Future<void> _initialize() async {
-    setState(() {});
-  }
+    accessToken = (await getAccessToken())!;
 
+    try {
+      board = await getBoard(
+        dotenv.env['TRELLO_API_KEY']!,
+        accessToken,
+        widget.board.id,
+      );
+    } catch (e) {
+      print('Erreur lors de la récupération des détails du tableau: $e');
+    }
+
+    if (mounted) {
+      setState(() {});
+    }
+  }
+  
   Future<List<TrelloList>> _getLists() async {
     var apiKey = dotenv.env['TRELLO_API_KEY'];
     var lists =
@@ -74,9 +94,12 @@ class BoardViewState extends State<BoardView> {
       idOrganization: widget.board.idOrganization,
       closed: widget.board.closed,
       pinned: widget.board.pinned,
+      desc: widget.board.desc,
       url: widget.board.url,
       shortUrl: widget.board.shortUrl,
     );
+    _nameController.text = name;
+
     var apiKey = dotenv.env['TRELLO_API_KEY'];
     await updateBoard(apiKey!, await getAccessToken(), widget.board.id, board);
   }
@@ -85,20 +108,30 @@ class BoardViewState extends State<BoardView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: TextFormField(
-              onChanged: (String value) {
-                setState(() {
-                  _updateBoard(value);
-                });
-              },
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-              ),
-              initialValue: widget.board.name,
-              style: const TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-              ))),
+        title: TextFormField(
+          controller: _nameController,
+          onChanged: (String value) {
+            _updateBoard(value);
+          },
+          decoration: const InputDecoration(
+            border: InputBorder.none,
+          ),
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+          ),
+        ),
+        actions: <Widget>[
+          CustomPopupMenuButton(
+            boardId: widget.board.id,
+            onBoardUpdated: (updatedBoard) {
+              setState(() {
+                _nameController.text = updatedBoard.name;
+              });
+            },
+          ),
+        ],
+      ),
       body: Container(
         decoration: BoxDecoration(
           image: widget.board.bgImage != null
@@ -159,7 +192,9 @@ class BoardViewState extends State<BoardView> {
                                           child: TextFormField(
                                               onChanged: (String value) {
                                                 _updateList(value,
-                                                    snapshot.data![item].id);
+                                                        snapshot.data![item].id)
+                                                    .then((value) =>
+                                                        _initialize());
                                               },
                                               decoration: const InputDecoration(
                                                 border: InputBorder.none,
@@ -293,6 +328,16 @@ class BoardViewState extends State<BoardView> {
                                             ),
                                             Expanded(
                                               child: TextField(
+                                                onSubmitted: (String value) {
+                                                  setState(() {
+                                                    createCard(
+                                                        dotenv.env[
+                                                            'TRELLO_API_KEY']!,
+                                                        accessToken!,
+                                                        snapshot.data![item].id,
+                                                        value);
+                                                  });
+                                                },
                                                 style: const TextStyle(
                                                     color: Colors.white),
                                                 decoration:
@@ -315,6 +360,108 @@ class BoardViewState extends State<BoardView> {
             }),
       ),
       bottomNavigationBar: MenuWidget(), // Here is where you add the MenuWidget
+    );
+  }
+}
+
+class CustomPopupMenuButton extends StatelessWidget {
+  final String boardId;
+  final Function(Board) onBoardUpdated;
+
+  const CustomPopupMenuButton({
+    super.key,
+    required this.boardId,
+    required this.onBoardUpdated,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.more_vert),
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return SizedBox(
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                children: <Widget>[
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        ListTile(
+                          leading: const Icon(Icons.edit),
+                          title: const Text('Modifier'),
+                          onTap: () async {
+                            final result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    EditBoardScreen(boardId: boardId),
+                              ),
+                            );
+
+                            if (result != null) {
+                              final updatedBoard = result as Board;
+                              onBoardUpdated(updatedBoard);
+                            }
+                          },
+                        ),
+                        ListTile(
+                          leading: const Icon(Icons.delete),
+                          title: const Text('Supprimer'),
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Supprimer le tableau'),
+                                    content: const Text(
+                                        'Êtes-vous sûr de vouloir supprimer ce tableau ?'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('Annuler'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () async {
+                                          deleteBoard(
+                                                  dotenv.env['TRELLO_API_KEY']!,
+                                                  (await getAccessToken())!,
+                                                  boardId)
+                                              .then((value) {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const DashboardView()),
+                                            );
+                                          });
+                                        },
+                                        child: const Text('Supprimer'),
+                                      ),
+                                    ],
+                                  );
+                                });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

@@ -136,16 +136,15 @@ Future<List<Board>> getBoards(
   }
 }
 
-Future<void> updateBoard(
-    String apiKey, String? token, String boardId, Board board) async {
+Future<bool> updateBoard(String apiKey, String? token, String boardId, Board board) async {
   final response = await http.put(
-    Uri.parse(
-        'https://api.trello.com/1/boards/$boardId?key=$apiKey&token=$token&name=${board.name}'),
+    Uri.parse('https://api.trello.com/1/boards/$boardId?key=$apiKey&token=$token&name=${board.name}&desc=${board.desc}'),
   );
 
   if (response.statusCode != 200) {
     throw Exception('Failed to update board');
   }
+  return true;
 }
 
 /// Fetches the user's workspaces from Trello.
@@ -229,8 +228,16 @@ Future<void> createCard(
         'https://api.trello.com/1/cards?key=$apiKey&token=$token&idList=$listId&name=$name'),
   );
 
-  if (response.statusCode != 200) {
-    throw Exception('Failed to create card');
+  if (response.statusCode == 200) {
+    Fluttertoast.showToast(
+      msg: "Ajout effectué",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.green,
+      textColor: Colors.white,
+    );
+  } else {
+    throw Exception('Failed to create a card');
   }
 }
 
@@ -350,6 +357,34 @@ Future<TrelloOrganization> getWorkspace(
     return TrelloOrganization.fromJson(data);
   } else {
     throw Exception('Failed to load workspace');
+  }
+}
+
+Future<Board> getBoard(String apiKey, String? token, String boardId) async {
+  final response = await http.get(
+    Uri.parse('https://api.trello.com/1/boards/$boardId?key=$apiKey&token=$token'),
+  );
+
+  if (response.statusCode == 200) {
+    var data = jsonDecode(response.body);
+    return Board.fromJson(data);
+  } else {
+    throw Exception('Failed to load workspace');
+  }
+}
+
+
+/// Deletes a specific board from Trello.
+///
+/// This function calls the Trello API to delete a specific board.
+/// It requires the user's API key, token, and the board's ID.
+Future<void> deleteBoard(String apiKey, String token, String boardId) async {
+  final response = await http.delete(
+    Uri.parse('https://api.trello.com/1/boards/$boardId?key=$apiKey&token=$token'),
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to delete board');
   }
 }
 
