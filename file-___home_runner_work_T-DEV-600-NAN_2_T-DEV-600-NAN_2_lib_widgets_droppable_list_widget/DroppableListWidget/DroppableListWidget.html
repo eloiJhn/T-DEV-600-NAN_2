@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the TrelloList constructor from Class TrelloList from the trello_list library, for the Dart programming language.">
-  <title>TrelloList constructor - TrelloList - trello_list library - Dart API</title>
+  <meta name="description" content="API docs for the DroppableListWidget constructor from Class DroppableListWidget from the droppable_list_widget library, for the Dart programming language.">
+  <title>DroppableListWidget constructor - DroppableListWidget - droppable_list_widget library - Dart API</title>
 
 
   
@@ -29,11 +29,11 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_list/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_list-library.html">models&#47;trello_list.dart</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_list/TrelloList-class.html">TrelloList</a></li>
-    <li class="self-crumb">TrelloList constructor</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_droppable_list_widget/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_droppable_list_widget-library.html">widgets&#47;droppable_list_widget.dart</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_droppable_list_widget/DroppableListWidget-class.html">DroppableListWidget</a></li>
+    <li class="self-crumb">DroppableListWidget constructor</li>
   </ol>
-  <div class="self-name">TrelloList</div>
+  <div class="self-name">DroppableListWidget</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -54,16 +54,19 @@
   <div
       id="dartdoc-main-content"
       class="main-content"
-      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_list&#47;TrelloList-class-sidebar.html"
+      data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_droppable_list_widget&#47;DroppableListWidget-class-sidebar.html"
       data-below-sidebar="">
       <div>
-<h1><span class="kind-constructor">TrelloList</span> constructor 
+<h1><span class="kind-constructor">DroppableListWidget</span> constructor 
 </h1></div>
 
     <section class="multi-line-signature">
       
-      <span class="name ">TrelloList</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="-param-id">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">id</span>, </span></li>
-<li><span class="parameter" id="-param-name"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span>, </span></li>
+      <span class="name ">DroppableListWidget</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="-param-list">{<span>required</span> <span class="type-annotation">dynamic</span> <span class="parameter-name">list</span>, </span></li>
+<li><span class="parameter" id="-param-onCardDropped"><span>required</span> <span class="type-annotation">dynamic</span> <span class="parameter-name">onCardDropped</span>(<ol class="parameter-list"><li><span class="parameter" id="param-"><span class="type-annotation">dynamic</span>, </span></li>
+<li><span class="parameter" id="param-"><span class="type-annotation">dynamic</span></span></li>
+</ol>
+), </span></li>
 <li><span class="parameter" id="-param-cards"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a></span> <span class="parameter-name">cards</span>}</span></li>
 </ol>)
     </section>
@@ -74,17 +77,7 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">TrelloList({
-  required this.id,
-  required this.name,
-  required this.cards,  &#47;&#47; Initialisation de cards
-  &#47;&#47; required this.closed,
-  &#47;&#47; required this.pos,
-  &#47;&#47; required this.softLimit,
-  &#47;&#47; required this.idBoard,
-  &#47;&#47; required this.subscribed,
-  &#47;&#47; required this.limits,
-});</code></pre>
+  <pre class="language-dart"><code class="language-dart">DroppableListWidget({required this.list, required this.onCardDropped, required List&lt;TrelloCard&gt; cards});</code></pre>
 </section>
 
 
@@ -100,13 +93,13 @@
 
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_list/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_list-library.html">trello_list</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_list/TrelloList-class.html">TrelloList</a></li>
-    <li class="self-crumb">TrelloList constructor</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_droppable_list_widget/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_droppable_list_widget-library.html">droppable_list_widget</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_widgets_droppable_list_widget/DroppableListWidget-class.html">DroppableListWidget</a></li>
+    <li class="self-crumb">DroppableListWidget constructor</li>
 </ol>
 
 
-    <h5>TrelloList class</h5>
+    <h5>DroppableListWidget class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-left-->
 

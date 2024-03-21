@@ -73,9 +73,13 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">factory TrelloList.fromJson(Map&lt;String, dynamic&gt; json) {
+  var cardsJson = json[&#39;cards&#39;] as List&lt;dynamic&gt;? ?? [];
+  List&lt;TrelloCard&gt; cardsList = cardsJson.map((cardJson) =&gt; TrelloCard.fromJson(cardJson)).toList();
+
   return TrelloList(
     id: json[&#39;id&#39;],
     name: json[&#39;name&#39;],
+    cards: cardsList,  &#47;&#47; Assignation des cartes décodées
     &#47;&#47; closed: json[&#39;closed&#39;],
     &#47;&#47; pos: json[&#39;pos&#39;],
     &#47;&#47; softLimit: json[&#39;softLimit&#39;],
