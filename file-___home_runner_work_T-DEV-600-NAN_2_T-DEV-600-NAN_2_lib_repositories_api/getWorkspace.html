@@ -83,15 +83,14 @@ It requires the user's API key, token, the workspace's ID, and the new name of t
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;TrelloOrganization&gt; getWorkspace(
-    String apiKey, String? token, String workspaceId) async {
+  <pre class="language-dart"><code class="language-dart">Future&lt;TrelloOrganization&gt; getWorkspace(String apiKey, String? token, String workspaceId) async {
   final response = await http.get(
-    Uri.parse(
-        &#39;https:&#47;&#47;api.trello.com&#47;1&#47;organizations&#47;$workspaceId?key=$apiKey&amp;token=$token&#39;),
+    Uri.parse(&#39;https:&#47;&#47;api.trello.com&#47;1&#47;organizations&#47;$workspaceId?key=$apiKey&amp;token=$token&#39;),
   );
 
   if (response.statusCode == 200) {
     var data = jsonDecode(response.body);
+    print(data);
     return TrelloOrganization.fromJson(data);
   } else {
     throw Exception(&#39;Failed to load workspace&#39;);

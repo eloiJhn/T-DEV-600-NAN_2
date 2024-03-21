@@ -84,11 +84,9 @@ It requires the user's API key, token, the card's ID, and the ID of the list to 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; moveCard(
-    String apiKey, String token, String cardId, String listId) async {
+  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; moveCard(String apiKey, String token, String cardId, String listId) async {
   final response = await http.put(
-    Uri.parse(
-        &#39;https:&#47;&#47;api.trello.com&#47;1&#47;cards&#47;$cardId?key=$apiKey&amp;token=$token&amp;idList=$listId&#39;),
+    Uri.parse(&#39;https:&#47;&#47;api.trello.com&#47;1&#47;cards&#47;$cardId?key=$apiKey&amp;token=$token&amp;idList=$listId&#39;),
   );
 
   if (response.statusCode != 200) {

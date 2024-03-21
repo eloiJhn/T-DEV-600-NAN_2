@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
   <meta name="description" content="API docs for the build method from the CustomPopupMenuButton class, for the Dart programming language.">
-  <title>build method - CustomPopupMenuButton class - workspace_view library - Dart API</title>
+  <title>build method - CustomPopupMenuButton class - board_view library - Dart API</title>
 
 
   
@@ -29,8 +29,8 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view-library.html">views&#47;board&#47;workspace_view.dart</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/CustomPopupMenuButton-class.html">CustomPopupMenuButton</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view-library.html">views&#47;board&#47;board_view.dart</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view/CustomPopupMenuButton-class.html">CustomPopupMenuButton</a></li>
     <li class="self-crumb">build method</li>
   </ol>
   <div class="self-name">build</div>
@@ -54,7 +54,7 @@
 <div
     id="dartdoc-main-content"
     class="main-content"
-    data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view&#47;CustomPopupMenuButton-class-sidebar.html"
+    data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view&#47;CustomPopupMenuButton-class-sidebar.html"
     data-below-sidebar="">
     <div>
 <h1><span class="kind-method">build</span> method 
@@ -106,15 +106,19 @@ Widget build(BuildContext context) {
                       ListTile(
                         leading: const Icon(Icons.edit),
                         title: const Text(&#39;Modifier&#39;),
-                        onTap: () {
-                          Navigator.pushReplacement(
+                        onTap: () async {
+                          final result = await Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =&gt; EditOrganizationScreen(
-                                  organisationId: organisationId,
-                                  boards: boards),
+                              builder: (context) =&gt;
+                                  EditBoardScreen(boardId: boardId),
                             ),
-                          ).then((value) =&gt; state.refreshData());
+                          );
+
+                          if (result != null) {
+                            final updatedBoard = result as Board;
+                            onBoardUpdated(updatedBoard);
+                          }
                         },
                       ),
                       ListTile(
@@ -125,10 +129,9 @@ Widget build(BuildContext context) {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title:
-                                      const Text(&#39;Supprimer l\&#39;organisation&#39;),
+                                  title: const Text(&#39;Supprimer le tableau&#39;),
                                   content: const Text(
-                                      &#39;Êtes-vous sûr de vouloir supprimer cette organisation ?&#39;),
+                                      &#39;Êtes-vous sûr de vouloir supprimer ce tableau ?&#39;),
                                   actions: &lt;Widget&gt;[
                                     TextButton(
                                       onPressed: () {
@@ -138,17 +141,15 @@ Widget build(BuildContext context) {
                                     ),
                                     TextButton(
                                       onPressed: () async {
-                                        deleteWorkspace(
+                                        deleteBoard(
                                                 dotenv.env[&#39;TRELLO_API_KEY&#39;]!,
                                                 (await getAccessToken())!,
-                                                organisationId)
+                                                boardId)
                                             .then((value) {
-                                          Navigator.of(context)
-                                              .pushAndRemoveUntil(
+                                          Navigator.of(context).push(
                                             MaterialPageRoute(
                                                 builder: (context) =&gt;
-                                                    DashboardView()),
-                                            (Route&lt;dynamic&gt; route) =&gt; false,
+                                                    const DashboardView()),
                                           );
                                         });
                                       },
@@ -185,8 +186,8 @@ Widget build(BuildContext context) {
 
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view-library.html">workspace_view</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_workspace_view/CustomPopupMenuButton-class.html">CustomPopupMenuButton</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view-library.html">board_view</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_views_board_board_view/CustomPopupMenuButton-class.html">CustomPopupMenuButton</a></li>
     <li class="self-crumb">build method</li>
 </ol>
 

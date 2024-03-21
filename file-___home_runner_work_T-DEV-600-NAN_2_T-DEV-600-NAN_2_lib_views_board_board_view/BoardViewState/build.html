@@ -85,20 +85,30 @@
 Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(
-        title: TextFormField(
-            onChanged: (String value) {
-              setState(() {
-                _updateBoard(value);
-              });
-            },
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-            ),
-            initialValue: widget.board.name,
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-            ))),
+      title: TextFormField(
+        controller: _nameController,
+        onChanged: (String value) {
+          _updateBoard(value);
+        },
+        decoration: const InputDecoration(
+          border: InputBorder.none,
+        ),
+        style: const TextStyle(
+          color: Colors.black,
+          fontSize: 20,
+        ),
+      ),
+      actions: &lt;Widget&gt;[
+        CustomPopupMenuButton(
+          boardId: widget.board.id,
+          onBoardUpdated: (updatedBoard) {
+            setState(() {
+              _nameController.text = updatedBoard.name;
+            });
+          },
+        ),
+      ],
+    ),
     body: Container(
       decoration: BoxDecoration(
         image: widget.board.bgImage != null
@@ -159,7 +169,9 @@ Widget build(BuildContext context) {
                                         child: TextFormField(
                                             onChanged: (String value) {
                                               _updateList(value,
-                                                  snapshot.data![item].id);
+                                                      snapshot.data![item].id)
+                                                  .then((value) =&gt;
+                                                      refreshData());
                                             },
                                             decoration: const InputDecoration(
                                               border: InputBorder.none,
@@ -248,12 +260,11 @@ Widget build(BuildContext context) {
                                                             ),
                                                             onPressed: () =&gt; {
                                                               &#47;&#47; _deleteCard(snapshot.data![index].id),
-                                                              setState(
-                                                                  () async {
+                                                              setState(() {
                                                                 deleteCard(
                                                                     dotenv.env[
                                                                         &#39;TRELLO_API_KEY&#39;]!,
-                                                                    await getAccessToken(),
+                                                                    accessToken!,
                                                                     snapshot
                                                                         .data![
                                                                             index]
@@ -293,6 +304,16 @@ Widget build(BuildContext context) {
                                           ),
                                           Expanded(
                                             child: TextField(
+                                              onSubmitted: (String value) {
+                                                setState(() {
+                                                  createCard(
+                                                      dotenv.env[
+                                                          &#39;TRELLO_API_KEY&#39;]!,
+                                                      accessToken!,
+                                                      snapshot.data![item].id,
+                                                      value);
+                                                });
+                                              },
                                               style: const TextStyle(
                                                   color: Colors.white),
                                               decoration:
