@@ -136,9 +136,11 @@ Future<List<Board>> getBoards(
   }
 }
 
-Future<bool> updateBoard(String apiKey, String? token, String boardId, Board board) async {
+Future<bool> updateBoard(
+    String apiKey, String? token, String boardId, Board board) async {
   final response = await http.put(
-    Uri.parse('https://api.trello.com/1/boards/$boardId?key=$apiKey&token=$token&name=${board.name}&desc=${board.desc}'),
+    Uri.parse(
+        'https://api.trello.com/1/boards/$boardId?key=$apiKey&token=$token&name=${board.name}&desc=${board.desc}'),
   );
 
   if (response.statusCode != 200) {
@@ -222,7 +224,7 @@ Future<List<dynamic>> getCards(
 /// This function calls the Trello API to create a new card in a specific list.
 /// It requires the user's API key, token, the list's ID, and the name of the card.
 Future<void> createCard(
-    String apiKey, String token, String listId, String name) async {
+    String apiKey, String? token, String listId, String name) async {
   final response = await http.post(
     Uri.parse(
         'https://api.trello.com/1/cards?key=$apiKey&token=$token&idList=$listId&name=$name'),
@@ -362,7 +364,8 @@ Future<TrelloOrganization> getWorkspace(
 
 Future<Board> getBoard(String apiKey, String? token, String boardId) async {
   final response = await http.get(
-    Uri.parse('https://api.trello.com/1/boards/$boardId?key=$apiKey&token=$token'),
+    Uri.parse(
+        'https://api.trello.com/1/boards/$boardId?key=$apiKey&token=$token'),
   );
 
   if (response.statusCode == 200) {
@@ -373,14 +376,14 @@ Future<Board> getBoard(String apiKey, String? token, String boardId) async {
   }
 }
 
-
 /// Deletes a specific board from Trello.
 ///
 /// This function calls the Trello API to delete a specific board.
 /// It requires the user's API key, token, and the board's ID.
 Future<void> deleteBoard(String apiKey, String token, String boardId) async {
   final response = await http.delete(
-    Uri.parse('https://api.trello.com/1/boards/$boardId?key=$apiKey&token=$token'),
+    Uri.parse(
+        'https://api.trello.com/1/boards/$boardId?key=$apiKey&token=$token'),
   );
 
   if (response.statusCode != 200) {

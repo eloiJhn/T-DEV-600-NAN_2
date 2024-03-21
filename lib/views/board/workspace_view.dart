@@ -173,7 +173,8 @@ class WorkspaceViewState extends State<WorkspaceView> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CreateBoardScreen(),
+                            builder: (context) => CreateBoardScreen(
+                                organizationId: widget.workspaceId),
                           ),
                         );
                       },

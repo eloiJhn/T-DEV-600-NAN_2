@@ -41,14 +41,12 @@ class BoardViewState extends State<BoardView> {
     carouselController = CarouselController();
     _nameController.text = widget.board.name;
   }
-  
-  Future<void> _initialize() async {
-    accessToken = (await getAccessToken())!;
 
+  Future<void> _initialize() async {
     try {
       board = await getBoard(
         dotenv.env['TRELLO_API_KEY']!,
-        accessToken,
+        await getAccessToken(),
         widget.board.id,
       );
     } catch (e) {
@@ -59,7 +57,7 @@ class BoardViewState extends State<BoardView> {
       setState(() {});
     }
   }
-  
+
   Future<List<TrelloList>> _getLists() async {
     var apiKey = dotenv.env['TRELLO_API_KEY'];
     var lists =
@@ -329,11 +327,11 @@ class BoardViewState extends State<BoardView> {
                                             Expanded(
                                               child: TextField(
                                                 onSubmitted: (String value) {
-                                                  setState(() {
+                                                  setState(() async {
                                                     createCard(
                                                         dotenv.env[
                                                             'TRELLO_API_KEY']!,
-                                                        accessToken!,
+                                                        await getAccessToken(),
                                                         snapshot.data![item].id,
                                                         value);
                                                   });
