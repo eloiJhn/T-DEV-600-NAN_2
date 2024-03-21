@@ -89,15 +89,7 @@ It requires the user's API key, token, and the card's ID.</p>
         &#39;https:&#47;&#47;api.trello.com&#47;1&#47;cards&#47;$cardId?key=$apiKey&amp;token=$token&#39;),
   );
 
-  if (response.statusCode == 200) {
-    Fluttertoast.showToast(
-      msg: &quot;Suppression effectuée&quot;,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-    );
-  } else {
+  if (response.statusCode != 200) {
     throw Exception(&#39;Failed to delete card&#39;);
   }
 }</code></pre>

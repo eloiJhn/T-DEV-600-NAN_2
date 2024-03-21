@@ -258,20 +258,42 @@ Widget build(BuildContext context) {
                                                               color: Colors
                                                                   .white,
                                                             ),
-                                                            onPressed: () =&gt; {
-                                                              &#47;&#47; _deleteCard(snapshot.data![index].id),
-                                                              setState(
-                                                                  () async {
-                                                                deleteCard(
-                                                                    dotenv.env[
-                                                                        &#39;TRELLO_API_KEY&#39;]!,
-                                                                    await getAccessToken(),
-                                                                    snapshot
-                                                                        .data![
-                                                                            index]
-                                                                        .id);
-                                                                _editList =
-                                                                    false;
+                                                            onPressed:
+                                                                () async =&gt; {
+                                                              deleteCard(
+                                                                      dotenv.env[
+                                                                          &#39;TRELLO_API_KEY&#39;]!,
+                                                                      await getAccessToken(),
+                                                                      snapshot
+                                                                          .data![
+                                                                              index]
+                                                                          .id!)
+                                                                  .then(
+                                                                      (value) {
+                                                                Fluttertoast.showToast(
+                                                                    msg:
+                                                                        &#39;Carte supprimée avec succès&#39;,
+                                                                    toastLength:
+                                                                        Toast
+                                                                            .LENGTH_SHORT,
+                                                                    gravity: ToastGravity
+                                                                        .BOTTOM,
+                                                                    timeInSecForIosWeb:
+                                                                        1,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .green,
+                                                                    textColor:
+                                                                        Colors
+                                                                            .white,
+                                                                    fontSize:
+                                                                        16.0);
+                                                                setState(() {
+                                                                  _getCardsByList(
+                                                                      snapshot
+                                                                          .data![index]
+                                                                          .id);
+                                                                });
                                                               })
                                                             },
                                                           ),
