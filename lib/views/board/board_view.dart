@@ -11,12 +11,11 @@ import 'package:trelltech/models/trello_card.dart';
 import 'package:trelltech/models/trello_list.dart';
 import 'package:trelltech/repositories/api.dart';
 import 'package:trelltech/views/board/workspace_view.dart';
+import 'package:trelltech/repositories/authentification.dart';
 import 'package:trelltech/widgets/card_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:trelltech/widgets/empty_widget.dart';
 import 'package:trelltech/widgets/menu_widget.dart';
-
-import '../../repositories/authentification.dart';
 import '../dashboard/dashboard_view.dart';
 import 'board_edit_view.dart';
 
@@ -30,7 +29,6 @@ class BoardView extends StatefulWidget {
 }
 
 class BoardViewState extends State<BoardView> {
-  String? accessToken;
   late CarouselController carouselController;
   bool _editList = false;
   late Board board;
@@ -43,11 +41,7 @@ class BoardViewState extends State<BoardView> {
     carouselController = CarouselController();
     _nameController.text = widget.board.name;
   }
-
-  Future<void> refreshData() async {
-    _initialize();
-  }
-
+  
   Future<void> _initialize() async {
     accessToken = (await getAccessToken())!;
 
@@ -65,10 +59,11 @@ class BoardViewState extends State<BoardView> {
       setState(() {});
     }
   }
-
+  
   Future<List<TrelloList>> _getLists() async {
     var apiKey = dotenv.env['TRELLO_API_KEY'];
-    var lists = await getLists(apiKey!, accessToken!, widget.board.id);
+    var lists =
+        await getLists(apiKey!, await getAccessToken(), widget.board.id!);
     List<TrelloList> listList =
         lists.map((item) => TrelloList.fromJson(item)).toList();
     return listList;
@@ -76,7 +71,7 @@ class BoardViewState extends State<BoardView> {
 
   Future<List<TrelloCard>> _getCardsByList(String trelloListId) async {
     var apiKey = dotenv.env['TRELLO_API_KEY'];
-    var cards = await getCards(apiKey!, accessToken!, trelloListId);
+    var cards = await getCards(apiKey!, await getAccessToken(), trelloListId);
     List<TrelloCard> listCard =
         cards.map((item) => TrelloCard.fromJson(item)).toList();
     return listCard;
@@ -88,7 +83,7 @@ class BoardViewState extends State<BoardView> {
       name: name,
     );
     var apiKey = dotenv.env['TRELLO_API_KEY'];
-    await updateList(apiKey!, accessToken!, listId, list);
+    await updateList(apiKey!, await getAccessToken(), listId, list);
     setState(() {});
   }
 
@@ -106,10 +101,7 @@ class BoardViewState extends State<BoardView> {
     _nameController.text = name;
 
     var apiKey = dotenv.env['TRELLO_API_KEY'];
-    await updateBoard(apiKey!, accessToken!, widget.board.id, board);
-
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('board_${widget.board.id}_name', name);
+    await updateBoard(apiKey!, await getAccessToken(), widget.board.id, board);
   }
 
   @override
@@ -202,7 +194,7 @@ class BoardViewState extends State<BoardView> {
                                                 _updateList(value,
                                                         snapshot.data![item].id)
                                                     .then((value) =>
-                                                        refreshData());
+                                                        _initialize());
                                               },
                                               decoration: const InputDecoration(
                                                 border: InputBorder.none,
@@ -291,11 +283,12 @@ class BoardViewState extends State<BoardView> {
                                                               ),
                                                               onPressed: () => {
                                                                 // _deleteCard(snapshot.data![index].id),
-                                                                setState(() {
+                                                                setState(
+                                                                    () async {
                                                                   deleteCard(
                                                                       dotenv.env[
                                                                           'TRELLO_API_KEY']!,
-                                                                      accessToken!,
+                                                                      await getAccessToken(),
                                                                       snapshot
                                                                           .data![
                                                                               index]

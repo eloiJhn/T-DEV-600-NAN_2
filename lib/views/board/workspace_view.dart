@@ -50,10 +50,6 @@ class WorkspaceViewState extends State<WorkspaceView> {
     _initialize();
   }
 
-  Future<void> refreshData() async {
-    _initialize();
-  }
-
   Future<void> _initialize() async {
     accessToken = (await getAccessToken())!;
 
@@ -109,9 +105,22 @@ class WorkspaceViewState extends State<WorkspaceView> {
     return await PaletteGenerator.fromImageProvider(provider);
   }
 
+  Future<void> _addNewBoard() async {
+    var result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              CreateBoardScreen(organizationId: widget.workspaceId)),
+    );
+
+    if (result == 'boardCreated') {
+      await _initialize();
+    }
+  }
+
   Future<Color> _getBgColor(String? color, String? imageUrl) async {
     if (color != null) {
-      String colorHex = color!.split('#')[1];
+      String colorHex = color.split('#')[1];
       int colorInt = int.parse(colorHex, radix: 16);
       int colorBinary = 0xFF000000 + colorInt;
       return Color(colorBinary);
@@ -132,7 +141,7 @@ class WorkspaceViewState extends State<WorkspaceView> {
       future: bgColorFuture,
       builder: (BuildContext context, AsyncSnapshot<Color> snapshot) {
         return RefreshIndicator(
-            onRefresh: refreshData,
+            onRefresh: _initialize,
             child: _buildWorkspaceView(snapshot.data ?? Colors.grey));
       },
     );
@@ -178,13 +187,7 @@ class WorkspaceViewState extends State<WorkspaceView> {
       bottomNavigationBar: MenuWidget(),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          var result = await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CreateBoardScreen()),
-          );
-          if (result == 'organizationCreated') {
-            refreshData();
-          }
+          _addNewBoard();
         },
         backgroundColor: const Color(0xFF0D1B50),
         foregroundColor: Colors.white,
@@ -389,7 +392,7 @@ class CustomPopupMenuButton extends StatelessWidget {
                                     organisationId: organisationId,
                                     boards: boards),
                               ),
-                            ).then((value) => state.refreshData());
+                            ).then((value) => state._initialize());
                           },
                         ),
                         ListTile(
