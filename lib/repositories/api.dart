@@ -121,7 +121,7 @@ Future<Board> createBoard(String apiKey, String token, String name,
 /// It requires the user's API key, token, and the workspace ID.
 /// Returns a list of boards.
 Future<List<Board>> getBoards(
-    String apiKey, String token, String workspaceId) async {
+    String apiKey, String? token, String workspaceId) async {
   final response = await http.get(
     Uri.parse(
         'https://api.trello.com/1/organizations/$workspaceId/boards?key=$apiKey&token=$token'),

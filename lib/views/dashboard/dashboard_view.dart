@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:trelltech/models/trello_organization.dart';
 import 'package:trelltech/repositories/api.dart';
 import 'package:trelltech/repositories/authentification.dart';
 import 'package:trelltech/views/board/workspace_view.dart';
 import 'package:trelltech/widgets/informations_widget.dart';
 import 'package:trelltech/widgets/menu_widget.dart';
 import 'package:trelltech/views/organizations/organization_create_view.dart';
-import 'package:trelltech/widgets/menu_widget.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -63,52 +62,49 @@ class DashboardViewState extends State<DashboardView> {
       body: _isProcessing
           ? const Center(child: CircularProgressIndicator())
           : RefreshIndicator(
-        onRefresh: _refreshData,
-        child: GridView.count(
-          crossAxisCount: 2,
-          children: workspaces != null
-              ? workspaces!.map<Widget>((workspace) {
-            return Card(
-              margin: EdgeInsets.all(10.0),
-              child: GestureDetector(
-                onLongPress: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      return InformationsBottomSheet(
-                        name: workspace['displayName'],
-                        desc: workspace['desc'],
-                      );
-                    },
-                  );
-                },
-                child: InkWell(
-                  onTap: () async {
-                    var boards = await getBoards(
-                        apiKey, accessToken!, workspace['id']);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => WorkspaceView(
-                            workspaceId: workspace['id'],
-                            boards: boards),
-                      ),
-                    );
-                  },
-                  child: Center(
-                    child: Text(
-                      workspace['displayName'],
-                      style: TextStyle(fontSize: 24),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
+              onRefresh: _refreshData,
+              child: GridView.count(
+                crossAxisCount: 2,
+                children: workspaces != null
+                    ? workspaces!.map<Widget>((workspace) {
+                        return Card(
+                          margin: EdgeInsets.all(10.0),
+                          child: GestureDetector(
+                            onLongPress: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return InformationsBottomSheet(
+                                    name: workspace['displayName'],
+                                    desc: workspace['desc'],
+                                  );
+                                },
+                              );
+                            },
+                            child: InkWell(
+                              onTap: () async {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => WorkspaceView(
+                                            workspaceId: workspace['id'],
+                                          )),
+                                ).then((value) => _refreshData());
+                              },
+                              child: Center(
+                                child: Text(
+                                  workspace['displayName'],
+                                  style: TextStyle(fontSize: 24),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList()
+                    : [],
               ),
-            );
-          }).toList()
-              : [],
-        ),
-      ),
+            ),
       bottomNavigationBar: MenuWidget(),
       floatingActionButton: FloatingActionButton(
         onPressed: _addNewOrganization,
@@ -131,11 +127,12 @@ class DashboardViewState extends State<DashboardView> {
 
       if (workspaces != null && workspaces!.isNotEmpty) {
         setState(() {
-          var newOrganization = workspaces!.removeAt(0); // Supposer que la nouvelle org est en première position
-          workspaces!.add(newOrganization); // Ajouter la nouvelle organisation à la fin de la liste
+          var newOrganization = workspaces!.removeAt(
+              0); // Supposer que la nouvelle org est en première position
+          workspaces!.add(
+              newOrganization); // Ajouter la nouvelle organisation à la fin de la liste
         });
       }
     }
   }
 }
-

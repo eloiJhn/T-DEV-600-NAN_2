@@ -22,23 +22,20 @@ import 'package:trelltech/widgets/menu_widget.dart';
 
 class WorkspaceView extends StatefulWidget {
   final String workspaceId;
-  final List<Board> boards;
 
   const WorkspaceView({
-    Key? key,
-    required this.boards,
+    super.key,
     required this.workspaceId,
-  }) : super(key: key);
+  });
 
   @override
   WorkspaceViewState createState() => WorkspaceViewState();
 }
 
 class WorkspaceViewState extends State<WorkspaceView> {
-  late String accessToken;
   late TrelloOrganization? organization = null;
   late Future<Color> bgColorFuture;
-  List<Board> _boards = [];
+  late List<Board> boards = [];
 
   WorkspaceViewState() {
     bgColorFuture = Future.value(Colors.grey);
@@ -51,27 +48,12 @@ class WorkspaceViewState extends State<WorkspaceView> {
   }
 
   Future<void> _initialize() async {
-    accessToken = (await getAccessToken())!;
-
-    final prefs = await SharedPreferences.getInstance();
-    List<Board> updatedBoards = [];
-    for (var board in _boards) {
-      String? updatedName = prefs.getString('board_${board.id}_name');
-      if (updatedName != null) {
-        updatedBoards.add(board.copyWith(name: updatedName));
-      } else {
-        updatedBoards.add(board);
-      }
-    }
-
-    setState(() {
-      _boards = updatedBoards;
-    });
-
+    boards = await getBoards(dotenv.env['TRELLO_API_KEY']!,
+        await getAccessToken(), widget.workspaceId);
     try {
       organization = await getWorkspace(
         dotenv.env['TRELLO_API_KEY']!,
-        accessToken,
+        await getAccessToken(),
         widget.workspaceId,
       );
     } catch (e) {
@@ -79,10 +61,10 @@ class WorkspaceViewState extends State<WorkspaceView> {
           'Erreur lors de la récupération des détails de l\'organisation: $e');
     }
 
-    if (widget.boards.isNotEmpty) {
+    if (boards.isNotEmpty) {
       bgColorFuture = _getBgColor(
-        widget.boards[0].bgColor,
-        widget.boards[0].bgImage,
+        boards[0].bgColor,
+        boards[0].bgImage,
       );
     }
 
@@ -153,9 +135,7 @@ class WorkspaceViewState extends State<WorkspaceView> {
         title: Text(organization?.displayName ?? 'Loading...'),
         actions: <Widget>[
           CustomPopupMenuButton(
-              organisationId: widget.workspaceId,
-              boards: widget.boards,
-              state: this),
+              organisationId: widget.workspaceId, boards: boards, state: this),
         ],
       ),
       body: Center(
@@ -163,7 +143,7 @@ class WorkspaceViewState extends State<WorkspaceView> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Flexible(
-              child: widget.boards.isEmpty
+              child: boards.isEmpty
                   ? EmptyBoardWidget(
                       itemType: 'Tableau',
                       message:
@@ -200,7 +180,7 @@ class WorkspaceViewState extends State<WorkspaceView> {
 
   Widget _buildBoardList() {
     return ListView.builder(
-      itemCount: widget.boards.length,
+      itemCount: boards.length,
       scrollDirection: Axis.vertical,
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
@@ -209,18 +189,19 @@ class WorkspaceViewState extends State<WorkspaceView> {
               context: context,
               builder: (context) {
                 return InformationsBottomSheet(
-                  name: widget.boards[index].name,
-                  desc: widget.boards[index].desc,
+                  name: boards[index].name,
+                  desc: boards[index].desc,
                 );
               },
             );
           },
           child: CustomListItem(
-            board: widget.boards[index],
+            board: boards[index],
             bgColorFuture: _getBgColor(
-              widget.boards[index].bgColor,
-              widget.boards[index].bgImage,
+              boards[index].bgColor,
+              boards[index].bgImage,
             ),
+            refresh: _initialize,
           ),
         );
       },
@@ -231,11 +212,13 @@ class WorkspaceViewState extends State<WorkspaceView> {
 class CustomListItem extends StatelessWidget {
   final Board board;
   final Future<Color> bgColorFuture;
+  final void Function() refresh;
 
   const CustomListItem({
     Key? key,
     required this.board,
     required this.bgColorFuture,
+    required this.refresh,
   }) : super(key: key);
 
   @override
@@ -273,7 +256,7 @@ class CustomListItem extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => BoardView(board: board),
                   ),
-                );
+                ).then((value) => refresh());
               }
             },
             child: Opacity(
