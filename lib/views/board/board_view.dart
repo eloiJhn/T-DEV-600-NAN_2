@@ -20,7 +20,6 @@ import '../../repositories/authentification.dart';
 import '../dashboard/dashboard_view.dart';
 import 'board_edit_view.dart';
 
-
 class BoardView extends StatefulWidget {
   final Board board;
 
@@ -35,12 +34,14 @@ class BoardViewState extends State<BoardView> {
   late CarouselController carouselController;
   bool _editList = false;
   late Board board;
+  final TextEditingController _nameController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _initialize();
     carouselController = CarouselController();
+    _nameController.text = widget.board.name;
   }
 
   Future<void> refreshData() async {
@@ -57,8 +58,7 @@ class BoardViewState extends State<BoardView> {
         widget.board.id,
       );
     } catch (e) {
-      print(
-          'Erreur lors de la récupération des détails du tableau: $e');
+      print('Erreur lors de la récupération des détails du tableau: $e');
     }
 
     if (mounted) {
@@ -70,7 +70,7 @@ class BoardViewState extends State<BoardView> {
     var apiKey = dotenv.env['TRELLO_API_KEY'];
     var lists = await getLists(apiKey!, accessToken!, widget.board.id);
     List<TrelloList> listList =
-    lists.map((item) => TrelloList.fromJson(item)).toList();
+        lists.map((item) => TrelloList.fromJson(item)).toList();
     return listList;
   }
 
@@ -78,15 +78,14 @@ class BoardViewState extends State<BoardView> {
     var apiKey = dotenv.env['TRELLO_API_KEY'];
     var cards = await getCards(apiKey!, accessToken!, trelloListId);
     List<TrelloCard> listCard =
-    cards.map((item) => TrelloCard.fromJson(item)).toList();
+        cards.map((item) => TrelloCard.fromJson(item)).toList();
     return listCard;
   }
 
   Future<void> _updateList(String name, String listId) async {
-
     TrelloList list = TrelloList(
-        id: listId,
-        name: name,
+      id: listId,
+      name: name,
     );
     var apiKey = dotenv.env['TRELLO_API_KEY'];
     await updateList(apiKey!, accessToken!, listId, list);
@@ -94,16 +93,18 @@ class BoardViewState extends State<BoardView> {
   }
 
   Future<void> _updateBoard(String name) async {
-
     Board board = Board(
-        id: widget.board.id,
-        name: name,
-        idOrganization: widget.board.idOrganization,
-        closed: widget.board.closed,
-        pinned: widget.board.pinned,
-        url: widget.board.url,
-        shortUrl: widget.board.shortUrl,
+      id: widget.board.id,
+      name: name,
+      idOrganization: widget.board.idOrganization,
+      closed: widget.board.closed,
+      pinned: widget.board.pinned,
+      desc: widget.board.desc,
+      url: widget.board.url,
+      shortUrl: widget.board.shortUrl,
     );
+    _nameController.text = name;
+
     var apiKey = dotenv.env['TRELLO_API_KEY'];
     await updateBoard(apiKey!, accessToken!, widget.board.id, board);
 
@@ -114,259 +115,270 @@ class BoardViewState extends State<BoardView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title:
-        TextFormField(
+      appBar: AppBar(
+        title: TextFormField(
+          controller: _nameController,
           onChanged: (String value) {
-            setState(() {
-              _updateBoard(value);
-            });
+            _updateBoard(value);
           },
           decoration: const InputDecoration(
             border: InputBorder.none,
           ),
-          initialValue: widget.board.name,
           style: const TextStyle(
             color: Colors.black,
             fontSize: 20,
-          )
-        ),
-          actions: <Widget>[
-            CustomPopupMenuButton(boardId: widget.board.id, state: this),
-          ],),
-        body: Container(
-          decoration: BoxDecoration(
-            image: widget.board.bgImage != null
-                ? DecorationImage(
-                    image: NetworkImage(widget.board.bgImage!),
-                    fit: BoxFit.cover,
-                  )
-                : null,
-            color: widget.board.bgColor != null
-                ? Color(int.parse('0xff${widget.board.bgColor!.split('#')[1]}'))
-                : null,
           ),
-          child: FutureBuilder(
-              future: _getLists(),
-              builder: (context, AsyncSnapshot<List<TrelloList>> snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.data!.isEmpty) {
-                  return EmptyBoardWidget(
-                      itemType: 'Listes',
-                      message:
+        ),
+        actions: <Widget>[
+          CustomPopupMenuButton(
+            boardId: widget.board.id,
+            onBoardUpdated: (updatedBoard) {
+              setState(() {
+                _nameController.text = updatedBoard.name;
+              });
+            },
+          ),
+        ],
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: widget.board.bgImage != null
+              ? DecorationImage(
+                  image: NetworkImage(widget.board.bgImage!),
+                  fit: BoxFit.cover,
+                )
+              : null,
+          color: widget.board.bgColor != null
+              ? Color(int.parse('0xff${widget.board.bgColor!.split('#')[1]}'))
+              : null,
+        ),
+        child: FutureBuilder(
+            future: _getLists(),
+            builder: (context, AsyncSnapshot<List<TrelloList>> snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.data!.isEmpty) {
+                return EmptyBoardWidget(
+                  itemType: 'Listes',
+                  message:
                       "Vous n'avez actuellement aucune liste dans ce tableau",
-                      iconData: Icons.list,
-                      witheColor: true,
-                      onTap: () {
+                  iconData: Icons.list,
+                  witheColor: true,
+                  onTap: () {
                     print('Tableau clicked');
                   },
-                isMasculine: false,
+                  isMasculine: false,
                 );
-                } else {
-                  return CarouselSlider.builder(
-                      itemCount: snapshot.data?.length,
-                      options: CarouselOptions(
-                          autoPlay: false,
-                          enlargeCenterPage: false,
-                          height: MediaQuery.of(context).size.height),
-                      itemBuilder:
-                          (BuildContext context, int item, int pageViewIndex) {
-                        return Card(
-                            margin: const EdgeInsets.fromLTRB(15, 30, 15, 30),
-                            child: Column(children: [
-                              Expanded(
-                                flex: 1,
+              } else {
+                return CarouselSlider.builder(
+                    itemCount: snapshot.data?.length,
+                    options: CarouselOptions(
+                        autoPlay: false,
+                        enlargeCenterPage: false,
+                        height: MediaQuery.of(context).size.height),
+                    itemBuilder:
+                        (BuildContext context, int item, int pageViewIndex) {
+                      return Card(
+                          margin: const EdgeInsets.fromLTRB(15, 30, 15, 30),
+                          child: Column(children: [
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10)),
+                                    color: Color(0xff162B62)),
                                 child: Container(
-                                  decoration: const BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(10),
-                                          topRight: Radius.circular(10)),
-                                      color: Color(0xff162B62)),
-                                  child: Container(
-                                    margin: const EdgeInsets.only(
-                                        right: 20, left: 20),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: TextFormField(
-                                                onChanged: (String value) {
-                                                  _updateList(value, snapshot
-                                                      .data![item].id).then((value) => refreshData());
-                                                },
-                                                decoration: const InputDecoration(
-                                                  border: InputBorder.none,
-                                                ),
-                                                initialValue: snapshot.data![item].name.toUpperCase(),
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20,
-                                                )
-                                            ),
-                                          ),
-                                          IconButton(
-                                            icon: const Icon(Icons.edit),
-                                            color: Colors.white,
-                                            onPressed: () => {
-                                              setState(() {
-                                                _editList = !_editList;
-                                              })
-                                            },
-                                          )
-                                        ]),
-                                  ),
+                                  margin: const EdgeInsets.only(
+                                      right: 20, left: 20),
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: TextFormField(
+                                              onChanged: (String value) {
+                                                _updateList(value,
+                                                        snapshot.data![item].id)
+                                                    .then((value) =>
+                                                        refreshData());
+                                              },
+                                              decoration: const InputDecoration(
+                                                border: InputBorder.none,
+                                              ),
+                                              initialValue: snapshot
+                                                  .data![item].name
+                                                  .toUpperCase(),
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                              )),
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.edit),
+                                          color: Colors.white,
+                                          onPressed: () => {
+                                            setState(() {
+                                              _editList = !_editList;
+                                            })
+                                          },
+                                        )
+                                      ]),
                                 ),
                               ),
-                              Expanded(
-                                  flex: 8,
-                                  child: FutureBuilder(
-                                      future: _getCardsByList(
-                                          snapshot.data![item].id),
-                                      builder: (context,
-                                          AsyncSnapshot<List<TrelloCard>>
-                                              snapshot) {
-                                        if (!snapshot.hasData) {
-                                          return const Center(
-                                              child:
-                                                  CircularProgressIndicator());
-                                        } else {
-                                          return ListView.builder(
-                                              itemCount: snapshot.data?.length,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                return Row(
-                                                  children: [
-                                                    Expanded(
-                                                      flex: 7,
-                                                      child: Card(
-                                                        margin:
-                                                            const EdgeInsets.all(10),
+                            ),
+                            Expanded(
+                                flex: 8,
+                                child: FutureBuilder(
+                                    future: _getCardsByList(
+                                        snapshot.data![item].id),
+                                    builder: (context,
+                                        AsyncSnapshot<List<TrelloCard>>
+                                            snapshot) {
+                                      if (!snapshot.hasData) {
+                                        return const Center(
+                                            child: CircularProgressIndicator());
+                                      } else {
+                                        return ListView.builder(
+                                            itemCount: snapshot.data?.length,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return Row(
+                                                children: [
+                                                  Expanded(
+                                                    flex: 7,
+                                                    child: Card(
+                                                        margin: const EdgeInsets
+                                                            .all(10),
                                                         color: Colors.grey[200],
                                                         child: ListTile(
                                                             title: Text(snapshot
-                                                                .data![index].name),
+                                                                .data![index]
+                                                                .name),
                                                             onTap: () =>
                                                                 showModalBottomSheet(
                                                                     isScrollControlled:
                                                                         true,
-                                                                    context: context,
+                                                                    context:
+                                                                        context,
                                                                     builder:
                                                                         (BuildContext
                                                                             context) {
                                                                       return CardWidget(
-                                                                          card: snapshot
-                                                                                  .data![
-                                                                              index]);
-                                                                    }).whenComplete( () {
-                                                                      setState(() {
-                                                                        _getCardsByList(
-                                                                            snapshot
-                                                                                .data![
-                                                                                    index]
-                                                                                .id);
-                                                                      });
-                                                                    }))
-                                                      ),
-                                                    ),
-                                                    _editList
-                                                        ? Expanded(
-                                                            flex: 3,
-                                                            child: Card(
-                                                              color: Colors
-                                                                  .redAccent,
-                                                              child: IconButton(
-                                                                icon: const Icon(
-                                                                    Icons.delete, color: Colors.white,),
-                                                                onPressed: () => {
-                                                                  // _deleteCard(snapshot.data![index].id),
+                                                                          card:
+                                                                              snapshot.data![index]);
+                                                                    }).whenComplete(() {
                                                                   setState(() {
-                                                                    deleteCard(
-                                                                        dotenv.env['TRELLO_API_KEY']!,
-                                                                        accessToken!,
-                                                                        snapshot.data![index].id);
-                                                                    _editList = false;
-                                                                  })
-                                                                },
+                                                                    _getCardsByList(
+                                                                        snapshot
+                                                                            .data![index]
+                                                                            .id);
+                                                                  });
+                                                                }))),
+                                                  ),
+                                                  _editList
+                                                      ? Expanded(
+                                                          flex: 3,
+                                                          child: Card(
+                                                            color: Colors
+                                                                .redAccent,
+                                                            child: IconButton(
+                                                              icon: const Icon(
+                                                                Icons.delete,
+                                                                color: Colors
+                                                                    .white,
                                                               ),
+                                                              onPressed: () => {
+                                                                // _deleteCard(snapshot.data![index].id),
+                                                                setState(() {
+                                                                  deleteCard(
+                                                                      dotenv.env[
+                                                                          'TRELLO_API_KEY']!,
+                                                                      accessToken!,
+                                                                      snapshot
+                                                                          .data![
+                                                                              index]
+                                                                          .id);
+                                                                  _editList =
+                                                                      false;
+                                                                })
+                                                              },
                                                             ),
-                                                          )
-                                                        : const SizedBox()
-                                                  ],
-                                                );
-                                              });
-                                        }
-                                      })),
-                              Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                      decoration: const BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                              bottomLeft: Radius.circular(10),
-                                              bottomRight: Radius.circular(10)),
-                                          color: Color(0xff162B62)),
-                                      child: Center(
-                                        child: Container(
-                                          margin:
-                                              const EdgeInsets.only(left: 10),
-                                          child: Row(
-                                            children: [
-                                              const Icon(
-                                                Icons.add,
-                                                color: Colors.white,
-                                              ),
-                                              const SizedBox(
-                                                width: 8,
-                                              ),
-                                              Expanded(
-                                                child: TextField(
-                                                  onSubmitted:
-                                                      (String value) {
-                                                        setState(() {
-                                                          createCard(dotenv.env['TRELLO_API_KEY']!, accessToken!, snapshot.data![item].id, value);
-                                                        });
-                                                  },
-                                                  style: const TextStyle(
-                                                      color: Colors.white),
-                                                  decoration:
-                                                      InputDecoration.collapsed(
-                                                    hintText:
-                                                        AppLocalizations.of(
-                                                                context)!
-                                                            .addCard,
-                                                    hintStyle: const TextStyle(
-                                                        color: Colors.white70),
-                                                      ),
+                                                          ),
+                                                        )
+                                                      : const SizedBox()
+                                                ],
+                                              );
+                                            });
+                                      }
+                                    })),
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                    decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(10),
+                                            bottomRight: Radius.circular(10)),
+                                        color: Color(0xff162B62)),
+                                    child: Center(
+                                      child: Container(
+                                        margin: const EdgeInsets.only(left: 10),
+                                        child: Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.add,
+                                              color: Colors.white,
+                                            ),
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            Expanded(
+                                              child: TextField(
+                                                onSubmitted: (String value) {
+                                                  setState(() {
+                                                    createCard(
+                                                        dotenv.env[
+                                                            'TRELLO_API_KEY']!,
+                                                        accessToken!,
+                                                        snapshot.data![item].id,
+                                                        value);
+                                                  });
+                                                },
+                                                style: const TextStyle(
+                                                    color: Colors.white),
+                                                decoration:
+                                                    InputDecoration.collapsed(
+                                                  hintText: AppLocalizations.of(
+                                                          context)!
+                                                      .addCard,
+                                                  hintStyle: const TextStyle(
+                                                      color: Colors.white70),
                                                 ),
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
-                                      )
-                                  )
-                              )
-                            ])
-                        );
-                          }
-                  );
-                }
+                                      ),
+                                    )))
+                          ]));
+                    });
               }
-          ),
-        ),
-      bottomNavigationBar: MenuWidget(),  // Here is where you add the MenuWidget
+            }),
+      ),
+      bottomNavigationBar: MenuWidget(), // Here is where you add the MenuWidget
     );
   }
 }
 
 class CustomPopupMenuButton extends StatelessWidget {
   final String boardId;
-  final BoardViewState state;
+  final Function(Board) onBoardUpdated;
 
   const CustomPopupMenuButton({
     super.key,
     required this.boardId,
-    required this.state,
+    required this.onBoardUpdated,
   });
 
   @override
@@ -394,16 +406,19 @@ class CustomPopupMenuButton extends StatelessWidget {
                         ListTile(
                           leading: const Icon(Icons.edit),
                           title: const Text('Modifier'),
-                          onTap: () {
-                            Navigator.push(
+                          onTap: () async {
+                            final result = await Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EditBoardScreen(
-                                    boardId: boardId),
+                                builder: (context) =>
+                                    EditBoardScreen(boardId: boardId),
                               ),
-                            ).then((value) {
-                              state.refreshData();
-                            });
+                            );
+
+                            if (result != null) {
+                              final updatedBoard = result as Board;
+                              onBoardUpdated(updatedBoard);
+                            }
                           },
                         ),
                         ListTile(
@@ -414,8 +429,7 @@ class CustomPopupMenuButton extends StatelessWidget {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title:
-                                    const Text('Supprimer le tableau'),
+                                    title: const Text('Supprimer le tableau'),
                                     content: const Text(
                                         'Êtes-vous sûr de vouloir supprimer ce tableau ?'),
                                     actions: <Widget>[
@@ -428,12 +442,11 @@ class CustomPopupMenuButton extends StatelessWidget {
                                       TextButton(
                                         onPressed: () async {
                                           deleteBoard(
-                                              dotenv.env['TRELLO_API_KEY']!,
-                                              (await getAccessToken())!,
-                                              boardId)
+                                                  dotenv.env['TRELLO_API_KEY']!,
+                                                  (await getAccessToken())!,
+                                                  boardId)
                                               .then((value) {
-                                            Navigator.of(context)
-                                                .push(
+                                            Navigator.of(context).push(
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       const DashboardView()),
