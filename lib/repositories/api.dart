@@ -253,15 +253,7 @@ Future<void> deleteCard(String apiKey, String? token, String cardId) async {
         'https://api.trello.com/1/cards/$cardId?key=$apiKey&token=$token'),
   );
 
-  if (response.statusCode == 200) {
-    Fluttertoast.showToast(
-      msg: "Suppression effectuée",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-    );
-  } else {
+  if (response.statusCode != 200) {
     throw Exception('Failed to delete card');
   }
 }

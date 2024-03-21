@@ -279,20 +279,42 @@ class BoardViewState extends State<BoardView> {
                                                                 color: Colors
                                                                     .white,
                                                               ),
-                                                              onPressed: () => {
-                                                                // _deleteCard(snapshot.data![index].id),
-                                                                setState(
-                                                                    () async {
-                                                                  deleteCard(
-                                                                      dotenv.env[
-                                                                          'TRELLO_API_KEY']!,
-                                                                      await getAccessToken(),
-                                                                      snapshot
-                                                                          .data![
-                                                                              index]
-                                                                          .id);
-                                                                  _editList =
-                                                                      false;
+                                                              onPressed:
+                                                                  () async => {
+                                                                deleteCard(
+                                                                        dotenv.env[
+                                                                            'TRELLO_API_KEY']!,
+                                                                        await getAccessToken(),
+                                                                        snapshot
+                                                                            .data![
+                                                                                index]
+                                                                            .id!)
+                                                                    .then(
+                                                                        (value) {
+                                                                  Fluttertoast.showToast(
+                                                                      msg:
+                                                                          'Carte supprimée avec succès',
+                                                                      toastLength:
+                                                                          Toast
+                                                                              .LENGTH_SHORT,
+                                                                      gravity: ToastGravity
+                                                                          .BOTTOM,
+                                                                      timeInSecForIosWeb:
+                                                                          1,
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .green,
+                                                                      textColor:
+                                                                          Colors
+                                                                              .white,
+                                                                      fontSize:
+                                                                          16.0);
+                                                                  setState(() {
+                                                                    _getCardsByList(
+                                                                        snapshot
+                                                                            .data![index]
+                                                                            .id);
+                                                                  });
                                                                 })
                                                               },
                                                             ),
