@@ -171,7 +171,7 @@ Widget build(BuildContext context) {
                                               _updateList(value,
                                                       snapshot.data![item].id)
                                                   .then((value) =&gt;
-                                                      refreshData());
+                                                      _initialize());
                                             },
                                             decoration: const InputDecoration(
                                               border: InputBorder.none,
@@ -260,11 +260,12 @@ Widget build(BuildContext context) {
                                                             ),
                                                             onPressed: () =&gt; {
                                                               &#47;&#47; _deleteCard(snapshot.data![index].id),
-                                                              setState(() {
+                                                              setState(
+                                                                  () async {
                                                                 deleteCard(
                                                                     dotenv.env[
                                                                         &#39;TRELLO_API_KEY&#39;]!,
-                                                                    accessToken!,
+                                                                    await getAccessToken(),
                                                                     snapshot
                                                                         .data![
                                                                             index]

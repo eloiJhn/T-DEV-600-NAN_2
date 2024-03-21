@@ -65,7 +65,7 @@
 
 <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
 <span class="name ">updateList</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="updateList-param-apiKey"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">apiKey</span>, </span></li>
-<li><span class="parameter" id="updateList-param-token"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">token</span>, </span></li>
+<li><span class="parameter" id="updateList-param-token"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">token</span>, </span></li>
 <li><span class="parameter" id="updateList-param-listId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">listId</span>, </span></li>
 <li><span class="parameter" id="updateList-param-list"><span class="type-annotation"><a href="../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_models_trello_list/TrelloList-class.html">TrelloList</a></span> <span class="parameter-name">list</span></span></li>
 </ol>)
@@ -79,9 +79,11 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; updateList(String apiKey, String token, String listId, TrelloList list) async {
+  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; updateList(
+    String apiKey, String? token, String listId, TrelloList list) async {
   final response = await http.put(
-     Uri.parse(&#39;https:&#47;&#47;api.trello.com&#47;1&#47;lists&#47;$listId?key=$apiKey&amp;token=$token&amp;name=${list.name}&#39;),
+    Uri.parse(
+        &#39;https:&#47;&#47;api.trello.com&#47;1&#47;lists&#47;$listId?key=$apiKey&amp;token=$token&amp;name=${list.name}&#39;),
   );
 
   if (response.statusCode != 200) {
