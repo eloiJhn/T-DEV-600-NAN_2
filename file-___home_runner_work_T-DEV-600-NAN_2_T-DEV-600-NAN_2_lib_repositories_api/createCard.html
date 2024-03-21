@@ -65,7 +65,7 @@
 
 <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
 <span class="name ">createCard</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="createCard-param-apiKey"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">apiKey</span>, </span></li>
-<li><span class="parameter" id="createCard-param-token"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">token</span>, </span></li>
+<li><span class="parameter" id="createCard-param-token"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">token</span>, </span></li>
 <li><span class="parameter" id="createCard-param-listId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">listId</span>, </span></li>
 <li><span class="parameter" id="createCard-param-name"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span></span></li>
 </ol>)
@@ -85,7 +85,7 @@ It requires the user's API key, token, the list's ID, and the name of the card.<
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; createCard(
-    String apiKey, String token, String listId, String name) async {
+    String apiKey, String? token, String listId, String name) async {
   final response = await http.post(
     Uri.parse(
         &#39;https:&#47;&#47;api.trello.com&#47;1&#47;cards?key=$apiKey&amp;token=$token&amp;idList=$listId&amp;name=$name&#39;),

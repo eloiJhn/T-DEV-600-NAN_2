@@ -306,11 +306,11 @@ Widget build(BuildContext context) {
                                           Expanded(
                                             child: TextField(
                                               onSubmitted: (String value) {
-                                                setState(() {
+                                                setState(() async {
                                                   createCard(
                                                       dotenv.env[
                                                           &#39;TRELLO_API_KEY&#39;]!,
-                                                      accessToken!,
+                                                      await getAccessToken(),
                                                       snapshot.data![item].id,
                                                       value);
                                                 });

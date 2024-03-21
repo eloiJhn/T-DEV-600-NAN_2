@@ -79,9 +79,11 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;bool&gt; updateBoard(String apiKey, String? token, String boardId, Board board) async {
+  <pre class="language-dart"><code class="language-dart">Future&lt;bool&gt; updateBoard(
+    String apiKey, String? token, String boardId, Board board) async {
   final response = await http.put(
-    Uri.parse(&#39;https:&#47;&#47;api.trello.com&#47;1&#47;boards&#47;$boardId?key=$apiKey&amp;token=$token&amp;name=${board.name}&amp;desc=${board.desc}&#39;),
+    Uri.parse(
+        &#39;https:&#47;&#47;api.trello.com&#47;1&#47;boards&#47;$boardId?key=$apiKey&amp;token=$token&amp;name=${board.name}&amp;desc=${board.desc}&#39;),
   );
 
   if (response.statusCode != 200) {
