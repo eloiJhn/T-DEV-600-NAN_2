@@ -1,7 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:trelltech/widgets/menu_widget.dart';
+import 'package:trelltech/repositories/authentification.dart';
+import 'package:trelltech/repositories/api.dart';
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends StatefulWidget {
+  @override
+  _ProfileViewState createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<ProfileView> {
+  String? userName;
+  String? userEmail;
+  String? userPhotoUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserProfile();
+  }
+
+  Future<void> _loadUserProfile() async {
+    final apiKey = dotenv.env['TRELLO_API_KEY'];
+    final accessToken = await getAccessToken();
+
+    if (accessToken != null) {
+      final clientId = await getClientID();
+
+      if (clientId != null) {
+        final userInfo = await getMember(apiKey!, accessToken, clientId);
+
+        setState(() {
+          userName = userInfo['fullName'];
+          userEmail = userInfo['email']; // Assurez-vous que l'API renvoie bien l'email
+          userPhotoUrl = userInfo['avatarUrl'];
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,33 +49,41 @@ class ProfileView extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children:  <Widget>[
-            const CircleAvatar(
+          children: <Widget>[
+            CircleAvatar(
               radius: 50,
-              backgroundImage: NetworkImage("https://via.placeholder.com/150"),
+              backgroundImage: NetworkImage(
+                  userPhotoUrl != null ? "$userPhotoUrl/50.png" : 'https://placehold.co/50.png'
+              ),
             ),
-            const SizedBox(height: 20),
-            const Text(
-              "Nom de l'utilisateur",
+            SizedBox(height: 20),
+            Text(
+              userName ?? "Nom de l'utilisateur",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             Text(
-              "user@example.com", // Exemple d'email
+              userEmail ?? "Email de l'utilisateur",
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.grey[50],
+                color: Colors.grey[600],
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                print('Modifier le profil');
+                print('Changer de langue');
               },
-              child: Text('Modifier le profil'),
+              child: Text('Changer de langue'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                disconnect(context);
+              },
+              child: Text('Se déconnecter'),
             ),
           ],
         ),
