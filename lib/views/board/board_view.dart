@@ -225,13 +225,14 @@ class BoardViewState extends State<BoardView> {
                                         snapshot.data![item].id),
                                     builder: (context,
                                         AsyncSnapshot<List<TrelloCard>>
-                                            snapshot) {
-                                      if (!snapshot.hasData) {
+                                            snapshotCard) {
+                                      if (!snapshotCard.hasData) {
                                         return const Center(
                                             child: CircularProgressIndicator());
                                       } else {
                                         return ListView.builder(
-                                            itemCount: snapshot.data?.length,
+                                            itemCount:
+                                                snapshotCard.data?.length,
                                             itemBuilder: (BuildContext context,
                                                 int index) {
                                               return Row(
@@ -243,9 +244,11 @@ class BoardViewState extends State<BoardView> {
                                                             .all(10),
                                                         color: Colors.grey[200],
                                                         child: ListTile(
-                                                            title: Text(snapshot
-                                                                .data![index]
-                                                                .name),
+                                                            title: Text(
+                                                                snapshotCard
+                                                                    .data![
+                                                                        index]
+                                                                    .name),
                                                             onTap: () =>
                                                                 showModalBottomSheet(
                                                                     isScrollControlled:
@@ -256,8 +259,11 @@ class BoardViewState extends State<BoardView> {
                                                                         (BuildContext
                                                                             context) {
                                                                       return CardWidget(
-                                                                          card:
-                                                                              snapshot.data![index]);
+                                                                        card: snapshotCard
+                                                                            .data![index],
+                                                                        lists:
+                                                                            snapshot,
+                                                                      );
                                                                     }).whenComplete(() {
                                                                   setState(() {
                                                                     _getCardsByList(
