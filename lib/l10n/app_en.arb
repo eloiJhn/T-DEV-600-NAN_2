@@ -39,5 +39,9 @@
   "board_title": "Boards",
   "board_empty_message": "You don't have any boards yet, click here to add one",
   "lists_title": "Lists",
-  "lists_empty_message": "You don't have any lists yet in this board, click here to add one"
+  "lists_empty_message": "You don't have any lists yet in this board, click here to add one",
+  "profile": "Profile",
+  "userName": "Username",
+  "userEmail": "Email",
+  "disconnect": "Logout"
 }

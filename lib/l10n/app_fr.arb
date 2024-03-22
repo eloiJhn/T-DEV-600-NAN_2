@@ -1,6 +1,6 @@
 {
-  "no": "Non",
-  "nof": "Non",
+  "no": "Aucun",
+  "nof": "Aucune",
   "cancel": "Annuler",
   "requiredField": "Ce champ est requis",
   "dashboard_title": "Tableau de bord",
@@ -39,5 +39,9 @@
   "board_title": "Tableaux",
   "board_empty_message": "Vous n'avez pas encore de tableaux, cliquez ici pour en ajouter un",
   "lists_title": "Listes",
-  "lists_empty_message": "Vous n'avez pas encore de listes dans ce tableau, cliquez ici pour en ajouter une"
+  "lists_empty_message": "Vous n'avez pas encore de listes dans ce tableau, cliquez ici pour en ajouter une",
+  "profile": "Profil",
+  "userName": "Nom d'utilisateur",
+  "userEmail": "Adresse e-mail",
+  "disconnect": "Déconnexion"
 }
