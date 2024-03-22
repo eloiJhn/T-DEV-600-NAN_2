@@ -1,10 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trelltech/models/trello_list.dart';
 import 'package:trelltech/repositories/api.dart';
 import 'package:trelltech/repositories/authentification.dart';
@@ -275,6 +271,9 @@ class _CardWidgetState extends State<CardWidget> {
                                                                   newValue) {
                                                                 setState(
                                                                     () async {
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
                                                                   widget.card
                                                                       .idMembers
                                                                       .add(
@@ -286,7 +285,7 @@ class _CardWidgetState extends State<CardWidget> {
                                                                       widget
                                                                           .card
                                                                           .id,
-                                                                      newValue!);
+                                                                      newValue);
                                                                 });
                                                               },
                                                             ),

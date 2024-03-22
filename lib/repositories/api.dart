@@ -91,7 +91,7 @@ Future<Board> createBoard(String apiKey, String token, String name,
   if (templateId != null) {
     final response = await http.post(
       Uri.parse(
-          'https://api.trello.com/1/boards?key=$apiKey&token=$token&name=$name&desc=$description&idBoardSource=$templateId&idOrganization=$workspaceId'),
+          'https://api.trello.com/1/boards?key=$apiKey&token=$token&name=$name&desc=$description&idOrganization=$workspaceId&idBoardSource=$templateId'),
     );
 
     if (response.statusCode == 200) {
@@ -108,7 +108,7 @@ Future<Board> createBoard(String apiKey, String token, String name,
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      return data['id'];
+      return Board.fromJson(data);
     } else {
       throw Exception('Failed to create board');
     }

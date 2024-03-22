@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:trelltech/views/board/board_view.dart';
 import 'package:trelltech/views/board/workspace_view.dart';
 import 'package:trelltech/views/dashboard/dashboard_view.dart';
-import 'package:trelltech/views/profile/profile_view.dart';
 import 'package:trelltech/views/organizations/organization_create_view.dart';
-
+import 'package:trelltech/views/profile/profile_view.dart';
 
 class MenuWidget extends StatefulWidget {
   final int initialIndex;
@@ -42,7 +40,9 @@ class _MenuWidgetState extends State<MenuWidget> {
           Navigator.pop(context); // Ferme le BottomSheet
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => CreateOrganizationScreen()), // Navigue vers OrganizationCreateView
+            MaterialPageRoute(
+                builder: (context) =>
+                    CreateOrganizationScreen()), // Navigue vers OrganizationCreateView
           );
         },
       );
@@ -73,7 +73,10 @@ class _MenuWidgetState extends State<MenuWidget> {
     });
 
     // si sur dashboard et on clique sur dashboard, on ne fait rien
-    if(index == 0 && context.findAncestorWidgetOfExactType<DashboardView>() != null || index == 1 && context.findAncestorWidgetOfExactType<ProfileView>() != null){
+    if (index == 0 &&
+            context.findAncestorWidgetOfExactType<DashboardView>() != null ||
+        index == 1 &&
+            context.findAncestorWidgetOfExactType<ProfileView>() != null) {
       return;
     }
 
@@ -91,7 +94,6 @@ class _MenuWidgetState extends State<MenuWidget> {
   @override
   Widget build(BuildContext context) {
     print('Building with _currentIndex: $_currentIndex');
-
 
     List<BottomNavigationBarItem> navBarItems = [
       const BottomNavigationBarItem(
@@ -116,4 +118,3 @@ class _MenuWidgetState extends State<MenuWidget> {
     );
   }
 }
-

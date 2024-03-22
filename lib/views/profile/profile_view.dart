@@ -12,7 +12,7 @@ class ProfileView extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children:  <Widget>[
+          children: <Widget>[
             const CircleAvatar(
               radius: 50,
               backgroundImage: NetworkImage("https://via.placeholder.com/150"),
