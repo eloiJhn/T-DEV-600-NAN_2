@@ -78,7 +78,12 @@
   <pre class="language-dart"><code class="language-dart">Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: &quot;.env&quot;);
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) =&gt; LanguageProvider(),
+      child: MyApp(),
+    ),
+  );
 }</code></pre>
 </section>
 

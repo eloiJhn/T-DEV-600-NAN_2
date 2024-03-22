@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the build method from the MyApp class, for the Dart programming language.">
-  <title>build method - MyApp class - main library - Dart API</title>
+  <meta name="description" content="API docs for the setLocale method from the LanguageProvider class, for the Dart programming language.">
+  <title>setLocale method - LanguageProvider class - language_provider library - Dart API</title>
 
 
   
@@ -29,11 +29,11 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main-library.html">main.dart</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main/MyApp-class.html">MyApp</a></li>
-    <li class="self-crumb">build method</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_provider_language_provider/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_provider_language_provider-library.html">provider&#47;language_provider.dart</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_provider_language_provider/LanguageProvider-class.html">LanguageProvider</a></li>
+    <li class="self-crumb">setLocale method</li>
   </ol>
-  <div class="self-name">build</div>
+  <div class="self-name">setLocale</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -54,22 +54,17 @@
 <div
     id="dartdoc-main-content"
     class="main-content"
-    data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main&#47;MyApp-class-sidebar.html"
+    data-above-sidebar="file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_provider_language_provider&#47;LanguageProvider-class-sidebar.html"
     data-below-sidebar="">
     <div>
-<h1><span class="kind-method">build</span> method 
+<h1><span class="kind-method">setLocale</span> method 
 </h1></div>
 
     <section class="multi-line-signature">
       
-  <div>
-    <ol class="annotation-list">
-        <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
-    </ol>
-  </div>
 
-<span class="returntype">dynamic</span>
-<span class="name ">build</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="build-param-context"><span class="type-annotation">dynamic</span> <span class="parameter-name">context</span></span></li>
+<span class="returntype">void</span>
+<span class="name ">setLocale</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="setLocale-param-locale"><span class="type-annotation">dynamic</span> <span class="parameter-name">locale</span></span></li>
 </ol>)
 
       
@@ -81,26 +76,9 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">@override
-Widget build(BuildContext context) {
-  var languageProvider = Provider.of&lt;LanguageProvider&gt;(context);
-  return MaterialApp(
-    title: &#39;TrellTech&#39;,
-    localizationsDelegates: AppLocalizations.localizationsDelegates,
-    supportedLocales: AppLocalizations.supportedLocales,
-    locale: languageProvider.locale,
-    theme: ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      useMaterial3: true,
-    ),
-    initialRoute: &#39;&#47;&#39;,
-    routes: {
-      &#39;&#47;&#39;: (context) =&gt; const HomeView(),
-      &#39;&#47;discover&#39;: (context) =&gt; const DiscoverAppView(),
-      &#39;&#47;dashboard&#39;: (context) =&gt; const DashboardView(),
-      &#39;&#47;profile&#39;: (context) =&gt; ProfileView(),
-    },
-  );
+  <pre class="language-dart"><code class="language-dart">void setLocale(Locale locale) {
+  _locale = locale;
+  notifyListeners();
 }</code></pre>
 </section>
 
@@ -117,13 +95,13 @@ Widget build(BuildContext context) {
 
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">trelltech</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main-library.html">main</a></li>
-    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_main/MyApp-class.html">MyApp</a></li>
-    <li class="self-crumb">build method</li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_provider_language_provider/file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_provider_language_provider-library.html">language_provider</a></li>
+    <li><a href="../../file-___home_runner_work_T-DEV-600-NAN_2_T-DEV-600-NAN_2_lib_provider_language_provider/LanguageProvider-class.html">LanguageProvider</a></li>
+    <li class="self-crumb">setLocale method</li>
 </ol>
 
 
-    <h5>MyApp class</h5>
+    <h5>LanguageProvider class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-->
 

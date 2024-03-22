@@ -105,7 +105,7 @@ Widget build(BuildContext context) {
                     children: &lt;Widget&gt;[
                       ListTile(
                         leading: const Icon(Icons.edit),
-                        title: const Text(&#39;Modifier&#39;),
+                        title: Text(AppLocalizations.of(context)!.board_edit),
                         onTap: () async {
                           final result = await Navigator.push(
                             context,
@@ -123,21 +123,25 @@ Widget build(BuildContext context) {
                       ),
                       ListTile(
                         leading: const Icon(Icons.delete),
-                        title: const Text(&#39;Supprimer&#39;),
+                        title:
+                            Text(AppLocalizations.of(context)!.board_delete),
                         onTap: () {
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title: const Text(&#39;Supprimer le tableau&#39;),
-                                  content: const Text(
-                                      &#39;Êtes-vous sûr de vouloir supprimer ce tableau ?&#39;),
+                                  title: Text(AppLocalizations.of(context)!
+                                      .board_delete),
+                                  content: Text(AppLocalizations.of(context)!
+                                      .board_delete_message),
                                   actions: &lt;Widget&gt;[
                                     TextButton(
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },
-                                      child: const Text(&#39;Annuler&#39;),
+                                      child: Text(
+                                          AppLocalizations.of(context)!
+                                              .cancel),
                                     ),
                                     TextButton(
                                       onPressed: () async {
@@ -146,14 +150,33 @@ Widget build(BuildContext context) {
                                                 (await getAccessToken())!,
                                                 boardId)
                                             .then((value) {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =&gt;
-                                                    const DashboardView()),
-                                          );
-                                        });
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =&gt;
+                                                      WorkspaceView(
+                                                          workspaceId:
+                                                              organizationId!)));
+                                        }).then((value) =&gt; {
+                                                  Fluttertoast.showToast(
+                                                    msg: AppLocalizations.of(
+                                                            context)!
+                                                        .board_deleted,
+                                                    toastLength:
+                                                        Toast.LENGTH_SHORT,
+                                                    gravity:
+                                                        ToastGravity.BOTTOM,
+                                                    timeInSecForIosWeb: 1,
+                                                    backgroundColor:
+                                                        Colors.green,
+                                                    textColor: Colors.white,
+                                                    fontSize: 16.0,
+                                                  )
+                                                });
                                       },
-                                      child: const Text(&#39;Supprimer&#39;),
+                                      child: Text(
+                                          AppLocalizations.of(context)!
+                                              .board_delete),
                                     ),
                                   ],
                                 );
