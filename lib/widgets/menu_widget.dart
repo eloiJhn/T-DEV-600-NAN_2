@@ -3,6 +3,7 @@ import 'package:trelltech/views/board/workspace_view.dart';
 import 'package:trelltech/views/dashboard/dashboard_view.dart';
 import 'package:trelltech/views/organizations/organization_create_view.dart';
 import 'package:trelltech/views/profile/profile_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MenuWidget extends StatefulWidget {
   final int initialIndex;
@@ -93,12 +94,10 @@ class _MenuWidgetState extends State<MenuWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print('Building with _currentIndex: $_currentIndex');
-
     List<BottomNavigationBarItem> navBarItems = [
-      const BottomNavigationBarItem(
-        icon: Icon(Icons.dashboard),
-        label: 'Dashboard',
+      BottomNavigationBarItem(
+        icon: const Icon(Icons.dashboard),
+        label: AppLocalizations.of(context)!.dashboard_title,
       ),
     ];
 
