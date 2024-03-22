@@ -105,7 +105,7 @@ Widget build(BuildContext context) {
                     children: &lt;Widget&gt;[
                       ListTile(
                         leading: const Icon(Icons.edit),
-                        title: Text(AppLocalizations.of(context)!.board_edit),
+                        title: const Text(&#39;Modifier&#39;),
                         onTap: () async {
                           final result = await Navigator.push(
                             context,
@@ -123,25 +123,21 @@ Widget build(BuildContext context) {
                       ),
                       ListTile(
                         leading: const Icon(Icons.delete),
-                        title:
-                            Text(AppLocalizations.of(context)!.board_delete),
+                        title: const Text(&#39;Supprimer&#39;),
                         onTap: () {
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title: Text(AppLocalizations.of(context)!
-                                      .board_delete),
-                                  content: Text(AppLocalizations.of(context)!
-                                      .board_delete_message),
+                                  title: const Text(&#39;Supprimer le tableau&#39;),
+                                  content: const Text(
+                                      &#39;Êtes-vous sûr de vouloir supprimer ce tableau ?&#39;),
                                   actions: &lt;Widget&gt;[
                                     TextButton(
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },
-                                      child: Text(
-                                          AppLocalizations.of(context)!
-                                              .cancel),
+                                      child: const Text(&#39;Annuler&#39;),
                                     ),
                                     TextButton(
                                       onPressed: () async {
@@ -150,33 +146,14 @@ Widget build(BuildContext context) {
                                                 (await getAccessToken())!,
                                                 boardId)
                                             .then((value) {
-                                          Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =&gt;
-                                                      WorkspaceView(
-                                                          workspaceId:
-                                                              organizationId!)));
-                                        }).then((value) =&gt; {
-                                                  Fluttertoast.showToast(
-                                                    msg: AppLocalizations.of(
-                                                            context)!
-                                                        .board_deleted,
-                                                    toastLength:
-                                                        Toast.LENGTH_SHORT,
-                                                    gravity:
-                                                        ToastGravity.BOTTOM,
-                                                    timeInSecForIosWeb: 1,
-                                                    backgroundColor:
-                                                        Colors.green,
-                                                    textColor: Colors.white,
-                                                    fontSize: 16.0,
-                                                  )
-                                                });
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =&gt;
+                                                    const DashboardView()),
+                                          );
+                                        });
                                       },
-                                      child: Text(
-                                          AppLocalizations.of(context)!
-                                              .board_delete),
+                                      child: const Text(&#39;Supprimer&#39;),
                                     ),
                                   ],
                                 );
