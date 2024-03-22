@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:trelltech/models/board.dart';
-import 'package:trelltech/models/trello_organization.dart';
 import 'package:trelltech/repositories/api.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:trelltech/repositories/authentification.dart';
-import 'package:trelltech/views/board/workspace_view.dart';
 
 class EditBoardScreen extends StatefulWidget {
   final String boardId;
@@ -40,8 +38,8 @@ class _EditBoardScreenState extends State<EditBoardScreen> {
       _isLoading = true;
     });
 
-    final board = await getBoard(dotenv.env['TRELLO_API_KEY']!,
-        await getAccessToken(), widget.boardId);
+    final board = await getBoard(
+        dotenv.env['TRELLO_API_KEY']!, await getAccessToken(), widget.boardId);
 
     _nameController.text = board.name;
     _descriptionController.text = board.desc!;
@@ -70,7 +68,7 @@ class _EditBoardScreenState extends State<EditBoardScreen> {
       if (success) {
         Navigator.pop(context, board);
         Fluttertoast.showToast(
-          msg: AppLocalizations.of(context)!.boardUpdated,
+          msg: AppLocalizations.of(context)!.board_updated,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -78,11 +76,9 @@ class _EditBoardScreenState extends State<EditBoardScreen> {
           textColor: Colors.white,
           fontSize: 16.0,
         );
-
-
       } else {
         Fluttertoast.showToast(
-          msg: AppLocalizations.of(context)!.boardUpdateFailed,
+          msg: AppLocalizations.of(context)!.board_updateFailed,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -102,56 +98,56 @@ class _EditBoardScreenState extends State<EditBoardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.editBoard),
+        title: Text(AppLocalizations.of(context)!.board_edit),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              TextFormField(
-                controller: _nameController,
-                decoration: InputDecoration(
-                  labelText:
-                  AppLocalizations.of(context)!.boardName,
-                  border: const OutlineInputBorder(),
+              padding: const EdgeInsets.all(16.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.board_name,
+                        border: const OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return AppLocalizations.of(context)!.requiredField;
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16.0),
+                    TextFormField(
+                      controller: _descriptionController,
+                      decoration: InputDecoration(
+                        labelText:
+                            AppLocalizations.of(context)!.board_description,
+                        border: const OutlineInputBorder(),
+                      ),
+                      maxLines: 4,
+                    ),
+                    const SizedBox(height: 16.0),
+                    ElevatedButton(
+                      onPressed: _submitForm,
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: const Color(0xFF1C39A1), // text color
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)!.board_update,
+                        style: const TextStyle(fontSize: 16.0),
+                      ),
+                    ),
+                  ],
                 ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return AppLocalizations.of(context)!.requiredField;
-                  }
-                  return null;
-                },
               ),
-              const SizedBox(height: 16.0),
-              TextFormField(
-                controller: _descriptionController,
-                decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context)!
-                      .organizationDescription,
-                  border: const OutlineInputBorder(),
-                ),
-                maxLines: 4,
-              ),
-              const SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: _submitForm,
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white, backgroundColor: const Color(0xFF1C39A1), // text color
-                ),
-                child: Text(
-                  AppLocalizations.of(context)!.updateBoard,
-                  style: const TextStyle(fontSize: 16.0),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }
