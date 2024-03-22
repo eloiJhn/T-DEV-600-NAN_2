@@ -88,7 +88,7 @@ It requires the user's API key, token, the card's ID, and the new name of the ca
     String apiKey, String? token, String cardId, TrelloCard card) async {
   final response = await http.put(
     Uri.parse(
-        &#39;https:&#47;&#47;api.trello.com&#47;1&#47;cards&#47;$cardId?key=$apiKey&amp;token=$token&amp;desc=${card.desc}&amp;name=${card.name}&#39;),
+        &#39;https:&#47;&#47;api.trello.com&#47;1&#47;cards&#47;$cardId?key=$apiKey&amp;token=$token&amp;desc=${card.desc}&amp;name=${card.name}&amp;due=${card.due}&amp;idList=${card.idList}&#39;),
   );
 
   if (response.statusCode != 200) {

@@ -142,14 +142,14 @@ Widget build(BuildContext context) {
                                     TextButton(
                                       onPressed: () async {
                                         deleteBoard(
-                                            dotenv.env[&#39;TRELLO_API_KEY&#39;]!,
-                                            (await getAccessToken())!,
-                                            boardId)
+                                                dotenv.env[&#39;TRELLO_API_KEY&#39;]!,
+                                                (await getAccessToken())!,
+                                                boardId)
                                             .then((value) {
                                           Navigator.of(context).push(
                                             MaterialPageRoute(
                                                 builder: (context) =&gt;
-                                                const DashboardView()),
+                                                    const DashboardView()),
                                           );
                                         });
                                       },
