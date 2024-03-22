@@ -101,7 +101,6 @@ Widget build(BuildContext context) {
       actions: &lt;Widget&gt;[
         CustomPopupMenuButton(
           boardId: widget.board.id,
-          organizationId: widget.board.idOrganization,
           onBoardUpdated: (updatedBoard) {
             setState(() {
               _nameController.text = updatedBoard.name;
@@ -129,8 +128,9 @@ Widget build(BuildContext context) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.data!.isEmpty) {
               return EmptyBoardWidget(
-                itemType: AppLocalizations.of(context)!.lists_title,
-                message: AppLocalizations.of(context)!.lists_empty_message,
+                itemType: &#39;Listes&#39;,
+                message:
+                    &quot;Vous n&#39;avez actuellement aucune liste dans ce tableau&quot;,
                 iconData: Icons.list,
                 witheColor: true,
                 onTap: () {
@@ -277,9 +277,8 @@ Widget build(BuildContext context) {
                                                                   .then(
                                                                       (value) {
                                                                 Fluttertoast.showToast(
-                                                                    msg: AppLocalizations.of(
-                                                                            context)!
-                                                                        .card_deleted,
+                                                                    msg:
+                                                                        &#39;Carte supprimée avec succès&#39;,
                                                                     toastLength:
                                                                         Toast
                                                                             .LENGTH_SHORT,
@@ -350,7 +349,7 @@ Widget build(BuildContext context) {
                                                   InputDecoration.collapsed(
                                                 hintText: AppLocalizations.of(
                                                         context)!
-                                                    .card_add,
+                                                    .addCard,
                                                 hintStyle: const TextStyle(
                                                     color: Colors.white70),
                                               ),
