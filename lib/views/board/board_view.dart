@@ -61,6 +61,7 @@ class BoardViewState extends State<BoardView> {
         await getLists(apiKey!, await getAccessToken(), widget.board.id!);
     List<TrelloList> listList =
         lists.map((item) => TrelloList.fromJson(item)).toList();
+    if (listList.isNotEmpty) listList.add(TrelloList(id: 'plus', name: ''));
     return listList;
   }
 
@@ -152,7 +153,73 @@ class BoardViewState extends State<BoardView> {
                   iconData: Icons.list,
                   witheColor: true,
                   onTap: () {
-                    print('Tableau clicked');
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        final _formKey = GlobalKey<FormState>();
+                        return AlertDialog(
+                          title: Text('Ajouter une liste'),
+                          content: Form(
+                            key: _formKey,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: TextFormField(
+                                    decoration: InputDecoration(
+                                        labelText: 'Nom de la liste'),
+                                    validator: (input) => input!.trim().isEmpty
+                                        ? 'Veuillez entrer un nom de liste'
+                                        : null,
+                                    onSaved: (input) async => {
+                                      if (input!.isNotEmpty)
+                                        {
+                                          createList(
+                                              dotenv.env['TRELLO_API_KEY']!,
+                                              await getAccessToken(),
+                                              input,
+                                              "bottom",
+                                              widget.board.id),
+                                          Fluttertoast.showToast(
+                                            msg: AppLocalizations.of(context)!
+                                                .list_created,
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.BOTTOM,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor: Colors.green,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0,
+                                          ),
+                                          _initialize()
+                                        }
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              child: Text('Annuler'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: Text('Ajouter'),
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  _formKey.currentState?.save();
+                                  // Ici, vous pouvez ajouter la logique pour sauvegarder la nouvelle liste
+                                  Navigator.of(context).pop();
+                                }
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                   isMasculine: false,
                 );
@@ -162,9 +229,138 @@ class BoardViewState extends State<BoardView> {
                     options: CarouselOptions(
                         autoPlay: false,
                         enlargeCenterPage: false,
+                        enableInfiniteScroll: false,
                         height: MediaQuery.of(context).size.height),
                     itemBuilder:
                         (BuildContext context, int item, int pageViewIndex) {
+                      if (item == snapshot.data!.length - 1) {
+                        return GestureDetector(
+                          child: Card(
+                            margin: const EdgeInsets.fromLTRB(15, 30, 15, 30),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10)),
+                                        color: Color(0xff162B62)),
+                                    child: Center(
+                                      child: Text(
+                                        AppLocalizations.of(context)!
+                                            .list_create,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 8,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(20.0),
+                                    child: Center(
+                                      child: Text(
+                                        AppLocalizations.of(context)!
+                                            .list_create_message,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                final _formKey = GlobalKey<FormState>();
+                                return AlertDialog(
+                                  title: Text(AppLocalizations.of(context)!
+                                      .list_create),
+                                  content: Form(
+                                    key: _formKey,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: TextFormField(
+                                            decoration: InputDecoration(
+                                                labelText: AppLocalizations.of(
+                                                        context)!
+                                                    .list_name),
+                                            validator: (input) => input!
+                                                    .trim()
+                                                    .isEmpty
+                                                ? 'Veuillez entrer un nom de liste'
+                                                : null,
+                                            onSaved: (input) async => {
+                                              if (input!.isNotEmpty)
+                                                {
+                                                  createList(
+                                                      dotenv.env[
+                                                          'TRELLO_API_KEY']!,
+                                                      await getAccessToken(),
+                                                      input,
+                                                      "bottom",
+                                                      widget.board.id),
+                                                  Fluttertoast.showToast(
+                                                    msg: AppLocalizations.of(
+                                                            context)!
+                                                        .list_created,
+                                                    toastLength:
+                                                        Toast.LENGTH_SHORT,
+                                                    gravity:
+                                                        ToastGravity.BOTTOM,
+                                                    timeInSecForIosWeb: 1,
+                                                    backgroundColor:
+                                                        Colors.green,
+                                                    textColor: Colors.white,
+                                                    fontSize: 16.0,
+                                                  ),
+                                                  _initialize()
+                                                }
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: Text(
+                                          AppLocalizations.of(context)!.cancel),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: Text(AppLocalizations.of(context)!
+                                          .list_create),
+                                      onPressed: () {
+                                        if (_formKey.currentState!.validate()) {
+                                          _formKey.currentState?.save();
+                                          // Ici, vous pouvez ajouter la logique pour sauvegarder la nouvelle liste
+                                          Navigator.of(context).pop();
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        );
+                      }
                       return Card(
                           margin: const EdgeInsets.fromLTRB(15, 30, 15, 30),
                           child: Column(children: [
@@ -316,7 +512,7 @@ class BoardViewState extends State<BoardView> {
                                                                   setState(() {
                                                                     _getCardsByList(
                                                                         snapshot
-                                                                             .data![index]
+                                                                            .data![index]
                                                                             .id);
                                                                   });
                                                                 })
@@ -360,6 +556,7 @@ class BoardViewState extends State<BoardView> {
                                                         await getAccessToken(),
                                                         snapshot.data![item].id,
                                                         value);
+                                                    _initialize();
                                                   });
                                                 },
                                                 style: const TextStyle(
