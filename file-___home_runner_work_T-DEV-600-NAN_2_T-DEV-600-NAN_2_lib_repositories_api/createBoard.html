@@ -93,7 +93,7 @@ Throws an exception if the request fails.</p>
   if (templateId != null) {
     final response = await http.post(
       Uri.parse(
-          &#39;https:&#47;&#47;api.trello.com&#47;1&#47;boards?key=$apiKey&amp;token=$token&amp;name=$name&amp;desc=$description&amp;idBoardSource=$templateId&amp;idOrganization=$workspaceId&#39;),
+          &#39;https:&#47;&#47;api.trello.com&#47;1&#47;boards?key=$apiKey&amp;token=$token&amp;name=$name&amp;desc=$description&amp;idOrganization=$workspaceId&amp;idBoardSource=$templateId&#39;),
     );
 
     if (response.statusCode == 200) {
@@ -110,7 +110,7 @@ Throws an exception if the request fails.</p>
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      return data[&#39;id&#39;];
+      return Board.fromJson(data);
     } else {
       throw Exception(&#39;Failed to create board&#39;);
     }

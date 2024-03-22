@@ -102,7 +102,7 @@ Widget build(BuildContext context) {
           onTap: () {
             if (board.closed) {
               Fluttertoast.showToast(
-                msg: &quot;Le tableau est fermé&quot;,
+                msg: AppLocalizations.of(context)!.board_closed,
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.BOTTOM,
                 timeInSecForIosWeb: 1,
