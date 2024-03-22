@@ -316,7 +316,7 @@ class BoardViewState extends State<BoardView> {
                                                                   setState(() {
                                                                     _getCardsByList(
                                                                         snapshot
-                                                                            .data![index]
+                                                                             .data![index]
                                                                             .id);
                                                                   });
                                                                 })
