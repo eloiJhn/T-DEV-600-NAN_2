@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
+import 'package:trelltech/provider/language_provider.dart';
 import 'package:trelltech/widgets/menu_widget.dart';
 import 'package:trelltech/repositories/authentification.dart';
 import 'package:trelltech/repositories/api.dart';
@@ -32,7 +34,8 @@ class _ProfileViewState extends State<ProfileView> {
 
         setState(() {
           userName = userInfo['fullName'];
-          userEmail = userInfo['email']; // Assurez-vous que l'API renvoie bien l'email
+          userEmail =
+              userInfo['email']; // Assurez-vous que l'API renvoie bien l'email
           userPhotoUrl = userInfo['avatarUrl'];
         });
       }
@@ -52,9 +55,9 @@ class _ProfileViewState extends State<ProfileView> {
           children: <Widget>[
             CircleAvatar(
               radius: 50,
-              backgroundImage: NetworkImage(
-                  userPhotoUrl != null ? "$userPhotoUrl/50.png" : 'https://placehold.co/50.png'
-              ),
+              backgroundImage: NetworkImage(userPhotoUrl != null
+                  ? "$userPhotoUrl/50.png"
+                  : 'https://placehold.co/50.png'),
             ),
             SizedBox(height: 20),
             Text(
@@ -73,12 +76,7 @@ class _ProfileViewState extends State<ProfileView> {
               ),
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                print('Changer de langue');
-              },
-              child: Text('Changer de langue'),
-            ),
+            LanguageDropdown(),
             ElevatedButton(
               onPressed: () {
                 disconnect(context);
@@ -89,6 +87,47 @@ class _ProfileViewState extends State<ProfileView> {
         ),
       ),
       bottomNavigationBar: MenuWidget(),
+    );
+  }
+}
+
+class LanguageDropdown extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var languageProvider = Provider.of<LanguageProvider>(context);
+    return DropdownButtonHideUnderline(
+      child: DropdownButton(
+        value: languageProvider.locale,
+        items: [
+          DropdownMenuItem(
+            value: Locale('en', 'US'),
+            child: Row(
+              children: <Widget>[
+                Image.network('https://flagpedia.net/data/flags/mini/us.png',
+                    width: 30),
+                const SizedBox(width: 8),
+                Text('English'),
+              ],
+            ),
+          ),
+          DropdownMenuItem(
+            value: Locale('fr', 'FR'),
+            child: Row(
+              children: <Widget>[
+                Image.network('https://flagpedia.net/data/flags/mini/fr.png',
+                    width: 30),
+                const SizedBox(width: 8),
+                Text('Français'),
+              ],
+            ),
+          ),
+        ],
+        onChanged: (Locale? locale) {
+          if (locale != null) {
+            languageProvider.setLocale(locale);
+          }
+        },
+      ),
     );
   }
 }
