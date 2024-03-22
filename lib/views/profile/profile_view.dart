@@ -5,6 +5,7 @@ import 'package:trelltech/provider/language_provider.dart';
 import 'package:trelltech/widgets/menu_widget.dart';
 import 'package:trelltech/repositories/authentification.dart';
 import 'package:trelltech/repositories/api.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileView extends StatefulWidget {
   @override
@@ -34,8 +35,7 @@ class _ProfileViewState extends State<ProfileView> {
 
         setState(() {
           userName = userInfo['fullName'];
-          userEmail =
-              userInfo['email']; // Assurez-vous que l'API renvoie bien l'email
+          userEmail = userInfo['email'];
           userPhotoUrl = userInfo['avatarUrl'];
         });
       }
@@ -46,7 +46,7 @@ class _ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile"),
+        title: Text(AppLocalizations.of(context)!.profile),
         centerTitle: true,
       ),
       body: Center(
@@ -61,7 +61,7 @@ class _ProfileViewState extends State<ProfileView> {
             ),
             SizedBox(height: 20),
             Text(
-              userName ?? "Nom de l'utilisateur",
+              userName ?? AppLocalizations.of(context)!.userName,
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -69,7 +69,7 @@ class _ProfileViewState extends State<ProfileView> {
             ),
             SizedBox(height: 10),
             Text(
-              userEmail ?? "Email de l'utilisateur",
+              userEmail ?? AppLocalizations.of(context)!.userEmail,
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey[600],
@@ -81,7 +81,7 @@ class _ProfileViewState extends State<ProfileView> {
               onPressed: () {
                 disconnect(context);
               },
-              child: Text('Se déconnecter'),
+              child: Text(AppLocalizations.of(context)!.disconnect),
             ),
           ],
         ),
