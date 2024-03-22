@@ -102,9 +102,9 @@ class _MenuWidgetState extends State<MenuWidget> {
     ];
 
     navBarItems.add(
-      const BottomNavigationBarItem(
+      BottomNavigationBarItem(
         icon: Icon(Icons.account_circle),
-        label: 'Profile',
+        label: AppLocalizations.of(context)!.profile,
       ),
     );
 
