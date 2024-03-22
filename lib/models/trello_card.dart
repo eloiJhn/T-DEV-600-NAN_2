@@ -9,13 +9,13 @@ class TrelloCard {
   // final DateTime dateLastActivity;
   final String name;
   // final Map<String, dynamic> descData;
-  final String? due;
+  String? due;
   // final String dueReminder;
   // final String email;
   final String idBoard;
   // final List<Map<String, String>> idChecklists;
   // final List<Map<String, String>> idLabels;
-  // final String idList;
+  String idList;
   final List<String> idMembers;
   // final List<String> idMembersVoted;
   // final int idShort;
@@ -48,7 +48,7 @@ class TrelloCard {
     required this.idBoard,
     // required this.idChecklists,
     // required this.idLabels,
-    // required this.idList,
+    required this.idList,
     required this.idMembers,
     // required this.idMembersVoted,
     // required this.idShort,
@@ -83,7 +83,7 @@ class TrelloCard {
       idBoard: json['idBoard'],
       // idChecklists: List<Map<String, String>>.from(json['idChecklists']),
       // idLabels: List<Map<String, String>>.from(json['idLabels']),
-      // idList: json['idList'],
+      idList: json['idList'],
       idMembers: List<String>.from(json['idMembers']),
       // idMembersVoted: List<String>.from(json['idMembersVoted']),
       // idShort: json['idShort'],

@@ -266,7 +266,7 @@ Future<void> updateCard(
     String apiKey, String? token, String cardId, TrelloCard card) async {
   final response = await http.put(
     Uri.parse(
-        'https://api.trello.com/1/cards/$cardId?key=$apiKey&token=$token&desc=${card.desc}&name=${card.name}'),
+        'https://api.trello.com/1/cards/$cardId?key=$apiKey&token=$token&desc=${card.desc}&name=${card.name}&due=${card.due}&idList=${card.idList}'),
   );
 
   if (response.statusCode != 200) {
