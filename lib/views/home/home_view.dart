@@ -28,41 +28,43 @@ class _HomeViewState extends State<HomeView> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-          Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset('assets/images/logo.png',
-              width: 30,
-              height: 30,
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(
+                  'assets/images/logo.png',
+                  width: 30,
+                  height: 30,
+                ),
+                const SizedBox(width: 5),
+                const Text(
+                  'TrellTech',
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: 5),
-            const Text(
-              'TrellTech',
-              style: TextStyle(
-                fontSize: 24,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
+            const SizedBox(height: 20),
+            ElevatedButton(
+              key: const Key('discover_button'),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => const DiscoverAppView()),
+                );
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.white),
+                foregroundColor: MaterialStateProperty.all(Color(0xFF1C39A1)),
               ),
+              child: const Text('Découvrir l\'application'),
             ),
           ],
         ),
-        const SizedBox(height: 20),
-        ElevatedButton(
-          key: const Key('discover_button'),
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const DiscoverAppView()),
-            );
-          },
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.white),
-            foregroundColor: MaterialStateProperty.all(Color(0xFF1C39A1)),
-          ),
-          child: const Text('Découvrir l\'application'),
-        ),
-      ],
-    ),)
-    ,
+      ),
     );
   }
 }

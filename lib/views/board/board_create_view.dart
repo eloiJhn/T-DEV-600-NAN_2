@@ -2,12 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:trelltech/models/board.dart';
 import 'package:trelltech/models/trello_board_template.dart';
-import 'package:trelltech/models/trello_organization.dart';
 import 'package:trelltech/repositories/api.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:trelltech/repositories/authentification.dart';
 import 'package:trelltech/views/board/board_view.dart';
 import 'package:trelltech/widgets/template_picker_widget.dart';
@@ -25,7 +24,7 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
   late TextEditingController _nameController;
   late TextEditingController _descriptionController;
   late bool _isLoading = false;
-  String _selectedOption = 'tableau_vierge';
+  String _selectedOption = 'empty';
   TrelloBoardTemplate? _selectedTemplate;
 
   @override
@@ -70,7 +69,7 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
             _selectedTemplate?.id);
 
         Fluttertoast.showToast(
-          msg: AppLocalizations.of(context)!.boardCreated,
+          msg: AppLocalizations.of(context)!.board_created,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -85,8 +84,9 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
           ),
         );
       } catch (e) {
+        print(e);
         Fluttertoast.showToast(
-          msg: AppLocalizations.of(context)!.boardCreationFailed,
+          msg: AppLocalizations.of(context)!.board_creationFailed,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -106,7 +106,7 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.boardCreated),
+        title: Text(AppLocalizations.of(context)!.board_create),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -120,7 +120,7 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
                     TextFormField(
                       controller: _nameController,
                       decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.boardName,
+                        labelText: AppLocalizations.of(context)!.board_name,
                         border: const OutlineInputBorder(),
                       ),
                       validator: (value) {
@@ -135,7 +135,7 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
                       controller: _descriptionController,
                       decoration: InputDecoration(
                         labelText:
-                            AppLocalizations.of(context)!.boardDescription,
+                            AppLocalizations.of(context)!.board_description,
                         border: const OutlineInputBorder(),
                       ),
                       maxLines: 4,
@@ -147,7 +147,7 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                _selectedOption = 'tableau_vierge';
+                                _selectedOption = 'empty';
                                 _selectedTemplate = null;
                               });
                             },
@@ -156,23 +156,26 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
                               child: Card(
                                 shape: RoundedRectangleBorder(
                                   side: BorderSide(
-                                    color: _selectedOption == 'tableau_vierge'
+                                    color: _selectedOption == 'empty'
                                         ? Colors.blue
                                         : Colors.grey,
                                     width: 2.0,
                                   ),
                                   borderRadius: BorderRadius.circular(15.0),
                                 ),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(20.0),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                      Icon(
+                                      const Icon(
                                         Icons.insert_chart,
                                         size: 50.0,
                                       ),
-                                      Text('Tableau vierge'),
+                                      Text(
+                                          AppLocalizations.of(context)!
+                                              .board_empty,
+                                          textAlign: TextAlign.center),
                                     ],
                                   ),
                                 ),
@@ -283,18 +286,19 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
                                           width: 2.0,
                                         ),
                                       ),
-                                      child: const Padding(
+                                      child: Padding(
                                         padding: EdgeInsets.all(20.0),
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: <Widget>[
-                                            Icon(
+                                            const Icon(
                                               Icons.dashboard_customize,
                                               size: 50.0,
                                             ),
                                             Text(
-                                              'Basé sur un template',
+                                              AppLocalizations.of(context)!
+                                                  .board_basedOnTemplate,
                                               textAlign: TextAlign.center,
                                             ),
                                           ],
@@ -314,7 +318,7 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
                         backgroundColor: const Color(0xFF1C39A1),
                       ),
                       child: Text(
-                        AppLocalizations.of(context)!.boardCreated,
+                        AppLocalizations.of(context)!.board_create,
                         style: const TextStyle(fontSize: 16.0),
                       ),
                     ),

@@ -1,17 +1,16 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:trelltech/models/board.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trelltech/models/board.dart';
 import 'package:trelltech/models/trello_organization.dart';
 import 'package:trelltech/repositories/api.dart';
 import 'package:trelltech/repositories/authentification.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:trelltech/views/board/board_create_view.dart';
 import 'package:trelltech/views/board/board_view.dart';
 import 'package:trelltech/views/dashboard/dashboard_view.dart';
@@ -145,9 +144,9 @@ class WorkspaceViewState extends State<WorkspaceView> {
             Flexible(
               child: boards.isEmpty
                   ? EmptyBoardWidget(
-                      itemType: 'Tableau',
+                      itemType: AppLocalizations.of(context)!.board_title,
                       message:
-                          "Vous n'avez actuellement aucun tableau de créé pour cette organisation. Veuillez cliquer pour en ajouter un",
+                          AppLocalizations.of(context)!.board_empty_message,
                       iconData: Icons.dashboard,
                       onTap: () {
                         Navigator.push(
@@ -242,7 +241,7 @@ class CustomListItem extends StatelessWidget {
             onTap: () {
               if (board.closed) {
                 Fluttertoast.showToast(
-                  msg: "Le tableau est fermé",
+                  msg: AppLocalizations.of(context)!.board_closed,
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.BOTTOM,
                   timeInSecForIosWeb: 1,
@@ -367,7 +366,8 @@ class CustomPopupMenuButton extends StatelessWidget {
                       children: <Widget>[
                         ListTile(
                           leading: const Icon(Icons.edit),
-                          title: const Text('Modifier'),
+                          title: Text(AppLocalizations.of(context)!
+                              .organization_update),
                           onTap: () {
                             Navigator.pushReplacement(
                               context,
@@ -381,16 +381,17 @@ class CustomPopupMenuButton extends StatelessWidget {
                         ),
                         ListTile(
                           leading: const Icon(Icons.delete),
-                          title: const Text('Supprimer'),
+                          title: Text(AppLocalizations.of(context)!
+                              .organization_delete),
                           onTap: () {
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title:
-                                        const Text('Supprimer l\'organisation'),
-                                    content: const Text(
-                                        'Êtes-vous sûr de vouloir supprimer cette organisation ?'),
+                                    title: Text(AppLocalizations.of(context)!
+                                        .organization_delete),
+                                    content: Text(AppLocalizations.of(context)!
+                                        .organization_delete_message),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () {
@@ -414,7 +415,9 @@ class CustomPopupMenuButton extends StatelessWidget {
                                             );
                                           });
                                         },
-                                        child: const Text('Supprimer'),
+                                        child: Text(
+                                            AppLocalizations.of(context)!
+                                                .organization_delete),
                                       ),
                                     ],
                                   );

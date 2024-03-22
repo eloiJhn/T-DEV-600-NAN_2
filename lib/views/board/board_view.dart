@@ -1,21 +1,18 @@
-import 'dart:ffi';
-
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trelltech/models/board.dart';
 import 'package:trelltech/models/trello_card.dart';
 import 'package:trelltech/models/trello_list.dart';
 import 'package:trelltech/repositories/api.dart';
-import 'package:trelltech/views/board/workspace_view.dart';
 import 'package:trelltech/repositories/authentification.dart';
+import 'package:trelltech/views/board/workspace_view.dart';
 import 'package:trelltech/widgets/card_widget.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:trelltech/widgets/empty_widget.dart';
 import 'package:trelltech/widgets/menu_widget.dart';
+
 import '../dashboard/dashboard_view.dart';
 import 'board_edit_view.dart';
 
@@ -64,6 +61,7 @@ class BoardViewState extends State<BoardView> {
         await getLists(apiKey!, await getAccessToken(), widget.board.id!);
     List<TrelloList> listList =
         lists.map((item) => TrelloList.fromJson(item)).toList();
+    if (listList.isNotEmpty) listList.add(TrelloList(id: 'plus', name: ''));
     return listList;
   }
 
@@ -122,6 +120,7 @@ class BoardViewState extends State<BoardView> {
         actions: <Widget>[
           CustomPopupMenuButton(
             boardId: widget.board.id,
+            organizationId: widget.board.idOrganization,
             onBoardUpdated: (updatedBoard) {
               setState(() {
                 _nameController.text = updatedBoard.name;
@@ -149,13 +148,78 @@ class BoardViewState extends State<BoardView> {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.data!.isEmpty) {
                 return EmptyBoardWidget(
-                  itemType: 'Listes',
-                  message:
-                      "Vous n'avez actuellement aucune liste dans ce tableau",
+                  itemType: AppLocalizations.of(context)!.lists_title,
+                  message: AppLocalizations.of(context)!.lists_empty_message,
                   iconData: Icons.list,
                   witheColor: true,
                   onTap: () {
-                    print('Tableau clicked');
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        final _formKey = GlobalKey<FormState>();
+                        return AlertDialog(
+                          title: Text('Ajouter une liste'),
+                          content: Form(
+                            key: _formKey,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: TextFormField(
+                                    decoration: InputDecoration(
+                                        labelText: 'Nom de la liste'),
+                                    validator: (input) => input!.trim().isEmpty
+                                        ? 'Veuillez entrer un nom de liste'
+                                        : null,
+                                    onSaved: (input) async => {
+                                      if (input!.isNotEmpty)
+                                        {
+                                          createList(
+                                              dotenv.env['TRELLO_API_KEY']!,
+                                              await getAccessToken(),
+                                              input,
+                                              "bottom",
+                                              widget.board.id),
+                                          Fluttertoast.showToast(
+                                            msg: AppLocalizations.of(context)!
+                                                .list_created,
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.BOTTOM,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor: Colors.green,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0,
+                                          ),
+                                          _initialize()
+                                        }
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              child: Text('Annuler'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: Text('Ajouter'),
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  _formKey.currentState?.save();
+                                  // Ici, vous pouvez ajouter la logique pour sauvegarder la nouvelle liste
+                                  Navigator.of(context).pop();
+                                }
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                   isMasculine: false,
                 );
@@ -165,9 +229,138 @@ class BoardViewState extends State<BoardView> {
                     options: CarouselOptions(
                         autoPlay: false,
                         enlargeCenterPage: false,
+                        enableInfiniteScroll: false,
                         height: MediaQuery.of(context).size.height),
                     itemBuilder:
                         (BuildContext context, int item, int pageViewIndex) {
+                      if (item == snapshot.data!.length - 1) {
+                        return GestureDetector(
+                          child: Card(
+                            margin: const EdgeInsets.fromLTRB(15, 30, 15, 30),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10)),
+                                        color: Color(0xff162B62)),
+                                    child: Center(
+                                      child: Text(
+                                        AppLocalizations.of(context)!
+                                            .list_create,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 8,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(20.0),
+                                    child: Center(
+                                      child: Text(
+                                        AppLocalizations.of(context)!
+                                            .list_create_message,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                final _formKey = GlobalKey<FormState>();
+                                return AlertDialog(
+                                  title: Text(AppLocalizations.of(context)!
+                                      .list_create),
+                                  content: Form(
+                                    key: _formKey,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: TextFormField(
+                                            decoration: InputDecoration(
+                                                labelText: AppLocalizations.of(
+                                                        context)!
+                                                    .list_name),
+                                            validator: (input) => input!
+                                                    .trim()
+                                                    .isEmpty
+                                                ? 'Veuillez entrer un nom de liste'
+                                                : null,
+                                            onSaved: (input) async => {
+                                              if (input!.isNotEmpty)
+                                                {
+                                                  createList(
+                                                      dotenv.env[
+                                                          'TRELLO_API_KEY']!,
+                                                      await getAccessToken(),
+                                                      input,
+                                                      "bottom",
+                                                      widget.board.id),
+                                                  Fluttertoast.showToast(
+                                                    msg: AppLocalizations.of(
+                                                            context)!
+                                                        .list_created,
+                                                    toastLength:
+                                                        Toast.LENGTH_SHORT,
+                                                    gravity:
+                                                        ToastGravity.BOTTOM,
+                                                    timeInSecForIosWeb: 1,
+                                                    backgroundColor:
+                                                        Colors.green,
+                                                    textColor: Colors.white,
+                                                    fontSize: 16.0,
+                                                  ),
+                                                  _initialize()
+                                                }
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: Text(
+                                          AppLocalizations.of(context)!.cancel),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: Text(AppLocalizations.of(context)!
+                                          .list_create),
+                                      onPressed: () {
+                                        if (_formKey.currentState!.validate()) {
+                                          _formKey.currentState?.save();
+                                          // Ici, vous pouvez ajouter la logique pour sauvegarder la nouvelle liste
+                                          Navigator.of(context).pop();
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        );
+                      }
                       return Card(
                           margin: const EdgeInsets.fromLTRB(15, 30, 15, 30),
                           child: Column(children: [
@@ -298,8 +491,9 @@ class BoardViewState extends State<BoardView> {
                                                                     .then(
                                                                         (value) {
                                                                   Fluttertoast.showToast(
-                                                                      msg:
-                                                                          'Carte supprimée avec succès',
+                                                                      msg: AppLocalizations.of(
+                                                                              context)!
+                                                                          .card_deleted,
                                                                       toastLength:
                                                                           Toast
                                                                               .LENGTH_SHORT,
@@ -362,6 +556,7 @@ class BoardViewState extends State<BoardView> {
                                                         await getAccessToken(),
                                                         snapshot.data![item].id,
                                                         value);
+                                                    _initialize();
                                                   });
                                                 },
                                                 style: const TextStyle(
@@ -370,7 +565,7 @@ class BoardViewState extends State<BoardView> {
                                                     InputDecoration.collapsed(
                                                   hintText: AppLocalizations.of(
                                                           context)!
-                                                      .addCard,
+                                                      .card_add,
                                                   hintStyle: const TextStyle(
                                                       color: Colors.white70),
                                                 ),
@@ -392,11 +587,13 @@ class BoardViewState extends State<BoardView> {
 
 class CustomPopupMenuButton extends StatelessWidget {
   final String boardId;
+  final String? organizationId;
   final Function(Board) onBoardUpdated;
 
   const CustomPopupMenuButton({
     super.key,
     required this.boardId,
+    required this.organizationId,
     required this.onBoardUpdated,
   });
 
@@ -424,7 +621,7 @@ class CustomPopupMenuButton extends StatelessWidget {
                       children: <Widget>[
                         ListTile(
                           leading: const Icon(Icons.edit),
-                          title: const Text('Modifier'),
+                          title: Text(AppLocalizations.of(context)!.board_edit),
                           onTap: () async {
                             final result = await Navigator.push(
                               context,
@@ -442,21 +639,25 @@ class CustomPopupMenuButton extends StatelessWidget {
                         ),
                         ListTile(
                           leading: const Icon(Icons.delete),
-                          title: const Text('Supprimer'),
+                          title:
+                              Text(AppLocalizations.of(context)!.board_delete),
                           onTap: () {
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: const Text('Supprimer le tableau'),
-                                    content: const Text(
-                                        'Êtes-vous sûr de vouloir supprimer ce tableau ?'),
+                                    title: Text(AppLocalizations.of(context)!
+                                        .board_delete),
+                                    content: Text(AppLocalizations.of(context)!
+                                        .board_delete_message),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () {
                                           Navigator.pop(context);
                                         },
-                                        child: const Text('Annuler'),
+                                        child: Text(
+                                            AppLocalizations.of(context)!
+                                                .cancel),
                                       ),
                                       TextButton(
                                         onPressed: () async {
@@ -465,14 +666,33 @@ class CustomPopupMenuButton extends StatelessWidget {
                                                   (await getAccessToken())!,
                                                   boardId)
                                               .then((value) {
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const DashboardView()),
-                                            );
-                                          });
+                                            Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        WorkspaceView(
+                                                            workspaceId:
+                                                                organizationId!)));
+                                          }).then((value) => {
+                                                    Fluttertoast.showToast(
+                                                      msg: AppLocalizations.of(
+                                                              context)!
+                                                          .board_deleted,
+                                                      toastLength:
+                                                          Toast.LENGTH_SHORT,
+                                                      gravity:
+                                                          ToastGravity.BOTTOM,
+                                                      timeInSecForIosWeb: 1,
+                                                      backgroundColor:
+                                                          Colors.green,
+                                                      textColor: Colors.white,
+                                                      fontSize: 16.0,
+                                                    )
+                                                  });
                                         },
-                                        child: const Text('Supprimer'),
+                                        child: Text(
+                                            AppLocalizations.of(context)!
+                                                .board_delete),
                                       ),
                                     ],
                                   );
