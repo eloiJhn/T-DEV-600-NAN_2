@@ -38,6 +38,8 @@
   "board_basedOnTemplate": "Basé sur le modèle",
   "board_title": "Tableaux",
   "board_empty_message": "Vous n'avez pas encore de tableaux, cliquez ici pour en ajouter un",
+  "board_open": "Tableaux ouverts",
+  "board_closed": "Tableaux fermés",
   "lists_title": "Listes",
   "lists_empty_message": "Vous n'avez pas encore de listes dans ce tableau, cliquez ici pour en ajouter une",
   "list_create": "Créer une liste",
