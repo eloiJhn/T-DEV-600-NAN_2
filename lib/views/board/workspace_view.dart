@@ -34,7 +34,8 @@ class WorkspaceView extends StatefulWidget {
 class WorkspaceViewState extends State<WorkspaceView> {
   late TrelloOrganization? organization = null;
   late Future<Color> bgColorFuture;
-  late List<Board> boards = [];
+  late List<Board> openBoards = [];
+  late List<Board> closedBoards = [];
 
   WorkspaceViewState() {
     bgColorFuture = Future.value(Colors.grey);
@@ -47,7 +48,7 @@ class WorkspaceViewState extends State<WorkspaceView> {
   }
 
   Future<void> _initialize() async {
-    boards = await getBoards(dotenv.env['TRELLO_API_KEY']!,
+    List<Board> boards = await getBoards(dotenv.env['TRELLO_API_KEY']!,
         await getAccessToken(), widget.workspaceId);
     try {
       organization = await getWorkspace(
@@ -55,15 +56,18 @@ class WorkspaceViewState extends State<WorkspaceView> {
         await getAccessToken(),
         widget.workspaceId,
       );
+
+      openBoards = boards.where((board) => !board.closed).toList();
+      closedBoards = boards.where((board) => board.closed).toList();
     } catch (e) {
       print(
           'Erreur lors de la récupération des détails de l\'organisation: $e');
     }
 
-    if (boards.isNotEmpty) {
+    if (openBoards.isNotEmpty) {
       bgColorFuture = _getBgColor(
-        boards[0].bgColor,
-        boards[0].bgImage,
+        openBoards[0].bgColor,
+        openBoards[0].bgImage,
       );
     }
 
@@ -73,6 +77,32 @@ class WorkspaceViewState extends State<WorkspaceView> {
   }
 
   bool get isOrganizationInitialized => organization != null;
+
+  Widget _buildBoardList() {
+    return ListView(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            AppLocalizations.of(context)!.board_open,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ),
+        _buildBoardListView(openBoards),
+        if (closedBoards.isNotEmpty) ...[
+          const Divider(color: Colors.grey),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              AppLocalizations.of(context)!.board_closed,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+          _buildBoardListView(closedBoards),
+        ],
+      ],
+    );
+  }
 
   Future<PaletteGenerator> _generatePalette(String imageUrl) async {
     if (imageUrl.isEmpty) {
@@ -129,12 +159,15 @@ class WorkspaceViewState extends State<WorkspaceView> {
   }
 
   Widget _buildWorkspaceView(Color bgColor) {
+    List<Board> allBoards = openBoards + closedBoards;
     return Scaffold(
       appBar: AppBar(
         title: Text(organization?.displayName ?? 'Loading...'),
         actions: <Widget>[
           CustomPopupMenuButton(
-              organisationId: widget.workspaceId, boards: boards, state: this),
+              organisationId: widget.workspaceId,
+              boards: allBoards,
+              state: this),
         ],
       ),
       body: Center(
@@ -142,7 +175,7 @@ class WorkspaceViewState extends State<WorkspaceView> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Flexible(
-              child: boards.isEmpty
+              child: openBoards.isEmpty && closedBoards.isEmpty
                   ? EmptyBoardWidget(
                       itemType: AppLocalizations.of(context)!.board_title,
                       message:
@@ -177,10 +210,14 @@ class WorkspaceViewState extends State<WorkspaceView> {
     );
   }
 
-  Widget _buildBoardList() {
+  Widget _buildBoardListView(List<Board> boards) {
     return ListView.builder(
       itemCount: boards.length,
       scrollDirection: Axis.vertical,
+      shrinkWrap:
+          true, // Ajoutez cette ligne pour que ListView fonctionne dans Column
+      physics:
+          const NeverScrollableScrollPhysics(), // Ajoutez cette ligne pour désactiver le défilement dans cette ListView
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
           onLongPress: () {
@@ -410,7 +447,7 @@ class CustomPopupMenuButton extends StatelessWidget {
                                                 .pushAndRemoveUntil(
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      DashboardView()),
+                                                      const DashboardView()),
                                               (Route<dynamic> route) => false,
                                             );
                                           });

@@ -38,6 +38,8 @@
   "board_basedOnTemplate": "Based on template",
   "board_title": "Boards",
   "board_empty_message": "You don't have any boards yet, click here to add one",
+  "board_open": "Open boards",
+  "board_closed": "Closed boards",
   "lists_title": "Lists",
   "lists_empty_message": "You don't have any lists yet in this board, click here to add one",
   "list_create": "Create list",
