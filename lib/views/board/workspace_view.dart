@@ -1,17 +1,16 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:trelltech/models/board.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:trelltech/models/board.dart';
 import 'package:trelltech/models/trello_organization.dart';
 import 'package:trelltech/repositories/api.dart';
 import 'package:trelltech/repositories/authentification.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:trelltech/views/board/board_create_view.dart';
 import 'package:trelltech/views/board/board_view.dart';
 import 'package:trelltech/views/dashboard/dashboard_view.dart';
@@ -35,7 +34,8 @@ class WorkspaceView extends StatefulWidget {
 class WorkspaceViewState extends State<WorkspaceView> {
   late TrelloOrganization? organization = null;
   late Future<Color> bgColorFuture;
-  late List<Board> boards = [];
+  late List<Board> openBoards = [];
+  late List<Board> closedBoards = [];
 
   WorkspaceViewState() {
     bgColorFuture = Future.value(Colors.grey);
@@ -48,7 +48,7 @@ class WorkspaceViewState extends State<WorkspaceView> {
   }
 
   Future<void> _initialize() async {
-    boards = await getBoards(dotenv.env['TRELLO_API_KEY']!,
+    List<Board> boards = await getBoards(dotenv.env['TRELLO_API_KEY']!,
         await getAccessToken(), widget.workspaceId);
     try {
       organization = await getWorkspace(
@@ -56,15 +56,18 @@ class WorkspaceViewState extends State<WorkspaceView> {
         await getAccessToken(),
         widget.workspaceId,
       );
+
+      openBoards = boards.where((board) => !board.closed).toList();
+      closedBoards = boards.where((board) => board.closed).toList();
     } catch (e) {
       print(
           'Erreur lors de la récupération des détails de l\'organisation: $e');
     }
 
-    if (boards.isNotEmpty) {
+    if (openBoards.isNotEmpty) {
       bgColorFuture = _getBgColor(
-        boards[0].bgColor,
-        boards[0].bgImage,
+        openBoards[0].bgColor,
+        openBoards[0].bgImage,
       );
     }
 
@@ -74,6 +77,32 @@ class WorkspaceViewState extends State<WorkspaceView> {
   }
 
   bool get isOrganizationInitialized => organization != null;
+
+  Widget _buildBoardList() {
+    return ListView(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            AppLocalizations.of(context)!.board_open,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ),
+        _buildBoardListView(openBoards),
+        if (closedBoards.isNotEmpty) ...[
+          const Divider(color: Colors.grey),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              AppLocalizations.of(context)!.board_closed,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+          _buildBoardListView(closedBoards),
+        ],
+      ],
+    );
+  }
 
   Future<PaletteGenerator> _generatePalette(String imageUrl) async {
     if (imageUrl.isEmpty) {
@@ -130,12 +159,15 @@ class WorkspaceViewState extends State<WorkspaceView> {
   }
 
   Widget _buildWorkspaceView(Color bgColor) {
+    List<Board> allBoards = openBoards + closedBoards;
     return Scaffold(
       appBar: AppBar(
         title: Text(organization?.displayName ?? 'Loading...'),
         actions: <Widget>[
           CustomPopupMenuButton(
-              organisationId: widget.workspaceId, boards: boards, state: this),
+              organisationId: widget.workspaceId,
+              boards: allBoards,
+              state: this),
         ],
       ),
       body: Center(
@@ -143,11 +175,11 @@ class WorkspaceViewState extends State<WorkspaceView> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Flexible(
-              child: boards.isEmpty
+              child: openBoards.isEmpty && closedBoards.isEmpty
                   ? EmptyBoardWidget(
-                      itemType: 'Tableau',
+                      itemType: AppLocalizations.of(context)!.board_title,
                       message:
-                          "Vous n'avez actuellement aucun tableau de créé pour cette organisation. Veuillez cliquer pour en ajouter un",
+                          AppLocalizations.of(context)!.board_empty_message,
                       iconData: Icons.dashboard,
                       onTap: () {
                         Navigator.push(
@@ -178,10 +210,14 @@ class WorkspaceViewState extends State<WorkspaceView> {
     );
   }
 
-  Widget _buildBoardList() {
+  Widget _buildBoardListView(List<Board> boards) {
     return ListView.builder(
       itemCount: boards.length,
       scrollDirection: Axis.vertical,
+      shrinkWrap:
+          true, // Ajoutez cette ligne pour que ListView fonctionne dans Column
+      physics:
+          const NeverScrollableScrollPhysics(), // Ajoutez cette ligne pour désactiver le défilement dans cette ListView
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
           onLongPress: () {
@@ -242,7 +278,7 @@ class CustomListItem extends StatelessWidget {
             onTap: () {
               if (board.closed) {
                 Fluttertoast.showToast(
-                  msg: "Le tableau est fermé",
+                  msg: AppLocalizations.of(context)!.board_closed,
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.BOTTOM,
                   timeInSecForIosWeb: 1,
@@ -367,7 +403,8 @@ class CustomPopupMenuButton extends StatelessWidget {
                       children: <Widget>[
                         ListTile(
                           leading: const Icon(Icons.edit),
-                          title: const Text('Modifier'),
+                          title: Text(AppLocalizations.of(context)!
+                              .organization_update),
                           onTap: () {
                             Navigator.pushReplacement(
                               context,
@@ -381,16 +418,17 @@ class CustomPopupMenuButton extends StatelessWidget {
                         ),
                         ListTile(
                           leading: const Icon(Icons.delete),
-                          title: const Text('Supprimer'),
+                          title: Text(AppLocalizations.of(context)!
+                              .organization_delete),
                           onTap: () {
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title:
-                                        const Text('Supprimer l\'organisation'),
-                                    content: const Text(
-                                        'Êtes-vous sûr de vouloir supprimer cette organisation ?'),
+                                    title: Text(AppLocalizations.of(context)!
+                                        .organization_delete),
+                                    content: Text(AppLocalizations.of(context)!
+                                        .organization_delete_message),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () {
@@ -409,12 +447,14 @@ class CustomPopupMenuButton extends StatelessWidget {
                                                 .pushAndRemoveUntil(
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      DashboardView()),
+                                                      const DashboardView()),
                                               (Route<dynamic> route) => false,
                                             );
                                           });
                                         },
-                                        child: const Text('Supprimer'),
+                                        child: Text(
+                                            AppLocalizations.of(context)!
+                                                .organization_delete),
                                       ),
                                     ],
                                   );

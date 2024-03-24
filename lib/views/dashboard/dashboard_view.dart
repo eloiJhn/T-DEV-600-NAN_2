@@ -56,7 +56,7 @@ class DashboardViewState extends State<DashboardView> {
       key: _scaffoldKey,
       backgroundColor: Color(0xFF1C39A1),
       appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.dashboard),
+          title: Text(AppLocalizations.of(context)!.dashboard_title),
           backgroundColor: Colors.transparent,
           foregroundColor: Colors.white),
       body: _isProcessing

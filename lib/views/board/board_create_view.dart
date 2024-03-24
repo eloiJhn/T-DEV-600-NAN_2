@@ -2,14 +2,14 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:trelltech/models/board.dart';
 import 'package:trelltech/models/trello_board_template.dart';
-import 'package:trelltech/models/trello_organization.dart';
 import 'package:trelltech/repositories/api.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:trelltech/repositories/authentification.dart';
 import 'package:trelltech/views/board/board_view.dart';
+import 'package:trelltech/widgets/template_picker_widget.dart';
 
 class CreateBoardScreen extends StatefulWidget {
   String organizationId;
@@ -24,7 +24,7 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
   late TextEditingController _nameController;
   late TextEditingController _descriptionController;
   late bool _isLoading = false;
-  String _selectedOption = 'tableau_vierge';
+  String _selectedOption = 'empty';
   TrelloBoardTemplate? _selectedTemplate;
 
   @override
@@ -69,7 +69,7 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
             _selectedTemplate?.id);
 
         Fluttertoast.showToast(
-          msg: AppLocalizations.of(context)!.boardCreated,
+          msg: AppLocalizations.of(context)!.board_created,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -84,8 +84,9 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
           ),
         );
       } catch (e) {
+        print(e);
         Fluttertoast.showToast(
-          msg: AppLocalizations.of(context)!.boardCreationFailed,
+          msg: AppLocalizations.of(context)!.board_creationFailed,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -101,141 +102,11 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
     }
   }
 
-  void _showTemplatePicker(Function(TrelloBoardTemplate) onSelect) async {
-    final templates = await getBoardTemplates(
-        dotenv.env['TRELLO_API_KEY']!, await getAccessToken());
-
-    String filter = '';
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (BuildContext bc) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return SizedBox(
-              height: MediaQuery.of(context).size.height * 0.9,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextField(
-                        onChanged: (value) {
-                          setState(() {
-                            filter = value;
-                          });
-                        },
-                        decoration: const InputDecoration(
-                          labelText: "Rechercher",
-                          hintText: "Rechercher",
-                          prefixIcon: Icon(Icons.search),
-                          border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(25.0)),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: templates.length,
-                        itemBuilder: (context, index) {
-                          return templates[index].name.contains(filter)
-                              ? Card(
-                                  clipBehavior: Clip.antiAlias,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      templates[index].backgroundImage != null
-                                          ? Ink.image(
-                                              image: NetworkImage(
-                                                  templates[index]
-                                                      .backgroundImage!),
-                                              fit: BoxFit.cover,
-                                              height: 240,
-                                              child: InkWell(
-                                                onTap: () {
-                                                  onSelect(templates[index]);
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                            )
-                                          : Container(
-                                              color: Color(int.parse(
-                                                  'FF${templates[index].backgroundColor?.replaceAll('#', '') ?? ''}',
-                                                  radix: 16)),
-                                              height: 240,
-                                            ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              templates[index].name,
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 24,
-                                              ),
-                                            ),
-                                            Row(
-                                              children: [
-                                                const Icon(
-                                                  Icons.remove_red_eye,
-                                                  color: Colors.black,
-                                                ),
-                                                Text(
-                                                  '${templates[index].viewCount}',
-                                                  style: const TextStyle(
-                                                    wordSpacing: 2,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 16.0),
-                                                const Icon(
-                                                  Icons.copy,
-                                                  color: Colors.black,
-                                                ),
-                                                Text(
-                                                  '${templates[index].copyCount}',
-                                                  style: const TextStyle(
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : Container();
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.boardCreated),
+        title: Text(AppLocalizations.of(context)!.board_create),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -249,7 +120,7 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
                     TextFormField(
                       controller: _nameController,
                       decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.boardName,
+                        labelText: AppLocalizations.of(context)!.board_name,
                         border: const OutlineInputBorder(),
                       ),
                       validator: (value) {
@@ -264,7 +135,7 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
                       controller: _descriptionController,
                       decoration: InputDecoration(
                         labelText:
-                            AppLocalizations.of(context)!.boardDescription,
+                            AppLocalizations.of(context)!.board_description,
                         border: const OutlineInputBorder(),
                       ),
                       maxLines: 4,
@@ -276,7 +147,7 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                _selectedOption = 'tableau_vierge';
+                                _selectedOption = 'empty';
                                 _selectedTemplate = null;
                               });
                             },
@@ -285,23 +156,26 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
                               child: Card(
                                 shape: RoundedRectangleBorder(
                                   side: BorderSide(
-                                    color: _selectedOption == 'tableau_vierge'
+                                    color: _selectedOption == 'empty'
                                         ? Colors.blue
                                         : Colors.grey,
                                     width: 2.0,
                                   ),
                                   borderRadius: BorderRadius.circular(15.0),
                                 ),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(20.0),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                      Icon(
+                                      const Icon(
                                         Icons.insert_chart,
                                         size: 50.0,
                                       ),
-                                      Text('Tableau vierge'),
+                                      Text(
+                                          AppLocalizations.of(context)!
+                                              .board_empty,
+                                          textAlign: TextAlign.center),
                                     ],
                                   ),
                                 ),
@@ -316,7 +190,7 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
                                     setState(() {
                                       _selectedOption = 'template';
                                     });
-                                    _showTemplatePicker((template) {
+                                    showTemplatePicker(context, (template) {
                                       setState(() {
                                         _selectedTemplate = template;
                                       });
@@ -393,7 +267,7 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
                                       _selectedOption = 'template';
                                       _selectedTemplate = null;
                                     });
-                                    _showTemplatePicker((template) {
+                                    showTemplatePicker(context, (template) {
                                       setState(() {
                                         _selectedTemplate = template;
                                       });
@@ -412,18 +286,19 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
                                           width: 2.0,
                                         ),
                                       ),
-                                      child: const Padding(
+                                      child: Padding(
                                         padding: EdgeInsets.all(20.0),
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: <Widget>[
-                                            Icon(
+                                            const Icon(
                                               Icons.dashboard_customize,
                                               size: 50.0,
                                             ),
                                             Text(
-                                              'Basé sur un template',
+                                              AppLocalizations.of(context)!
+                                                  .board_basedOnTemplate,
                                               textAlign: TextAlign.center,
                                             ),
                                           ],
@@ -443,7 +318,7 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
                         backgroundColor: const Color(0xFF1C39A1),
                       ),
                       child: Text(
-                        AppLocalizations.of(context)!.boardCreated,
+                        AppLocalizations.of(context)!.board_create,
                         style: const TextStyle(fontSize: 16.0),
                       ),
                     ),

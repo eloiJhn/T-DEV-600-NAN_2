@@ -1,4 +1,5 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class EmptyBoardWidget extends StatelessWidget {
@@ -43,7 +44,7 @@ class EmptyBoardWidget extends StatelessWidget {
                     size: 100,
                   ),
                   Text(
-                    "${isMasculine ? 'Aucun' : 'Aucune'} $itemType",
+                    "${isMasculine ? AppLocalizations.of(context)!.no : AppLocalizations.of(context)!.nof} $itemType",
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,

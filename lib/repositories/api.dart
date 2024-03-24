@@ -81,6 +81,46 @@ Future<dynamic> addMemberToCard(
   }
 }
 
+/// Create a new list on Trello.
+/// This function calls the Trello API to create a new list.
+/// It requires the user's API key, token, and the name of the list.
+/// Returns the ID of the new list.
+/// Throws an exception if the request fails.
+Future<TrelloList> createList(String apiKey, String? token, String name,
+    String? pos, String boardId) async {
+  final response = await http.post(
+    Uri.parse(
+        'https://api.trello.com/1/lists?key=$apiKey&token=$token&name=$name&idBoard=$boardId&pos=$pos'),
+  );
+
+  if (response.statusCode == 200) {
+    var data = jsonDecode(response.body);
+    return TrelloList.fromJson(data);
+  } else {
+    throw Exception('Failed to create list');
+  }
+}
+
+/// Deletes a specific list from Trello.
+/// This function calls the Trello API to delete a specific list.
+/// It requires the user's API key, token, and the list's ID.
+/// Throws an exception if the request fails.
+/// Returns true if the request is successful.
+/// Throws an exception if the request fails.
+Future<bool> deleteList(String apiKey, String? token, String listId) async {
+  final response = await http.put(
+    Uri.parse(
+        'https://api.trello.com/1/lists/$listId/closed?key=$apiKey&token=$token&value=true'),
+  );
+
+  print(response.statusCode);
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to delete list');
+  }
+  return true;
+}
+
 /// Create a new board on Trello.
 /// This function calls the Trello API to create a new board.
 /// It requires the user's API key, token, and the name of the board.
@@ -91,7 +131,7 @@ Future<Board> createBoard(String apiKey, String token, String name,
   if (templateId != null) {
     final response = await http.post(
       Uri.parse(
-          'https://api.trello.com/1/boards?key=$apiKey&token=$token&name=$name&desc=$description&idBoardSource=$templateId&idOrganization=$workspaceId'),
+          'https://api.trello.com/1/boards?key=$apiKey&token=$token&name=$name&desc=$description&idOrganization=$workspaceId&idBoardSource=$templateId'),
     );
 
     if (response.statusCode == 200) {
@@ -108,7 +148,7 @@ Future<Board> createBoard(String apiKey, String token, String name,
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      return data['id'];
+      return Board.fromJson(data);
     } else {
       throw Exception('Failed to create board');
     }
@@ -266,7 +306,7 @@ Future<void> updateCard(
     String apiKey, String? token, String cardId, TrelloCard card) async {
   final response = await http.put(
     Uri.parse(
-        'https://api.trello.com/1/cards/$cardId?key=$apiKey&token=$token&desc=${card.desc}&name=${card.name}'),
+        'https://api.trello.com/1/cards/$cardId?key=$apiKey&token=$token&desc=${card.desc}&name=${card.name}&due=${card.due}&idList=${card.idList}'),
   );
 
   if (response.statusCode != 200) {
@@ -294,10 +334,11 @@ Future<void> moveCard(
 ///
 /// This function calls the Trello API to create a new workspace.
 /// It requires the user's API key, token, and the name of the workspace.
-Future<void> createWorkspace(String apiKey, String token, String name) async {
+Future<void> createWorkspace(
+    String apiKey, String token, String name, String desc) async {
   final response = await http.post(
     Uri.parse(
-        'https://api.trello.com/1/organizations?key=$apiKey&token=$token&displayName=$name'),
+        'https://api.trello.com/1/organizations?key=$apiKey&token=$token&displayName=$name&desc=$desc'),
   );
 
   if (response.statusCode != 200) {
