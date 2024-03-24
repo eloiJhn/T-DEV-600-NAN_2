@@ -105,7 +105,8 @@ Widget build(BuildContext context) {
                     children: &lt;Widget&gt;[
                       ListTile(
                         leading: const Icon(Icons.edit),
-                        title: const Text(&#39;Modifier&#39;),
+                        title: Text(AppLocalizations.of(context)!
+                            .organization_update),
                         onTap: () {
                           Navigator.pushReplacement(
                             context,
@@ -119,16 +120,17 @@ Widget build(BuildContext context) {
                       ),
                       ListTile(
                         leading: const Icon(Icons.delete),
-                        title: const Text(&#39;Supprimer&#39;),
+                        title: Text(AppLocalizations.of(context)!
+                            .organization_delete),
                         onTap: () {
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title:
-                                      const Text(&#39;Supprimer l\&#39;organisation&#39;),
-                                  content: const Text(
-                                      &#39;Êtes-vous sûr de vouloir supprimer cette organisation ?&#39;),
+                                  title: Text(AppLocalizations.of(context)!
+                                      .organization_delete),
+                                  content: Text(AppLocalizations.of(context)!
+                                      .organization_delete_message),
                                   actions: &lt;Widget&gt;[
                                     TextButton(
                                       onPressed: () {
@@ -152,7 +154,9 @@ Widget build(BuildContext context) {
                                           );
                                         });
                                       },
-                                      child: const Text(&#39;Supprimer&#39;),
+                                      child: Text(
+                                          AppLocalizations.of(context)!
+                                              .organization_delete),
                                     ),
                                   ],
                                 );
