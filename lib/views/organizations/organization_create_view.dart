@@ -53,7 +53,8 @@ class _CreateOrganizationScreenState extends State<CreateOrganizationScreen> {
       }
 
       try {
-        await createWorkspace(apiKey, accessToken, _nameController.text);
+        await createWorkspace(apiKey, accessToken, _nameController.text,
+            _descriptionController.text);
 
         Fluttertoast.showToast(
           msg: AppLocalizations.of(context)!.organization_created,
