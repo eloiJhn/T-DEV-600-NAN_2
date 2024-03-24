@@ -314,10 +314,11 @@ Future<void> moveCard(
 ///
 /// This function calls the Trello API to create a new workspace.
 /// It requires the user's API key, token, and the name of the workspace.
-Future<void> createWorkspace(String apiKey, String token, String name) async {
+Future<void> createWorkspace(
+    String apiKey, String token, String name, String desc) async {
   final response = await http.post(
     Uri.parse(
-        'https://api.trello.com/1/organizations?key=$apiKey&token=$token&displayName=$name'),
+        'https://api.trello.com/1/organizations?key=$apiKey&token=$token&displayName=$name&desc=$desc'),
   );
 
   if (response.statusCode != 200) {
