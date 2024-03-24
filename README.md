@@ -63,8 +63,8 @@ Enjoy the app!
 You can choose between mutiple OS to build the app (ios,apk,appbundle)  
 `flutter build <os> --release --dart-define-from-file=.env`
 ```bash
-$ flutter build ios --release --dart-define-from-file=.env
-* You can find the build into the build/ios/iphoneos
+$ flutter build apk --release --dart-define-from-file=.env
+* You can find the build into the build/app/outputs/flutter-apk
 ```
 
 ## Bonus
