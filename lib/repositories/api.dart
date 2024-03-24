@@ -101,6 +101,26 @@ Future<TrelloList> createList(String apiKey, String? token, String name,
   }
 }
 
+/// Deletes a specific list from Trello.
+/// This function calls the Trello API to delete a specific list.
+/// It requires the user's API key, token, and the list's ID.
+/// Throws an exception if the request fails.
+/// Returns true if the request is successful.
+/// Throws an exception if the request fails.
+Future<bool> deleteList(String apiKey, String? token, String listId) async {
+  final response = await http.put(
+    Uri.parse(
+        'https://api.trello.com/1/lists/$listId/closed?key=$apiKey&token=$token&value=true'),
+  );
+
+  print(response.statusCode);
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to delete list');
+  }
+  return true;
+}
+
 /// Create a new board on Trello.
 /// This function calls the Trello API to create a new board.
 /// It requires the user's API key, token, and the name of the board.

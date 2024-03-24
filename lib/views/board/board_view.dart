@@ -406,6 +406,78 @@ class BoardViewState extends State<BoardView> {
                                               _editList = !_editList;
                                             })
                                           },
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.delete),
+                                          color: Colors.white,
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text(
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .list_delete),
+                                                  content: Text(
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .list_delete_message),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text(
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .cancel),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        await deleteList(
+                                                                dotenv.env[
+                                                                    'TRELLO_API_KEY']!,
+                                                                await getAccessToken(),
+                                                                snapshot
+                                                                    .data![item]
+                                                                    .id!)
+                                                            .then((value) {
+                                                          Fluttertoast
+                                                              .showToast(
+                                                            msg: AppLocalizations
+                                                                    .of(context)!
+                                                                .list_deleted,
+                                                            toastLength: Toast
+                                                                .LENGTH_SHORT,
+                                                            gravity:
+                                                                ToastGravity
+                                                                    .BOTTOM,
+                                                            timeInSecForIosWeb:
+                                                                1,
+                                                            backgroundColor:
+                                                                Colors.green,
+                                                            textColor:
+                                                                Colors.white,
+                                                            fontSize: 16.0,
+                                                          );
+                                                          Navigator.pop(
+                                                              context);
+                                                          setState(() {
+                                                            _initialize();
+                                                          });
+                                                        });
+                                                      },
+                                                      child: Text(
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .list_delete),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          },
                                         )
                                       ]),
                                 ),
