@@ -107,6 +107,7 @@ class DashboardViewState extends State<DashboardView> {
             ),
       bottomNavigationBar: MenuWidget(),
       floatingActionButton: FloatingActionButton(
+        key: const Key('add_organization_button'),
         onPressed: _addNewOrganization,
         backgroundColor: const Color(0xFF0D1B50),
         foregroundColor: Colors.white,

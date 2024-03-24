@@ -52,6 +52,7 @@ dependencies:
   cached_network_image: ^3.0.0
   fluttertoast: ^8.2.4
   dotted_border: ^2.0.0
+  patrol: ^3.6.0
   provider: ^5.0.0
 
 dev_dependencies:
