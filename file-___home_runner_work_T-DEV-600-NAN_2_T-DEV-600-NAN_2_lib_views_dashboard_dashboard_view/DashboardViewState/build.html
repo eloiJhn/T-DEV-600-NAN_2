@@ -87,7 +87,7 @@ Widget build(BuildContext context) {
     key: _scaffoldKey,
     backgroundColor: Color(0xFF1C39A1),
     appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.dashboard_title),
+        title: Text(AppLocalizations.of(context)!.dashboard),
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.white),
     body: _isProcessing
@@ -138,6 +138,7 @@ Widget build(BuildContext context) {
           ),
     bottomNavigationBar: MenuWidget(),
     floatingActionButton: FloatingActionButton(
+      key: const Key(&#39;add_organization_button&#39;),
       onPressed: _addNewOrganization,
       backgroundColor: const Color(0xFF0D1B50),
       foregroundColor: Colors.white,
