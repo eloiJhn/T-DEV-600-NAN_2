@@ -69,8 +69,8 @@ $ flutter build apk --release --dart-define-from-file=.env
 
 ## Bonus
 
-- Dark/light Theme
 - Localization (English/French)
+
 
 ## Technologies
 
