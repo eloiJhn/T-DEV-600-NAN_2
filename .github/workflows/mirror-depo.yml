@@ -3,7 +3,7 @@ name: Copy repository to EpitechMscProPromo2026
 on:
   push:
     branches:
-      - master
+      - dont_touch
   workflow_dispatch:
 
 concurrency:
